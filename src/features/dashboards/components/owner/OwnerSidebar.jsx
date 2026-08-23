@@ -14,9 +14,9 @@ const OwnerSidebar = () => {
 
     const links = [
         { id: 1, name: "الرئيسية", href: "/dashboard/idea-owner", icon: <Home className="w-5 h-5" /> },
-        { id: 2, name: "مشاريعي", href: "/owner/projects", icon: <FolderOpen className="w-5 h-5" /> },
-        { id: 3, name: "طلبات الإهتمام", href: "/owner/investors", icon: <HeartHandshake className="w-5 h-5" /> },
-        { id: 4, name: "سلة المحذوفات", href: "/owner/reports", icon: <Trash2 className="w-5 h-5" /> },
+        { id: 2, name: "مشاريعي", href: "/dashboard/idea-owner/projects", icon: <FolderOpen className="w-5 h-5" /> },
+        { id: 3, name: "طلبات الإهتمام", href: "/idea-owner/investors", icon: <HeartHandshake className="w-5 h-5" /> },
+        { id: 4, name: "سلة المحذوفات", href: "/idea-owner/reports", icon: <Trash2 className="w-5 h-5" /> },
     ]
 
     return (

@@ -12,7 +12,7 @@ export default function ProjectsStatusChart() {
     const totalProjects = data.reduce((acc, item) => acc + item.value, 0);
 
     return (
-        <div className="w-full max-w-md bg-white rounded-2xl p-5 border border-slate-100 shadow-sm dir-rtl" dir="rtl">
+        <div className="w-full max-w-md bg-white rounded-2xl px-5 pt-5 pb-2 border border-slate-100 shadow-sm dir-rtl" dir="rtl">
             <h3 className="text-lg font-bold text-slate-800 mb-4">
                 توزيع المشاريع حسب الحالة
             </h3>
@@ -74,12 +74,6 @@ export default function ProjectsStatusChart() {
                         </div>
                     ))}
                 </div>
-            </div>
-
-            <div className="mt-4 pt-3 border-t border-slate-100 text-center">
-                <button className="text-xs font-bold text-slate-600 hover:text-blue-600 transition-colors">
-                    عرض التقرير بالكامل
-                </button>
             </div>
         </div>
     );

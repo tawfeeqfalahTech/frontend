@@ -30,7 +30,7 @@ const ResetForm = () => {
                     {showConfirmPassword ? <EyeSlashIcon size={20} /> : <EyeIcon size={20} />}
                 </button>
             </div>
-            <button className="bg-[#1E4C6F] w-full text-white text-lg py-2 rounded-xl cursor-pointer shadow-xl hover:-translate-y-0.5 hover:bg-[#163852] hover:shadow-2xl transition-all duration-300">إعادة التعيين</button>
+            <button className="bg-[#1E4C6F] w-full text-white text-lg py-2 my-1 rounded-xl cursor-pointer shadow-xl hover:-translate-y-0.5 hover:bg-[#163852] hover:shadow-2xl transition-all duration-300">إعادة التعيين</button>
         </form>
     )
 }

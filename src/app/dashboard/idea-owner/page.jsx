@@ -2,10 +2,12 @@ import OwnerCards from '../../../features/dashboards/components/owner/OwnerCards
 import OwnerLineChart from '../../../features/dashboards/components/owner/OwnerLineChart'
 import OwnerPieChart from '../../../features/dashboards/components/owner/OwnerPieChart'
 import OwnerTable from '../../../features/dashboards/components/owner/OwnerTable'
+import DashboardHeader from '../../../features/dashboards/components/shared/DashboardHeader'
 
 const page = () => {
     return (
         <div className='mr-55 max-[660px]:mr-0'>
+            <DashboardHeader route="الرئيسية" paragraph="مرحبا بك مجدداً, إليك نظرة عامة على مشاريعك" buttonLabel="مشروع جديد" />
             <OwnerCards />
             <div className='grid grid-cols-3 gap-3 mt-5'>
                 <div className='col-span-1 space-y-3'>
