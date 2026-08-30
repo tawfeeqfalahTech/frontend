@@ -1,8 +1,8 @@
-import OwnerCards from '../../../features/dashboards/components/owner/OwnerCards'
-import OwnerLineChart from '../../../features/dashboards/components/owner/OwnerLineChart'
-import OwnerPieChart from '../../../features/dashboards/components/owner/OwnerPieChart'
-import OwnerTable from '../../../features/dashboards/components/owner/OwnerTable'
-import DashboardHeader from '../../../features/dashboards/components/shared/DashboardHeader'
+import OwnerCards from '../../../features/dashboards/owner/home/components/OwnerCards'
+import OwnerLineChart from '../../../features/dashboards/owner/home/components/OwnerLineChart'
+import OwnerPieChart from '../../../features/dashboards/owner/home/components/OwnerPieChart'
+import OwnerTable from '../../../features/dashboards/owner/home/components/OwnerTable'
+import DashboardHeader from '../../../features/dashboards/shared/DashboardHeader'
 
 const page = () => {
     return (

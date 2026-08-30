@@ -1,4 +1,4 @@
-import DashboardHeader from "@/features/dashboards/components/shared/DashboardHeader"
+import DashboardHeader from "@/features/dashboards/shared/DashboardHeader"
 
 const page = () => {
     return (

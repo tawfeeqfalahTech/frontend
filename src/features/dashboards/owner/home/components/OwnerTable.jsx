@@ -9,6 +9,8 @@ const projects = [
     { id: '0001356', title: 'إدارة الحجوزات', rating: '80%', status: 'نشط', updatedAt: 'منذ ساعتين' },
     { id: '0001356', title: 'إدارة الحجوزات', rating: '80%', status: 'نشط', updatedAt: 'منذ ساعتين' },
     { id: '0001356', title: 'إدارة الحجوزات', rating: '80%', status: 'نشط', updatedAt: 'منذ ساعتين' },
+    { id: '0001356', title: 'إدارة الحجوزات', rating: '80%', status: 'نشط', updatedAt: 'منذ ساعتين' },
+    { id: '0001356', title: 'إدارة الحجوزات', rating: '80%', status: 'نشط', updatedAt: 'منذ ساعتين' },
 ];
 
 export default function ProjectsTable() {
@@ -28,7 +30,7 @@ export default function ProjectsTable() {
                     </thead>
 
                     <tbody className="divide-y divide-slate-200/70 text-xs sm:text-sm">
-                        {projects.map((item, index) => (
+                        {projects.slice(0, 5).map((item, index) => (
                             <tr key={index} className="hover:bg-slate-50/60 transition-colors">
                                 <td className="py-3.5 px-4 font-semibold text-slate-800">{item.id}</td>
                                 <td className="py-3.5 px-4 font-bold text-slate-800">{item.title}</td>

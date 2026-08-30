@@ -6,7 +6,7 @@ import Image from "next/image"
 const OwnerNavbar = () => {
     const route = "الرئيسية"
     return (
-        <div className="h-15 mr-55 max-[660px]:mr-0 flex items-center justify-between px-5 bg-white border-b border-slate-200">
+        <div className="h-15 mr-57 max-[660px]:mr-0 flex items-center justify-between px-5 bg-white border-b border-slate-200">
             <div>
                 <h1 className="font-semibold text-lg">
                     لوحة التحكم/

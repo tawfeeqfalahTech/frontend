@@ -1,5 +1,5 @@
-import OwnerNavbar from "../../../features/dashboards/components/owner/OwnerNavbar";
-import OwnerSidebar from "../../../features/dashboards/components/owner/OwnerSidebar";
+import OwnerNavbar from "../../../features/dashboards/owner/home/components/OwnerNavbar";
+import OwnerSidebar from "../../../features/dashboards/owner/home/components/OwnerSidebar";
 
 
 export default function OwnerLayout({ children }) {

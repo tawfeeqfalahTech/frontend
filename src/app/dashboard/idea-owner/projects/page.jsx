@@ -1,6 +1,6 @@
-import OwnerCards from '@/features/dashboards/components/owner/OwnerCards'
-import DashboardHeader from '@/features/dashboards/components/shared/DashboardHeader'
-import OwnerTable from '@/features/dashboards/components/owner/OwnerTable'
+import OwnerCards from '@/features/dashboards/owner/home/components/OwnerCards'
+import DashboardHeader from '@/features/dashboards/shared/DashboardHeader'
+import OwnerTable from '@/features/dashboards/owner/home/components/OwnerTable'
 const page = () => {
     return (
         <div className='mr-55 max-[660px]:mr-0'>
