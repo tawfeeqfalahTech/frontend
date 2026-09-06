@@ -1,6 +1,6 @@
 import AuthHero from "@/features/auth/components/shared/AuthHero"
 import AuthHeader from "@/features/auth/components/shared/AuthHeader"
-import OtpInput from "@/features/auth/components/OtpForm"
+import OtpInput from "@/features/auth/components/password-reset/OtpForm"
 
 const Page = () => {
     const email = "a********v@gmail.com"

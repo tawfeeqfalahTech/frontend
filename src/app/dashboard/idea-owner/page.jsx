@@ -9,14 +9,15 @@ const page = () => {
         <div className='mr-55 max-[660px]:mr-0'>
             <DashboardHeader route="الرئيسية" paragraph="مرحبا بك مجدداً, إليك نظرة عامة على مشاريعك" buttonLabel="مشروع جديد" />
             <OwnerCards />
-            <div className='grid grid-cols-3 gap-3 mt-5'>
-                <div className='col-span-1 space-y-3'>
+            <div className='grid grid-cols-4 gap-3 mt-5'>
+                <div className='col-span-2'>
                     <OwnerLineChart />
-                    <OwnerPieChart />
                 </div>
                 <div className='col-span-2'>
-                    <h3 className='text-[#1E4C6F] text-xl font-bold'>المشاريع الأخيرة</h3>
-                    <OwnerTable />
+                    <OwnerPieChart />
+                </div>
+                <div className='col-span-4'>
+                    <OwnerTable slice={3} />
                 </div>
             </div>
         </div>

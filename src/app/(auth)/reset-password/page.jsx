@@ -1,6 +1,6 @@
 import AuthHero from "@/features/auth/components/shared/AuthHero"
 import AuthHeader from "@/features/auth/components/shared/AuthHeader"
-import ResetForm from "@/features/auth/components/ResetForm"
+import ResetForm from "@/features/auth/components/password-reset/ResetForm"
 
 const Page = () => {
     return (

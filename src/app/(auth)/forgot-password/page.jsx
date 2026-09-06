@@ -1,6 +1,6 @@
 import AuthHero from "@/features/auth/components/shared/AuthHero"
 import AuthHeader from "@/features/auth/components/shared/AuthHeader"
-import ForgotForm from "@/features/auth/components/ForgotForm"
+import ForgotForm from "@/features/auth/components/password-reset/ForgotForm"
 import Link from "next/link"
 import { ArrowLeftIcon } from "lucide-react"
 

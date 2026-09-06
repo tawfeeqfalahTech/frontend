@@ -8,7 +8,6 @@ const cairo = Cairo({
   display: "swap",
 });
 
-
 export const metadata = {
   title: "إحياء - منصة لإدارة المشاريع",
   description: "وصف المشروع",
@@ -19,6 +18,7 @@ export default function RootLayout({ children }) {
     <html
       lang="ar"
       dir="rtl"
+      suppressHydrationWarning
       className={`${cairo.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans">{children}</body>

@@ -12,12 +12,12 @@ export default function ProjectsStatusChart() {
     const totalProjects = data.reduce((acc, item) => acc + item.value, 0);
 
     return (
-        <div className="w-full max-w-md bg-white rounded-2xl px-5 pt-5 pb-2 border border-slate-100 shadow-sm dir-rtl" dir="rtl">
+        <div className="w-full bg-white rounded-2xl px-5 pt-5 pb-2 border border-slate-100 shadow-sm dir-rtl" dir="rtl">
             <h3 className="text-lg font-bold text-slate-800 mb-4">
                 توزيع المشاريع حسب الحالة
             </h3>
 
-            <div className="flex items-center justify-between gap-4 py-2 flex-row-reverse">
+            <div className="flex flex-col items-center justify-between gap-4 py-2">
                 <div className="relative w-44 h-44 flex-shrink-">
                     <ResponsiveContainer width="100%" height="100%">
                         <PieChart>
@@ -50,9 +50,9 @@ export default function ProjectsStatusChart() {
                     </div>
                 </div>
 
-                <div className="flex-1 flex flex-col justify-center gap-4">
+                <div className="flex justify-center gap-4">
                     {data.map((item, index) => (
-                        <div key={index} className="flex items-center justify-between flex-row-reverse">
+                        <div key={index} className="flex items-center justify-between gap-7 flex-row-reverse">
                             <div className="text-center min-w-[40px]">
                                 <div className="text-base font-bold text-slate-900 leading-tight">
                                     {item.value}

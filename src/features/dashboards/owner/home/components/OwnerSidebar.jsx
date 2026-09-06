@@ -2,11 +2,6 @@
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { HomeIcon } from "@/icons/HomeIcon"
-import { LogoutIcon } from "@/icons/LogoutIcon"
-import { SettingsIcon } from "@/icons/SettingsIcon"
-import { HeartIcon } from "@/icons/HeartIcon"
-import { TrashIcon } from "@/icons/TrashIcon"
 import { FolderOpen, HeartHandshake, Home, LogOut, Settings, Trash2 } from "lucide-react"
 
 const OwnerSidebar = () => {
@@ -20,7 +15,7 @@ const OwnerSidebar = () => {
     ]
 
     return (
-        <aside className="w-55 max-[660px]:hidden h-screen bg-white fixed top-0 right-0 flex flex-col px-6 pb-6 pt-3 border-l border-slate-200 shadow-xl z-50">
+        <aside className="w-55 max-[660px]:hidden h-screen bg-white fixed bottom-0 top-0 right-0 flex flex-col px-6 pb-6 pt-3 border-l border-slate-200 shadow-xl z-50">
             <div className="flex items-center gap-3">
                 <Image
                     src="/images/logo.jpg"

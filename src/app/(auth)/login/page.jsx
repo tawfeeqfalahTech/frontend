@@ -1,5 +1,5 @@
-import AuthHero from "@/features/auth/components/shared/AuthHero"
 import AuthHeader from "@/features/auth/components/shared/AuthHeader"
+import AuthHero from "@/features/auth/components/shared/AuthHero"
 import AuthSocial from "@/features/auth/components/sign-in/AuthSocial"
 import SignInForm from "@/features/auth/components/sign-in/SignInForm"
 import Link from "next/link"

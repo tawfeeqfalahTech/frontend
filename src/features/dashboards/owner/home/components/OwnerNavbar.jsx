@@ -1,17 +1,20 @@
 import { BellIcon } from "@/icons/BellIcon"
 import { ChatIcon } from "@/icons/ChatIcon"
-import { Bell, MessageCircleMoreIcon } from "lucide-react"
+import { Bell, Menu, MessageCircleMoreIcon } from "lucide-react"
 import Image from "next/image"
 
 const OwnerNavbar = () => {
     const route = "الرئيسية"
     return (
         <div className="h-15 mr-57 max-[660px]:mr-0 flex items-center justify-between px-5 bg-white border-b border-slate-200">
-            <div>
-                <h1 className="font-semibold text-lg">
-                    لوحة التحكم/
-                    <span className="text-[#1E4C6F] font-bold">{route}</span>
-                </h1>
+            <div className="flex items-center gap-2">
+                <Menu size={20} className="cursor-pointer min-[660px]:hidden" />
+                <div>
+                    <h1 className="font-semibold text-lg">
+                        لوحة التحكم/
+                        <span className="text-[#1E4C6F] font-bold">{route}</span>
+                    </h1>
+                </div>
             </div>
             <div className="flex items-center gap-3">
                 <MessageCircleMoreIcon className="w-5 h-5" />

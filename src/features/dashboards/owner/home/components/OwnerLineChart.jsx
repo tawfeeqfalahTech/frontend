@@ -57,7 +57,7 @@ export default function InterestedChart() {
                 </div>
             </div>
 
-            <div className="h-64 w-full">
+            <div className="h-48 w-full">
                 <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={data} margin={{ top: 10, right: 2, left: -40, bottom: 0 }}>
                         <defs>
