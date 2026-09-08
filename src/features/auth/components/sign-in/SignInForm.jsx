@@ -21,8 +21,24 @@ const SignInForm = () => {
         }
         setLoading(true)
         try {
-            await login(data)
-            alert("تم تسجيل الدخول بنجاح")
+            const res = await login(data)
+
+            const resData = await res.json();
+
+            if (!res.ok) {
+                const errordata = await resData.catch(() => ({}));
+                const errorMessage = errordata.message || "HTTP Error: " + res.status;
+                throw new Error(errorMessage);
+            }
+
+            setCookie('token', resData.token, {
+                maxAge: 600,
+                path: '/',
+            });
+
+            alert(resData.message);
+            reoute.push(`/dashboard/${resData.user.id}`)
+
         } catch (error) {
             alert(error.message)
         } finally {

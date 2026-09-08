@@ -1,7 +1,7 @@
 import AuthHero from "@/features/auth/components/shared/AuthHero"
 import AuthHeader from "@/features/auth/components/shared/AuthHeader"
 import AuthSocial from "@/features/auth/components/sign-in/AuthSocial"
-import SignInForm from "@/features/auth/components/sign-in/SignInForm"
+import SignUpForm from "@/features/auth/components/sign-in/SignUpForm"
 import Link from "next/link"
 
 const Page = () => {
@@ -13,7 +13,7 @@ const Page = () => {
                     <div className="bg-white rounded-2xl w-full max-w-100 px-6 pb-5 pt-9.5">
                         <AuthHeader head="شارك مشروعك" paragraph="أنشئ الحساب الآن وابحث عن داعم لمشروعك" />
                         <div className="mt-6">
-                            <SignInForm />
+                            <SignUpForm />
                         </div>
                         <AuthSocial />
                         <p className="text-xs text-center font-semibold mt-4">لديك حساب بالفعل؟ <Link href="/login" className="text-[#5FABF8] underline">تسجيل الدخول</Link></p>

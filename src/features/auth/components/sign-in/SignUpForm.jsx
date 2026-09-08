@@ -2,7 +2,9 @@
 import EyeSlashIcon from '@/icons/EyeSlashIcon'
 import { EyeIcon, InboxIcon, Loader2, LockIcon } from 'lucide-react'
 import { useState } from 'react'
+import { setCookie } from 'cookies-next'
 import { register } from '../../authApi'
+import { useRouter } from 'next/navigation'
 
 const SignUpForm = () => {
     const [userName, setUserName] = useState("")
@@ -15,17 +17,43 @@ const SignUpForm = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+    const router = useRouter();
 
     const handleSubmit = async () => {
         const data = {
-            userName,
+            name: userName,
             email,
             password,
+            password_confirmation: confirmPassword,
+            // university: null,
+            // major: null,
+            // investment_focus: null,
+            // investment_range: {
+            //     min: 3033.4600723150174,
+            //     max: null
+            // },
+            // preferred_sectors: null
         }
+
         setLoading(true)
         try {
-            await register(data)
-            alert("تم إنشاء الحساب بنجاح")
+            const res = await register(data)
+
+            if (!res.ok) {
+                const errordata = await res.json().catch(() => ({}));
+                const errorMessage = errordata.message || "HTTP Error: " + res.status;
+                throw new Error(errorMessage);
+            }
+
+            setCookie('pending_verify_email', email, {
+                maxAge: 600,
+                path: '/',
+            });
+
+            const successData = await res.json();
+
+            alert(successData.message);
+            router.push('/verify-otp')
         } catch (error) {
             alert(error.message)
         } finally {
@@ -36,14 +64,17 @@ const SignUpForm = () => {
     return (
         <form onSubmit={(e) => { e.preventDefault(); handleSubmit() }}>
             <div className="flex flex-col space-y-4">
+
                 <div className="relative">
                     <InboxIcon className="absolute w-5 h-5 top-1/2 -translate-y-1/2 right-3 text-slate-950 pointer-events-none" />
                     <input type="text" className="bg-white font-semibold w-full outline-none rounded-xl h-11 shadow-[0_0_15px_rgba(0,0,0,0.2)] pr-10.5" value={userName} onChange={(e) => setUserName(e.target.value)} placeholder="الاسم الكامل" />
                 </div>
+
                 <div className="relative">
                     <InboxIcon className="absolute w-5 h-5 top-1/2 -translate-y-1/2 right-3 text-slate-950 pointer-events-none" />
                     <input type="email" className="bg-white font-semibold w-full outline-none rounded-xl h-11 shadow-[0_0_15px_rgba(0,0,0,0.2)] pr-10.5" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="البريد الالكتروني" />
                 </div>
+
                 <div className="relative">
                     <LockIcon className="absolute w-5 h-5 top-1/2 -translate-y-1/2 right-3 text-slate-950 pointer-events-none" />
                     <input type={!showPassword ? "password" : "text"} className="bg-white font-semibold outline-none w-full rounded-xl h-11 shadow-[0_0_15px_rgba(0,0,0,0.2)] pr-10.5 [::-ms-reveal]:hidden [::-ms-clear]:hidden" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="كلمة المرور" />
@@ -55,6 +86,7 @@ const SignUpForm = () => {
                         {showPassword ? <EyeSlashIcon size={20} /> : <EyeIcon size={20} />}
                     </button>
                 </div>
+
                 <div className="relative">
                     <LockIcon className="absolute w-5 h-5 top-1/2 -translate-y-1/2 right-3 text-slate-950 pointer-events-none" />
                     <input type={!showConfirmPassword ? "password" : "text"} className="bg-white font-semibold outline-none w-full rounded-xl h-11 shadow-[0_0_15px_rgba(0,0,0,0.2)] pr-10.5 [::-ms-reveal]:hidden [::-ms-clear]:hidden" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="تأكيد كلمة المرور" />
@@ -79,7 +111,8 @@ const SignUpForm = () => {
                 :
                 "إنشاء حساب"
             }
-            </button>        </form>
+            </button>
+        </form>
     )
 }
 

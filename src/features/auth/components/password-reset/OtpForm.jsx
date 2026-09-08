@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 
 export default function OtpInput({ length = 6, onComplete, disabled = false }) {
     const [otp, setOtp] = useState(new Array(length).fill(""));

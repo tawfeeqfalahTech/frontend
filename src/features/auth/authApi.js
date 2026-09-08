@@ -1,19 +1,26 @@
-import { apiClient } from "@/lib/client";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const login = async (userData) => {
-  const data = await apiClient("/login", {
+  const data = await fetch(`${BASE_URL}/login`, {
     method: "POST",
-    body: userData,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(userData),
   });
 
   return data;
 };
 
 export const register = async (userData) => {
-  const data = await apiClient("/register", {
+  const data = await fetch(`${BASE_URL}/register`, {
     method: "POST",
-    body: userData,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(userData),
   });
-
   return data;
 };

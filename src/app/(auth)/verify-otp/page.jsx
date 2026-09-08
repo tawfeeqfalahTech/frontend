@@ -1,9 +1,27 @@
+"use client"
 import AuthHero from "@/features/auth/components/shared/AuthHero"
 import AuthHeader from "@/features/auth/components/shared/AuthHeader"
 import OtpInput from "@/features/auth/components/password-reset/OtpForm"
+import { getCookie } from "cookies-next"
+import { useState, useEffect } from "react"
 
 const Page = () => {
-    const email = "a********v@gmail.com"
+
+    const [email, setEmail] = useState('');
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+        const savedEmail = getCookie('pending_verify_email');
+        if (savedEmail) {
+            setEmail(String(savedEmail));
+        }
+    }, []);
+
+    if (!isMounted) {
+        return null;
+    }
+
     return (
         <div className="relative min-h-screen w-full overflow-hidden">
             <AuthHero />
