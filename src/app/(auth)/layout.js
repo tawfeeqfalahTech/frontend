@@ -4,12 +4,8 @@ import { redirect } from "next/navigation";
 
 export default async function AuthLayout({ children }) {
   const user = await getAuthUser();
-
   if (user) {
-    if (!user.isVerified) {
-      redirect("verify-otp");
-    }
-    redirect(getDashboardPath(user?.role));
+    redirect(getDashboardPath(user.data?.role));
   }
   return children;
 }

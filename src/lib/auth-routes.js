@@ -1,6 +1,6 @@
 export function getDashboardPath(role) {
   switch (role) {
-    case "idea-owner":
+    case "idea_owner":
       return "/dashboard/idea-owner";
 
     case "investor":

@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import { getCookie } from "cookies-next";
 
 export default async function VerifyLayout({ children }) {
-  const emailVerify = await getCookie("pending_verify_email", { cookies });
+  const cookieStore = await cookies();
+  const emailVerify = cookieStore.get("pending_verify_email")?.value;
 
   if (!emailVerify) {
     redirect("/register");

@@ -4,6 +4,8 @@ import { EyeIcon, InboxIcon, Loader2, LockIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 import { login } from '../../authApi'
+import { setCookie } from '@/lib/action'
+import { useRouter } from 'next/navigation'
 
 const SignInForm = () => {
     const [email, setEmail] = useState("")
@@ -13,32 +15,38 @@ const SignInForm = () => {
 
     const [showPassword, setShowPassword] = useState(false);
 
+    const router = useRouter();
+
 
     const handleSubmit = async () => {
-        const data = {
+        const userData = {
             email,
             password
         }
         setLoading(true)
         try {
-            const res = await login(data)
-
-            const resData = await res.json();
+            const res = await login(userData)
+            const data = await res.json().catch(() => ({}))
 
             if (!res.ok) {
-                const errordata = await resData.catch(() => ({}));
-                const errorMessage = errordata.message || "HTTP Error: " + res.status;
+                if (data.code === "EMAIL_NOT_VERIFIED") {
+                    await setCookie("pending_verify_email", email, 60 * 7);
+                    alert(data.message);
+                    return router.push("/verify-otp");
+                }
+
+                const errorMessage = data.message || `HTTP Error: ${res.status}`;
                 throw new Error(errorMessage);
             }
 
-            setCookie('token', resData.token, {
-                maxAge: 600,
-                path: '/',
-            });
+            await setCookie("token", data.data?.token, 60 * 60 * 24 * 7);
 
-            alert(resData.message);
-            reoute.push(`/dashboard/${resData.user.id}`)
+            alert(data.message);
 
+            const targetRole = data?.user?.role;
+            if (targetRole) {
+                router.push(`/dashboard/${targetRole}`);
+            }
         } catch (error) {
             alert(error.message)
         } finally {

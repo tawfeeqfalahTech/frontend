@@ -1,7 +1,7 @@
-"use client"
+"use client";
 import { useState, useRef } from "react";
 
-export default function OtpInput({ length = 6, onComplete, disabled = false }) {
+export default function OtpInput({ length = 6, onComplete, onSubmit, disabled = false, loading = false }) {
     const [otp, setOtp] = useState(new Array(length).fill(""));
     const inputRefs = useRef([]);
 
@@ -53,8 +53,16 @@ export default function OtpInput({ length = 6, onComplete, disabled = false }) {
         }
     };
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const combinedOtp = otp.join("");
+        if (combinedOtp.length === length && onSubmit) {
+            onSubmit(combinedOtp);
+        }
+    };
+
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
             <div className="flex items-center justify-between" dir="ltr">
                 {otp.map((digit, index) => (
                     <input
@@ -62,7 +70,7 @@ export default function OtpInput({ length = 6, onComplete, disabled = false }) {
                         type="text"
                         inputMode="numeric"
                         maxLength={1}
-                        disabled={disabled}
+                        disabled={disabled || loading}
                         ref={(el) => (inputRefs.current[index] = el)}
                         value={digit}
                         onChange={(e) => handleChange(e, index)}
@@ -72,7 +80,17 @@ export default function OtpInput({ length = 6, onComplete, disabled = false }) {
                     />
                 ))}
             </div>
-            <button className="bg-[#1E4C6F] w-full mt-4 text-white text-lg py-2 rounded-xl cursor-pointer shadow-xl hover:-translate-y-0.5 hover:bg-[#163852] hover:shadow-2xl transition-all duration-300">تحقق من الرمز</button>
+            <button
+                type="submit"
+                disabled={disabled || loading || otp.join("").length < length}
+                className="bg-[#1E4C6F] w-full mt-4 text-white text-lg py-2 rounded-xl cursor-pointer shadow-xl hover:-translate-y-0.5 hover:bg-[#163852] hover:shadow-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+                {loading ? (
+                    <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : (
+                    "تحقق من الرمز"
+                )}
+            </button>
         </form>
     );
 }

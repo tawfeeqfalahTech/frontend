@@ -2,9 +2,9 @@
 import EyeSlashIcon from '@/icons/EyeSlashIcon'
 import { EyeIcon, InboxIcon, Loader2, LockIcon } from 'lucide-react'
 import { useState } from 'react'
-import { setCookie } from 'cookies-next'
 import { register } from '../../authApi'
 import { useRouter } from 'next/navigation'
+import { setCookie } from '@/lib/action'
 
 const SignUpForm = () => {
     const [userName, setUserName] = useState("")
@@ -20,39 +20,29 @@ const SignUpForm = () => {
     const router = useRouter();
 
     const handleSubmit = async () => {
-        const data = {
+        const userData = {
             name: userName,
             email,
             password,
-            password_confirmation: confirmPassword,
-            // university: null,
-            // major: null,
-            // investment_focus: null,
-            // investment_range: {
-            //     min: 3033.4600723150174,
-            //     max: null
-            // },
-            // preferred_sectors: null
+            password_confirmation: confirmPassword
         }
 
         setLoading(true)
         try {
-            const res = await register(data)
+            const res = await register(userData)
+            const data = await res.json().catch(() => ({}))
 
             if (!res.ok) {
-                const errordata = await res.json().catch(() => ({}));
-                const errorMessage = errordata.message || "HTTP Error: " + res.status;
+                const errorMessage = data.message || "HTTP Error: " + res.status;
                 throw new Error(errorMessage);
             }
+            if (email) {
+                await setCookie("pending_verify_email", email, 420);
+            }
 
-            setCookie('pending_verify_email', email, {
-                maxAge: 600,
-                path: '/',
-            });
+            alert(data.data.dev_otp)
 
-            const successData = await res.json();
-
-            alert(successData.message);
+            alert(data.message);
             router.push('/verify-otp')
         } catch (error) {
             alert(error.message)
@@ -80,6 +70,7 @@ const SignUpForm = () => {
                     <input type={!showPassword ? "password" : "text"} className="bg-white font-semibold outline-none w-full rounded-xl h-11 shadow-[0_0_15px_rgba(0,0,0,0.2)] pr-10.5 [::-ms-reveal]:hidden [::-ms-clear]:hidden" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="كلمة المرور" />
                     <button
                         type="button"
+                        tabIndex={-1}
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
                     >
@@ -92,6 +83,7 @@ const SignUpForm = () => {
                     <input type={!showConfirmPassword ? "password" : "text"} className="bg-white font-semibold outline-none w-full rounded-xl h-11 shadow-[0_0_15px_rgba(0,0,0,0.2)] pr-10.5 [::-ms-reveal]:hidden [::-ms-clear]:hidden" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="تأكيد كلمة المرور" />
                     <button
                         type="button"
+                        tabIndex={-1}
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                         className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
                     >
