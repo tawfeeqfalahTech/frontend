@@ -22,7 +22,6 @@ export const AuthContext = ({ initialUser, children }) => {
       console.log(error);
     } finally {
       await deleteCookie("token");
-      await deleteCookie("pendin_selection_role");
       router.replace("/login");
     }
   };

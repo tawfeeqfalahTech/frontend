@@ -1,11 +1,10 @@
 "use client"
-
 import { useState, useRef, useEffect } from "react"
 import { Bell, Menu, MessageCircleMoreIcon } from "lucide-react"
 import Image from "next/image"
 import UserDropdownMenu from "../layout/UserDropdownMenu"
 
-const Navbar = ({ user, onLogout }) => {
+const Navbar = ({ user }) => {
     const route = "الرئيسية"
     const [isOpen, setIsOpen] = useState(false)
     const dropdownRef = useRef(null)
@@ -52,13 +51,7 @@ const Navbar = ({ user, onLogout }) => {
 
                     {isOpen && (
                         <div className="absolute left-0 mt-2 z-50 animate-in fade-in zoom-in-95 duration-150">
-                            <UserDropdownMenu
-                                user={user}
-                                onLogout={() => {
-                                    setIsOpen(false)
-                                    if (onLogout) onLogout()
-                                }}
-                            />
+                            <UserDropdownMenu />
                         </div>
                     )}
                 </div>
