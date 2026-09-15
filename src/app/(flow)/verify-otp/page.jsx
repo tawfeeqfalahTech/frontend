@@ -2,7 +2,7 @@
 import AuthHero from "@/features/auth/components/shared/AuthHero";
 import AuthHeader from "@/features/auth/components/shared/AuthHeader";
 import OtpInput from "@/features/auth/components/OtpForm";
-import { verifyOtp } from "@/features/auth/authApi";
+import { resendOtp, verifyOtp } from "@/features/auth/authApi";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { deleteCookie, setCookie, getCookie } from "@/lib/action";
@@ -10,11 +10,31 @@ import { deleteCookie, setCookie, getCookie } from "@/lib/action";
 const Page = () => {
     const [email, setEmail] = useState("");
     const [isMounted, setIsMounted] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
+
+    const [message, setMessage] = useState("");
+    const [statusMessage, setStatusMessage] = useState(null)
+
+    const COOLDOWN = 90
+    const [cooldown, setCooldown] = useState(0)
+    const [isResending, setIsResending] = useState(false)
+    const [isChecking, setIsChecking] = useState(false)
+
     const router = useRouter();
 
     useEffect(() => {
+
+        const firstSent = localStorage.getItem("firstVerificationSent");
+
+        if (firstSent) {
+            const elapsed = Math.floor(
+                (Date.now() - Number(firstSent)) / 1000
+            );
+
+            if (elapsed < 90) {
+                setCooldown(90 - elapsed);
+            }
+        }
+
         let isSubscribed = true;
 
         async function initPage() {
@@ -34,14 +54,56 @@ const Page = () => {
         };
     }, []);
 
-    const handleVerifyOtp = async (otpCode) => {
+    useEffect(() => {
+        if (cooldown <= 0) return
+        const interval = setTimeout(() => setCooldown((c) => c - 1), 1000)
+        return () => clearTimeout(interval)
+    }, [cooldown])
+
+    const handleResend = async () => {
+        if (cooldown > 0 || isResending) return;
+
+        const lastSent = Number(localStorage.getItem("firstVerificationSent"));
+        if (lastSent && Date.now() - lastSent < COOLDOWN * 1000) {
+            toast.error("Please wait before resending.");
+            return;
+        }
+
+        setIsResending(true);
+
+        try {
+            const res = await resendOtp(email)
+            const data = await res.json().catch(() => ({}))
+
+            if (!res.ok) {
+                const errorMessage = data.message || `HTTP Error: ${res.status}`
+                throw new Error(errorMessage)
+            }
+
+            localStorage.setItem("firstVerificationSent", Date.now());
+            setCooldown(COOLDOWN);
+            setStatusMessage("success");
+            setMessage(data.message)
+
+        } catch (error) {
+            setStatusMessage("faild");
+            setMessage(error.message)
+        } finally {
+            setIsResending(false);
+        }
+    };
+
+    const verifyEmail = async (otpCode) => {
+
+        if (isChecking) return;
+
         if (!email) {
             alert("لم يتم العثور على البريد الإلكتروني. يرجى محاولة التسجيل مجدداً.");
             return;
         }
 
-        setLoading(true);
-        setErrorMessage("");
+        setIsChecking(true);
+        setMessage("");
 
         try {
             const res = await verifyOtp({
@@ -50,21 +112,26 @@ const Page = () => {
             });
 
             const data = await res.json().catch(() => ({}));
-            const token = data.data?.token;
 
-            if (res.ok) {
-                await setCookie("token", token, 60 * 60 * 24 * 7);
-                await setCookie("pending_selection_role", email, 60 * 7)
-                await deleteCookie("pending_verify_email");
-                router.push("/auth/select-role");
-            } else {
-                const message = data.message || `خطأ في الطلب: ${res.status}`;
-                setErrorMessage(message);
+            if (!res.ok) {
+                const errorMessage = data.message || `خطأ في الطلب: ${res.status}`;
+                setMessage(errorMessage);
+                setStatusMessage("faild")
+                throw new Error(errorMessage)
             }
+
+            await setCookie("pending_selection_role", email, 60 * 7)
+            await deleteCookie("pending_verify_email");
+
+            localStorage.removeItem("firstVerificationSent")
+
+            router.push("/auth/select-role");
+
         } catch (error) {
-            setErrorMessage(error.message || "حدث خطأ غير متوقع في الاتصال");
+            setMessage(error.message || "حدث خطأ غير متوقع في الاتصال");
+            setStatusMessage("faild")
         } finally {
-            setLoading(false);
+            setIsChecking(false);
         }
     };
 
@@ -77,30 +144,33 @@ const Page = () => {
             <AuthHero />
             <div className="relative z-10 grid grid-cols-2 max-[1163px]:grid-cols-1 min-h-screen mx-15 max-[520px]:mx-5">
                 <div className="flex items-center max-[1163px]:justify-center h-screen max-[520px]:my-10">
-                    <div className="bg-white rounded-2xl w-full max-w-100 px-6 pb-5 pt-9.5">
+                    <div className="bg-white rounded-2xl w-full max-w-100 px-6 pb-5.5 pt-9.5">
                         <AuthHeader
                             head="تحقق من بريدك الإلكتروني"
                             paragraph={`لقد أرسلنا رمز التحقق مكون من 6 أرقام إلى البريد ${email}`}
                         />
                         <div className="mt-4">
                             <OtpInput
-                                onSubmit={handleVerifyOtp}
-                                onComplete={handleVerifyOtp} // إرسال تلقائي فور إدخال الـ 6 أرقام
-                                loading={loading}
+                                onSubmit={handleResend}
+                                onComplete={verifyEmail}
+                                cooldown={cooldown}
+                                isChecking={isChecking}
+                                isResending={isResending}
+                                loading={isChecking || isResending}
                             />
                         </div>
 
-                        {/* رسالة الخطأ إن وجدت */}
-                        {errorMessage && (
-                            <p className="text-red-500 text-xs text-center font-semibold mt-2">
-                                {errorMessage}
+                        {message && (
+                            <p className={`${statusMessage === "success" ? "text-emerald-600" : "text-red-500"} text-xs text-center font-semibold mt-4`}>
+                                {message}
                             </p>
                         )}
-
-                        <p className="text-xs text-center font-semibold mt-4 flex justify-center">
-                            إعادة إرسال الرمز خلال{" "}
-                            <span className="text-[#5FABF8] underline pr-1">00:45</span>
-                        </p>
+                        {cooldown > 0 && (
+                            <p className="text-xs text-center font-semibold mt-4 flex justify-center">
+                                إعادة إرسال الرمز خلال{" "}
+                                <span className="text-[#5FABF8] underline pr-1">{cooldown}s</span>
+                            </p>
+                        )}
                     </div>
                 </div>
 

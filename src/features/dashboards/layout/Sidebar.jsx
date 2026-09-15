@@ -3,10 +3,9 @@ import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { FolderOpen, HeartHandshake, Home, LogOut, Settings, Trash2, X } from "lucide-react"
-import { logout } from "@/features/auth/authApi"
 import { useAuth } from "@/contexts/AuthContext"
 
-const OwnerSidebar = ({ isOpen, onClose }) => {
+const Sidebar = ({ isOpen, onClose }) => {
     const pathname = usePathname()
 
     const { Logout } = useAuth()
@@ -96,4 +95,4 @@ const OwnerSidebar = ({ isOpen, onClose }) => {
     )
 }
 
-export default OwnerSidebar
+export default Sidebar

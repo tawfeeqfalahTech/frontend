@@ -11,7 +11,7 @@ import { MoveRight, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Role } from "@/features/auth/authApi";
 import { useState, useEffect } from "react";
-import { deleteCookie, getCookie } from "@/lib/action";
+import { deleteCookie, getCookie, setCookie } from "@/lib/action";
 import { getDashboardPath } from "@/lib/auth-routes";
 
 const Page = () => {
@@ -62,6 +62,9 @@ const Page = () => {
                 throw new Error(errorMessage);
             }
 
+            const token = data.data?.token
+
+            await setCookie("token", token, 60 * 60 * 24 * 7);
             await deleteCookie("pending_selection_role")
             router.replace(getDashboardPath(data?.data?.user?.role));
 

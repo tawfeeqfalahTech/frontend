@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import OwnerNavbar from "./OwnerNavbar"
-import OwnerSidebar from "./OwnerSidebar"
+import OwnerNavbar from "../../../layout/Navbar"
+import OwnerSidebar from "../../../layout/Sidebar"
 
 const OwnerDashboardShell = ({ children }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)

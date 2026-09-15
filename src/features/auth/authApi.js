@@ -59,3 +59,15 @@ export const logout = async (token) => {
   });
   return res;
 };
+
+export const resendOtp = async (email) => {
+  const res = await fetch(`${API_URL}/email/resend`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email }),
+  });
+  return res;
+};

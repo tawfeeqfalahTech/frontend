@@ -31,8 +31,12 @@ const SignInForm = () => {
             if (!res.ok) {
                 if (data.code === "EMAIL_NOT_VERIFIED") {
                     await setCookie("pending_verify_email", email, 60 * 7);
-                    alert(data.message);
                     return router.push("/verify-otp");
+                }
+
+                if (data.code === "ROLE_REQUIRED") {
+                    await setCookie("pending_selection_role", email, 60 * 7)
+                    return router.push("/auth/select-role")
                 }
 
                 const errorMessage = data.message || `HTTP Error: ${res.status}`;

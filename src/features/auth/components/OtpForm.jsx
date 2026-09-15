@@ -1,7 +1,7 @@
 "use client";
 import { useState, useRef } from "react";
 
-export default function OtpInput({ length = 6, onComplete, onSubmit, disabled = false, loading = false }) {
+export default function OtpInput({ length = 6, onComplete, onSubmit, loading = false, cooldown, isChecking, isResending }) {
     const [otp, setOtp] = useState(new Array(length).fill(""));
     const inputRefs = useRef([]);
 
@@ -70,7 +70,7 @@ export default function OtpInput({ length = 6, onComplete, onSubmit, disabled = 
                         type="text"
                         inputMode="numeric"
                         maxLength={1}
-                        disabled={disabled || loading}
+                        disabled={loading}
                         ref={(el) => (inputRefs.current[index] = el)}
                         value={digit}
                         onChange={(e) => handleChange(e, index)}
@@ -82,13 +82,24 @@ export default function OtpInput({ length = 6, onComplete, onSubmit, disabled = 
             </div>
             <button
                 type="submit"
-                disabled={disabled || loading || otp.join("").length < length}
+                onClick={onSubmit}
+                disabled={loading || cooldown > 0}
                 className="bg-[#1E4C6F] w-full mt-4 text-white text-lg py-2 rounded-xl cursor-pointer shadow-xl hover:-translate-y-0.5 hover:bg-[#163852] hover:shadow-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
-                {loading ? (
-                    <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                {isChecking ? (
+                    <>
+                        جاري التحقق...
+                        <div className="w-4.5 h-4.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    </>
+                ) : isResending ? (
+                    <>
+                        جاري إرسال رمز جديد...
+                        <div className="w-4.5 h-4.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    </>
                 ) : (
-                    "تحقق من الرمز"
+                    <>
+                        إرسال رمز جديد
+                    </>
                 )}
             </button>
         </form>
