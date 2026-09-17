@@ -19,15 +19,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
     return (
         <>
-            {isOpen && (
-                <button
-                    type="button"
-                    aria-label="إغلاق القائمة"
-                    onClick={onClose}
-                    className="fixed inset-0 bg-black/30 z-40 min-[661px]:hidden"
-                />
-            )}
-            <aside className={`w-55 h-screen bg-white fixed bottom-0 top-0 right-0 flex flex-col px-6 pb-6 pt-3 border-l border-slate-200 shadow-xl z-50 transition-transform duration-200 max-[660px]:w-72 ${isOpen ? "translate-x-0" : "max-[660px]:translate-x-full"} min-[661px]:translate-x-0`}>
+            <aside className={`w-55 h-screen bg-white fixed bottom-0 top-0 right-0 flex flex-col px-6 pb-6 pt-3 border-l border-slate-200 shadow-xl z-50 transition-transform duration-200 max-[660px]:w-72 ${isOpen ? "translate-x-0" : "max-[660px]:translate-x-full"}`}>
                 <div className="flex items-center gap-3">
                     <Image
                         src="/images/logo.jpg"
@@ -41,7 +33,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                         type="button"
                         onClick={onClose}
                         aria-label="إغلاق القائمة"
-                        className="mr-auto min-[661px]:hidden"
+                        className="mr-auto min-[660px]:hidden"
                     >
                         <X className="w-5 h-5" />
                     </button>

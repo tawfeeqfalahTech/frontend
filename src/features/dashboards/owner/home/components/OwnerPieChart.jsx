@@ -50,7 +50,7 @@ export default function ProjectsStatusChart() {
                     </div>
                 </div>
 
-                <div className="flex justify-center gap-4">
+                {/* <div className="flex justify-center gap-4">
                     {data.map((item, index) => (
                         <div key={index} className="flex items-center justify-between gap-7 flex-row-reverse">
                             <div className="text-center min-w-[40px]">
@@ -73,7 +73,7 @@ export default function ProjectsStatusChart() {
                             </div>
                         </div>
                     ))}
-                </div>
+                </div> */}
             </div>
         </div>
     );

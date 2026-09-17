@@ -60,7 +60,7 @@ export default function ProjectsTable({ slice }) {
     };
 
     return (
-        <div className="w-full px-5 bg-white rounded-2xl overflow-hidden dir-rtl mt-2.5" dir="rtl">
+        <div className="w-full bg-white rounded-2xl overflow-hidden dir-rtl mt-2.5" dir="rtl">
             <div className='flex items-center justify-between'>
                 <h3 className='text-[#1E4C6F] text-lg font-bold'>المشاريع الأخيرة</h3>
                 <Link href="/dashboard/idea-owner/projects" className='text-[#0039C4] text-sm font-semibold cursor-pointer'>عرض الكل</Link>

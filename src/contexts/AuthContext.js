@@ -2,12 +2,12 @@
 import { logout } from "@/features/auth/authApi";
 import { deleteCookie, getCookie } from "@/lib/action";
 import { useRouter } from "next/navigation";
-import { createContext, useState, useContext } from "react";
+import { createContext, useContext } from "react";
 
 export const Context = createContext(null);
 
 export const AuthContext = ({ initialUser, children }) => {
-  const [currentUser, setCurrentUser] = useState(initialUser);
+  const user = initialUser;
 
   const router = useRouter();
 
@@ -27,9 +27,7 @@ export const AuthContext = ({ initialUser, children }) => {
   };
 
   return (
-    <Context.Provider value={{ currentUser, setCurrentUser, Logout }}>
-      {children}
-    </Context.Provider>
+    <Context.Provider value={{ user, Logout }}>{children}</Context.Provider>
   );
 };
 

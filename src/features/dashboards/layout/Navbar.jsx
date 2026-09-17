@@ -4,7 +4,7 @@ import { Bell, Menu, MessageCircleMoreIcon } from "lucide-react"
 import Image from "next/image"
 import UserDropdownMenu from "../layout/UserDropdownMenu"
 
-const Navbar = ({ user }) => {
+const Navbar = ({ user, onMenuClick }) => {
     const route = "الرئيسية"
     const [isOpen, setIsOpen] = useState(false)
     const dropdownRef = useRef(null)
@@ -22,7 +22,9 @@ const Navbar = ({ user }) => {
     return (
         <div className="h-15 mr-57 max-[660px]:mr-0 flex items-center justify-between px-5 bg-white border-b border-slate-200 relative">
             <div className="flex items-center gap-2">
-                <Menu size={20} className="cursor-pointer min-[660px]:hidden" />
+                <button onClick={onMenuClick} className="cursor-pointer min-[660px]:hidden">
+                    <Menu size={20} />
+                </button>
                 <div>
                     <h1 className="font-semibold text-lg">
                         لوحة التحكم/

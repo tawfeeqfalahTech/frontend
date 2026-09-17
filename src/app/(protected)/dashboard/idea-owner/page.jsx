@@ -6,7 +6,7 @@ import DashboardHeader from '../../../../features/dashboards/shared/DashboardHea
 
 const page = () => {
     return (
-        <div className='mr-55 max-[660px]:mr-0'>
+        <div className='pr-55 max-[660px]:pr-0'>
             <DashboardHeader route="الرئيسية" paragraph="مرحبا بك مجدداً, إليك نظرة عامة على مشاريعك" buttonLabel="مشروع جديد" />
             <OwnerCards />
             <div className='grid grid-cols-4 gap-3 mt-5'>

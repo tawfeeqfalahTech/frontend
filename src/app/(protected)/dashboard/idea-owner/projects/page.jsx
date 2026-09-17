@@ -2,7 +2,7 @@ import DashboardHeader from '@/features/dashboards/shared/DashboardHeader'
 import OwnerTable from '@/features/dashboards/owner/home/components/OwnerTable'
 const page = () => {
     return (
-        <div className='mr-55 max-[660px]:mr-0'>
+        <div className='pr-55 max-[660px]:pr-0'>
             <DashboardHeader route="مشاريعي" paragraph="إدارة وتتبع حالة المشاريع الخاصة بك" buttonLabel="مشروع جديد" />
             <div className='mt-5'>
                 <OwnerTable />
