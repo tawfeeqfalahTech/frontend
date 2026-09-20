@@ -17,6 +17,8 @@ const Sidebar = ({ isOpen, onClose }) => {
         { id: 4, name: "سلة المحذوفات", href: "/idea-owner/reports", icon: <Trash2 className="w-5 h-5" /> },
     ]
 
+    if (pathname === `/dashboard/idea-owner/create-project`) return null
+
     return (
         <>
             <aside className={`w-55 h-screen bg-white fixed bottom-0 top-0 right-0 flex flex-col px-6 pb-6 pt-3 border-l border-slate-200 shadow-xl z-50 transition-transform duration-200 max-[660px]:w-72 ${isOpen ? "translate-x-0" : "max-[660px]:translate-x-full"}`}>
