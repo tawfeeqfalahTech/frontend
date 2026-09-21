@@ -6,8 +6,8 @@ import { LayoutDashboard, User, LogOut } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { getDashboardPath } from "@/lib/auth-routes";
 
-export default function UserDropdownMenu() {
-    const { user, Logout } = useAuth()
+export default function UserDropdownMenu({ onLogout }) {
+    const { user } = useAuth()
     return (
         <div className="w-55 bg-white rounded-2xl shadow-xl border border-gray-100 p-4 dir-rtl text-right font-sans">
             <div className="flex items-center gap-2 pb-3 border-b border-gray-100">
@@ -55,7 +55,7 @@ export default function UserDropdownMenu() {
 
             <div className="pt-3">
                 <button
-                    onClick={() => Logout()}
+                    onClick={() => onLogout?.()}
                     className="w-full flex items-center justify-between px-2.5 py-2.5 rounded-xl text-[#E53935] hover:bg-red-50 transition-colors group cursor-pointer"
                 >
                     <span className=" font-medium">تسجيل الخروج</span>

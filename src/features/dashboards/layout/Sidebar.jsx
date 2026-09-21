@@ -3,12 +3,9 @@ import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { FolderOpen, HeartHandshake, Home, LogOut, Settings, Trash2, X } from "lucide-react"
-import { useAuth } from "@/contexts/AuthContext"
 
-const Sidebar = ({ isOpen, onClose }) => {
+const Sidebar = ({ isOpen, onClose, onLogoutClick }) => {
     const pathname = usePathname()
-
-    const { Logout } = useAuth()
 
     const links = [
         { id: 1, name: "الرئيسية", href: "/dashboard/idea-owner", icon: <Home className="w-5 h-5" /> },
@@ -77,7 +74,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                     <hr className="text-slate-200 mb-2 block" />
 
                     <button
-                        onClick={() => Logout()}
+                        onClick={() => onLogoutClick?.()}
                         className="flex items-center gap-3 py-3 cursor-pointer px-3 rounded-lg text-red-600 hover:bg-red-100 transition-colors duration-200 w-full text-right"
                     >
                         <LogOut className="w-4.5 h-4.5" />
