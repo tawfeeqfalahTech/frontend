@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Sprout, Coins, Users, Tag, Globe, Lock } from 'lucide-react';
 
-const StepFour = ({ formData }) => {
+const StepFour = ({ formData, setFormData, errors = {} }) => {
     // حالات مستوى الظهور والإقرار
     const [visibility, setVisibility] = useState('public');
     const [isAgreed, setIsAgreed] = useState(false);
@@ -109,7 +109,10 @@ const StepFour = ({ formData }) => {
                     {/* خيار عام */}
                     <button
                         type="button"
-                        onClick={() => setVisibility('public')}
+                        onClick={() => {
+                            setVisibility('public')
+                            setFormData?.((prev) => ({ ...prev, visibility: 'public' }))
+                        }}
                         className={`group relative flex items-start gap-3 p-4 rounded-2xl border text-right transition-all duration-300 cursor-pointer outline-none ${visibility === 'public'
                             ? 'border-[#1E4C6F] bg-[#1E4C6F]/[0.03] shadow-md ring-1 ring-[#1E4C6F]'
                             : 'border-slate-200 bg-white hover:border-[#1E4C6F]/40 hover:bg-slate-50/80 hover:shadow-lg hover:-translate-y-0.5'
@@ -137,7 +140,10 @@ const StepFour = ({ formData }) => {
                     {/* خيار للمستثمرين فقط */}
                     <button
                         type="button"
-                        onClick={() => setVisibility('investors')}
+                        onClick={() => {
+                            setVisibility('investors')
+                            setFormData?.((prev) => ({ ...prev, visibility: 'investors' }))
+                        }}
                         className={`group relative flex items-start gap-3 p-4 rounded-2xl border text-right transition-all duration-300 cursor-pointer outline-none ${visibility === 'investors'
                             ? 'border-[#1E4C6F] bg-[#1E4C6F]/[0.03] shadow-md ring-1 ring-[#1E4C6F]'
                             : 'border-slate-200 bg-white hover:border-[#1E4C6F]/40 hover:bg-slate-50/80 hover:shadow-lg hover:-translate-y-0.5'
@@ -162,6 +168,7 @@ const StepFour = ({ formData }) => {
                         </div>
                     </button>
                 </div>
+                {errors.visibility && <p className="form-error text-xs font-medium text-red-500">{errors.visibility}</p>}
             </div>
 
             {/* 3. الإقرار والتعهد */}

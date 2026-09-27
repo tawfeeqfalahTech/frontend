@@ -1,25 +1,40 @@
 import { X } from 'lucide-react'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useRef, useState, useEffect } from 'react'
 
-const StepOne = ({ formData, setFormData }) => {
-
-    const value = formData?.coverImage || null
+const StepOne = ({ formData, setFormData, errors = {} }) => {
+    const value = formData?.image || null
     const label = "صورة الغلاف"
     const hint = "اسحب صورة أو انقر للاختيار"
     const maxSizeMB = 5
     const accept = "image/png,image/jpeg,image/webp"
 
     const inputRef = useRef(null);
-    const [preview, setPreview] = useState(value ? (typeof value === 'string' ? value : URL.createObjectURL(value)) : null);
+    const [preview, setPreview] = useState(null);
     const [isDragging, setIsDragging] = useState(false);
     const [error, setError] = useState("");
     const [techInput, setTechInput] = useState("");
 
-    const onChange = (file) => {
-        setFormData?.(prev => ({ ...prev, coverImage: file }));
-    };
+    // تحديث المعاينة تلقائياً عند تغيير صورة الغلاف في بيانات النموذج
+    useEffect(() => {
+        if (!value) {
+            setPreview(null);
+            return;
+        }
 
-    const file = value;
+        if (typeof value === 'string') {
+            setPreview(value);
+        } else if (value instanceof File || value instanceof Blob) {
+            const objectUrl = URL.createObjectURL(value);
+            setPreview(objectUrl);
+
+            // تنظيف الذاكرة عند التفكيك أو التغيير
+            return () => URL.revokeObjectURL(objectUrl);
+        }
+    }, [value]);
+
+    const onChange = useCallback((file) => {
+        setFormData?.(prev => ({ ...prev, image: file }));
+    }, [setFormData]);
 
     const validateAndSet = useCallback(
         (selectedFile) => {
@@ -38,11 +53,9 @@ const StepOne = ({ formData, setFormData }) => {
                 return;
             }
 
-            const objectUrl = URL.createObjectURL(selectedFile);
-            setPreview(objectUrl);
             onChange?.(selectedFile);
         },
-        [maxSizeMB]
+        [maxSizeMB, onChange]
     );
 
     const handleInputChange = (e) => {
@@ -70,9 +83,6 @@ const StepOne = ({ formData, setFormData }) => {
 
     const handleRemove = (e) => {
         e.stopPropagation();
-        if (preview && typeof preview === 'string' && preview.startsWith('blob:')) {
-            URL.revokeObjectURL(preview);
-        }
         setPreview(null);
         setError("");
         onChange?.(null);
@@ -113,41 +123,54 @@ const StepOne = ({ formData, setFormData }) => {
     };
 
     return (
-        <div className="space-y-5 dir-rtl">
-            <div className="flex items-start gap-5">
-                <div className="w-full">
+        <div className="space-y-5 dir-rtl" dir="rtl">
+            <div className="flex flex-col md:flex-row items-start gap-5">
+                {/* حقول العنوان والوصف */}
+                <div className="w-full flex-1">
                     <div className="flex flex-col gap-1.5">
                         <label htmlFor="title" className="font-semibold text-slate-800 text-sm">عنوان المشروع</label>
                         <input
                             id="title"
                             value={formData?.title || ''}
-                            onChange={(e) => setFormData?.(prev => ({ ...prev, title: e.target.value }))}
+                            onChange={(e) =>
+                                setFormData?.((prev) => ({
+                                    ...prev,
+                                    title: e.target.value,
+                                }))
+                            }
                             type="text"
-                            className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl shadow-sm text-slate-800 text-sm transition-all duration-300 outline-none hover:border-slate-300 focus:border-[#1E4C6F] focus:ring-4 focus:ring-[#1E4C6F]/10 placeholder:text-slate-400 placeholder:font-normal"
+                            className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl shadow-sm text-slate-800 text-sm transition-all duration-300 outline-none hover:border-slate-300 focus:border-[#1E4C6F] focus:ring-4 focus:ring-[#1E4C6F]/10 placeholder:text-slate-400"
                             placeholder="مثال: تطبيق إدارة المهام الذكي"
                         />
+                        {errors.title && <p className="form-error text-xs font-medium text-red-500">{errors.title}</p>}
                     </div>
+
                     <div className="flex flex-col gap-1.5 mt-3">
-                        <label htmlFor="des" className="font-semibold text-slate-800 text-sm">وصف مختصر</label>
+                        <label htmlFor="shortDescription" className="font-semibold text-slate-800 text-sm">وصف مختصر</label>
                         <textarea
-                            id="des"
+                            id="shortDescription"
                             maxLength={200}
                             rows={4}
-                            className="w-full resize-none p-4 bg-white border border-slate-200 rounded-2xl shadow-sm 
-                                   text-slate-800 text-sm leading-relaxed placeholder:text-slate-400 placeholder:font-normal
-                                   transition-all duration-300 outline-none
-                                   hover:border-slate-300
-                                   focus:border-[#1E4C6F] focus:ring-4 focus:ring-[#1E4C6F]/10 focus:bg-white"
+                            value={formData?.shortDescription || ''}
+                            onChange={(e) =>
+                                setFormData?.((prev) => ({
+                                    ...prev,
+                                    shortDescription: e.target.value,
+                                }))
+                            }
+                            className="w-full resize-none p-4 bg-white border border-slate-200 rounded-2xl shadow-sm text-slate-800 text-sm leading-relaxed placeholder:text-slate-400 transition-all duration-300 outline-none hover:border-slate-300 focus:border-[#1E4C6F] focus:ring-4 focus:ring-[#1E4C6F]/10"
                             placeholder="صف مشروعك، المشكلة التي يحلها، الفئة المستهدفة، المميزات الرئيسية، وأي تفاصيل أخرى..."
                         />
                         <div className="flex items-center justify-between text-xs px-0.5">
                             <p className="text-emerald-600 font-medium">عدد الأحرف المسموح به 50 - 200</p>
-                            <span className="text-slate-400 font-medium">{formData?.des?.length || 0} / 200</span>
+                            <span className="text-slate-400 font-medium">{formData?.shortDescription?.length || 0} / 200</span>
                         </div>
+                        {errors.shortDescription && <p className="form-error text-xs font-medium text-red-500">{errors.shortDescription}</p>}
                     </div>
                 </div>
 
-                <div dir="rtl" className="w-full max-w-60 text-right shrink-0">
+                {/* حقل رفع صورة الغلاف */}
+                <div className="w-full md:w-60 text-right shrink-0">
                     <label className="mb-1.5 block text-sm font-semibold text-slate-800">
                         {label}
                     </label>
@@ -179,7 +202,6 @@ const StepOne = ({ formData, setFormData }) => {
                     >
                         {preview ? (
                             <>
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
                                     src={preview}
                                     alt="معاينة صورة الغلاف"
@@ -196,7 +218,6 @@ const StepOne = ({ formData, setFormData }) => {
                             </>
                         ) : (
                             <>
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img src="/images/dragImage.png" alt="" className="w-14 h-14 object-contain opacity-80" />
                                 <span className="px-3 text-center text-xs font-medium text-slate-600 leading-relaxed">
                                     {hint}
@@ -205,14 +226,16 @@ const StepOne = ({ formData, setFormData }) => {
                         )}
                     </div>
 
-                    {error && <p className="mt-1.5 text-xs text-red-500 font-medium">{error}</p>}
+                    {error && <p className="form-error mt-1.5 text-xs text-red-500 font-medium">{error}</p>}
+                    {errors.image && !error && <p className="form-error mt-1.5 text-xs text-red-500 font-medium">{errors.image}</p>}
 
-                    {file && !error && (
-                        <p className="mt-1.5 truncate text-xs text-slate-400 font-medium">{file.name}</p>
+                    {value && value.name && !error && (
+                        <p className="mt-1.5 truncate text-xs text-slate-400 font-medium">{value.name}</p>
                     )}
                 </div>
             </div>
 
+            {/* باقي الحقول: الفئة والتقنيات */}
             <div className="space-y-3">
                 <div className="flex flex-col gap-1.5">
                     <label htmlFor="category" className="font-semibold text-slate-800 text-sm">الفئة / المجال</label>
@@ -221,10 +244,12 @@ const StepOne = ({ formData, setFormData }) => {
                         type="text"
                         value={formData?.category || ''}
                         onChange={(e) => setFormData?.(prev => ({ ...prev, category: e.target.value }))}
-                        className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl shadow-sm text-slate-800 text-sm transition-all duration-300 outline-none hover:border-slate-300 focus:border-[#1E4C6F] focus:ring-4 focus:ring-[#1E4C6F]/10 placeholder:text-slate-400 placeholder:font-normal"
+                        className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl shadow-sm text-slate-800 text-sm transition-all duration-300 outline-none hover:border-slate-300 focus:border-[#1E4C6F] focus:ring-4 focus:ring-[#1E4C6F]/10 placeholder:text-slate-400"
                         placeholder="أدخل المجال / الفئة التي ينتمي إليها المشروع"
                     />
+                    {errors.category && <p className="form-error text-xs font-medium text-red-500">{errors.category}</p>}
                 </div>
+
                 <div className="flex flex-col gap-1.5">
                     <label htmlFor="tech" className="font-semibold text-slate-800 text-sm">التقنيات المستخدمة</label>
                     <input
@@ -234,7 +259,7 @@ const StepOne = ({ formData, setFormData }) => {
                         onChange={(e) => setTechInput(e.target.value)}
                         onKeyDown={handleAddTech}
                         disabled={techList.length >= 10}
-                        className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl shadow-sm text-slate-800 text-sm transition-all duration-300 outline-none hover:border-slate-300 focus:border-[#1E4C6F] focus:ring-4 focus:ring-[#1E4C6F]/10 placeholder:text-slate-400 placeholder:font-normal disabled:bg-slate-100 disabled:cursor-not-allowed"
+                        className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl shadow-sm text-slate-800 text-sm transition-all duration-300 outline-none hover:border-slate-300 focus:border-[#1E4C6F] focus:ring-4 focus:ring-[#1E4C6F]/10 placeholder:text-slate-400 disabled:bg-slate-100 disabled:cursor-not-allowed"
                         placeholder={techList.length >= 10 ? "وصلت للحد الأقصى (10 تقنيات)" : "اكتب التقنية واضغط Enter لإضافتها"}
                     />
 
@@ -265,4 +290,4 @@ const StepOne = ({ formData, setFormData }) => {
     )
 }
 
-export default StepOne
+export default StepOne;

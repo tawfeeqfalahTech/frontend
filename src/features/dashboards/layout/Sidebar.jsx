@@ -5,16 +5,16 @@ import { usePathname } from "next/navigation"
 import { FolderOpen, HeartHandshake, Home, LogOut, Settings, Trash2, X } from "lucide-react"
 
 const Sidebar = ({ isOpen, onClose, onLogoutClick }) => {
-    const pathname = usePathname()
+    const path = usePathname()
 
     const links = [
         { id: 1, name: "الرئيسية", href: "/dashboard/idea-owner", icon: <Home className="w-5 h-5" /> },
         { id: 2, name: "مشاريعي", href: "/dashboard/idea-owner/projects", icon: <FolderOpen className="w-5 h-5" /> },
-        { id: 3, name: "طلبات الإهتمام", href: "/idea-owner/investors", icon: <HeartHandshake className="w-5 h-5" /> },
-        { id: 4, name: "سلة المحذوفات", href: "/idea-owner/reports", icon: <Trash2 className="w-5 h-5" /> },
+        { id: 3, name: "طلبات الإهتمام", href: "/dashboard/idea-owner/investors", icon: <HeartHandshake className="w-5 h-5" /> },
+        { id: 4, name: "سلة المحذوفات", href: "/dashboard/idea-owner/deleted", icon: <Trash2 className="w-5 h-5" /> },
     ]
 
-    if (pathname === `/dashboard/idea-owner/create-project`) return null
+    if (path === `/dashboard/idea-owner/create-project` || path === `/dashboard/idea-owner/profile` || path === "/dashboard/idea-owner/deleted") return null
 
     return (
         <>
@@ -40,7 +40,7 @@ const Sidebar = ({ isOpen, onClose, onLogoutClick }) => {
 
                 <nav className="mt-8 flex-1 flex flex-col space-y-2">
                     {links.map((link) => {
-                        const isActive = pathname === link.href
+                        const isActive = path === link.href
                         return (
                             <Link
                                 key={link.id}
@@ -62,7 +62,7 @@ const Sidebar = ({ isOpen, onClose, onLogoutClick }) => {
                     <Link
                         href="/owner/settings"
                         onClick={onClose}
-                        className={`flex items-center gap-3 py-2.5 px-3 rounded-lg transition-colors duration-200 ${pathname === "/owner/settings"
+                        className={`flex items-center gap-3 py-2.5 px-3 rounded-lg transition-colors duration-200 ${path === "/owner/settings"
                             ? "text-[#D2C4AD] bg-[#1E4C6F] font-bold"
                             : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 font-semibold"
                             }`}

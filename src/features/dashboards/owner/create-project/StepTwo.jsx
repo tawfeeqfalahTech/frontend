@@ -1,9 +1,8 @@
-import { DollarSign, Rocket, CheckCircle2 } from 'lucide-react'
+import { DollarSign, Rocket } from 'lucide-react'
 import React, { useState } from 'react'
 
-const StepTwo = () => {
+const StepTwo = ({ formData, setFormData, errors = {} }) => {
     const [status, setStatus] = useState('funding');
-    const [description, setDescription] = useState("")
 
     const options = [
         {
@@ -31,8 +30,13 @@ const StepTwo = () => {
                 <div className="relative group">
                     <textarea
                         id="des"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
+                        value={formData?.description}
+                        onChange={(e) =>
+                            setFormData?.((prev) => ({
+                                ...prev,
+                                description: e.target.value,
+                            }))
+                        }
                         maxLength={200}
                         rows={4}
                         className="w-full resize-none p-4 bg-white border border-slate-200 rounded-2xl shadow-sm 
@@ -48,11 +52,12 @@ const StepTwo = () => {
                     <p className="text-emerald-600 font-medium flex items-center gap-1">
                         <span>•</span> عدد الأحرف الموصى به: 50 - 200 حرف
                     </p>
-                    <span className={`font-medium transition-colors ${description.length >= 50 ? 'text-emerald-600' : 'text-slate-400'
+                    <span className={`font-medium transition-colors ${formData?.description.length >= 50 ? 'text-emerald-600' : 'text-slate-400'
                         }`}>
-                        {description.length} / 200
+                        {formData?.description.length} / 200
                     </span>
                 </div>
+                {errors.description && <p className="form-error text-xs font-medium text-red-500">{errors.description}</p>}
             </div>
 
             <section className="mt-6">
@@ -66,7 +71,15 @@ const StepTwo = () => {
                             <button
                                 key={item.id}
                                 type="button"
-                                onClick={() => setStatus(item.id)}
+                                onClick={(e) => {
+                                    setStatus(item.id);
+
+                                    setFormData?.((prev) => ({
+                                        ...prev,
+                                        status: item.id,
+                                    }));
+                                }}
+
                                 className={`group relative flex items-start gap-3 p-4 rounded-2xl border text-right transition-all duration-300 cursor-pointer outline-none ${isSelected
                                     ? 'border-[#1E4C6F] bg-[#1E4C6F]/[0.03] shadow-md ring-1 ring-[#1E4C6F]'
                                     : 'border-slate-200 bg-white hover:border-[#1E4C6F]/40 hover:bg-slate-50/80 hover:shadow-lg hover:-translate-y-0.5'
@@ -94,7 +107,7 @@ const StepTwo = () => {
                     })}
                 </div>
             </section>
-        </main>
+        </main >
     )
 }
 
