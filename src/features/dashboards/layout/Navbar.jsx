@@ -22,7 +22,7 @@ const Navbar = ({ user, onMenuClick, onLogoutClick }) => {
         return () => document.removeEventListener("mousedown", handleClickOutside)
     }, [])
 
-    const isCreatProjectPage = path === "/dashboard/idea-owner/create-project" || path === "/dashboard/idea-owner/profile" || path === "/dashboard/idea-owner/deleted"
+    const isCreatProjectPage = path === "/dashboard/idea-owner/create-project" || path === "/dashboard/idea-owner/profile" || path === "/dashboard/idea-owner/deleted" || path === "/dashboard/idea-owner/view-project"
 
     // إغلاق قائمة المستخدم ثم فتح مودال تأكيد تسجيل الخروج (المُدار من DashboardShell)
     const handleLogoutClick = () => {
