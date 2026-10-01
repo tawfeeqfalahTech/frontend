@@ -14,7 +14,7 @@ const Sidebar = ({ isOpen, onClose, onLogoutClick }) => {
         { id: 4, name: "سلة المحذوفات", href: "/dashboard/idea-owner/deleted", icon: <Trash2 className="w-5 h-5" /> },
     ]
 
-    if (path === `/dashboard/idea-owner/create-project` || path === `/dashboard/idea-owner/profile` || path === "/dashboard/idea-owner/deleted" || path === "/dashboard/idea-owner/view-project" || path === "/dashboard/idea-owner/edit-profile") return null
+    if (path === `/dashboard/idea-owner/create-project` || path === `/dashboard/idea-owner/profile` || path === "/dashboard/idea-owner/deleted" || path === "/dashboard/idea-owner/view-project" || path === "/dashboard/idea-owner/edit-profile" || path === "/dashboard/idea-owner/edit-project") return null
 
     return (
         <>
