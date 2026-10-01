@@ -146,16 +146,16 @@ const StepOne = ({ formData, setFormData, errors = {} }) => {
                     </div>
 
                     <div className="flex flex-col gap-1.5 mt-3">
-                        <label htmlFor="shortDescription" className="font-semibold text-slate-800 text-sm">وصف مختصر</label>
+                        <label htmlFor="biocription" className="font-semibold text-slate-800 text-sm">وصف مختصر</label>
                         <textarea
-                            id="shortDescription"
+                            id="biocription"
                             maxLength={200}
                             rows={4}
-                            value={formData?.shortDescription || ''}
+                            value={formData?.biocription || ''}
                             onChange={(e) =>
                                 setFormData?.((prev) => ({
                                     ...prev,
-                                    shortDescription: e.target.value,
+                                    biocription: e.target.value,
                                 }))
                             }
                             className="w-full resize-none p-4 bg-white border border-slate-200 rounded-2xl shadow-sm text-slate-800 text-sm leading-relaxed placeholder:text-slate-400 transition-all duration-300 outline-none hover:border-slate-300 focus:border-[#1E4C6F] focus:ring-4 focus:ring-[#1E4C6F]/10"
@@ -163,9 +163,9 @@ const StepOne = ({ formData, setFormData, errors = {} }) => {
                         />
                         <div className="flex items-center justify-between text-xs px-0.5">
                             <p className="text-emerald-600 font-medium">عدد الأحرف المسموح به 50 - 200</p>
-                            <span className="text-slate-400 font-medium">{formData?.shortDescription?.length || 0} / 200</span>
+                            <span className="text-slate-400 font-medium">{formData?.biocription?.length || 0} / 200</span>
                         </div>
-                        {errors.shortDescription && <p className="form-error text-xs font-medium text-red-500">{errors.shortDescription}</p>}
+                        {errors.biocription && <p className="form-error text-xs font-medium text-red-500">{errors.biocription}</p>}
                     </div>
                 </div>
 

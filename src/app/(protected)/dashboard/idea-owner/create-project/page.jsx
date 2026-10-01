@@ -1,10 +1,10 @@
 "use client"
-import StepFour from "@/features/dashboards/owner/create-project/StepFour"
-import StepOne from "@/features/dashboards/owner/create-project/StepOne"
-import StepThree from "@/features/dashboards/owner/create-project/StepThree"
-import StepTwo from "@/features/dashboards/owner/create-project/StepTwo"
+import StepFour from "@/features/dashboards/owner/create-project/components/StepFour"
+import StepOne from "@/features/dashboards/owner/create-project/components/StepOne"
+import StepThree from "@/features/dashboards/owner/create-project/components/StepThree"
+import StepTwo from "@/features/dashboards/owner/create-project/components/StepTwo"
 import DashboardHeader from "@/features/dashboards/shared/DashboardHeader"
-import ProjectSuccess from "@/features/dashboards/owner/create-project/ProjectSuccess"
+import ProjectSuccess from "@/features/dashboards/owner/create-project/components/ProjectSuccess"
 import { useState } from "react"
 import { Bookmark, ChevronLeft, ChevronRight } from 'lucide-react'
 
@@ -19,7 +19,7 @@ const Page = () => {
         title: "",
         category: "",
         tech: [],
-        shortDescription: '',
+        bio: '',
         image: null,
         // Step Two
         description: '',
@@ -47,8 +47,8 @@ const Page = () => {
             if (!formData.category) {
                 newErrors.category = "يرجى اختيار فئة المشروع"
             }
-            if (!formData.shortDescription.trim()) {
-                newErrors.shortDescription = "الوصف المختصر مطلوب"
+            if (!formData.bio.trim()) {
+                newErrors.bio = "الوصف المختصر مطلوب"
             }
             if (!formData.image) {
                 newErrors.image = "صورة الغلاف مطلوبة"
@@ -95,8 +95,7 @@ const Page = () => {
             // عند الوصول للخطوة 4 وتخطي التحقق بنجاح
             setLoading(true)
             try {
-                // إرسال البيانات للباك إند هنا (API Call)
-                // await api.post('/projects', formData)
+                // const res = await addProject(formData)
 
                 setIsSubmitted(true)
             } catch (error) {

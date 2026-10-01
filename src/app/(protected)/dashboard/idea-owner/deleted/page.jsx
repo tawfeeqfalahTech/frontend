@@ -1,6 +1,6 @@
 "use client"
-import DeleteConfirmModal from '@/features/dashboards/owner/delete-project/DeleteConfirmModal'
-import RestoreProjectSuccessModal from '@/features/dashboards/owner/delete-project/RestoreProjectSuccessModal'
+import DeleteConfirmModal from '@/features/dashboards/owner/delete-project/components/DeleteConfirmModal'
+import RestoreProjectSuccessModal from '@/features/dashboards/owner/delete-project/components/RestoreProjectSuccessModal'
 import DashboardHeader from '@/features/dashboards/shared/DashboardHeader'
 import { Clock } from 'lucide-react'
 import Image from 'next/image'

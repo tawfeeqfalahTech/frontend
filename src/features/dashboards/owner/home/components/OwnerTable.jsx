@@ -2,17 +2,9 @@ import React from 'react';
 import { HeartHandshake, Clock, MoreVerticalIcon } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { projects } from '../../data/projects';
 
-const projects = [
-    { id: '0001356', title: 'إدارة الحجوزات', rating: '80%', status: 'نشط', Leads: "24", updatedAt: 'منذ ساعتين' },
-    { id: '0001357', title: 'إدارة الحجوزات', rating: '0%', status: 'مرفوض', Leads: "24", updatedAt: 'منذ ساعتين' },
-    { id: '0001358', title: 'إدارة الحجوزات', rating: '50%', status: 'قيد التقييم', Leads: "24", updatedAt: 'منذ ساعتين' },
-    { id: '0001359', title: 'إدارة الحجوزات', rating: '80%', status: 'نشط', Leads: "24", updatedAt: 'منذ ساعتين' },
-    { id: '0001310', title: 'إدارة الحجوزات', rating: '80%', status: 'نشط', Leads: "24", updatedAt: 'منذ ساعتين' },
-    { id: '0001311', title: 'إدارة الحجوزات', rating: '80%', status: 'نشط', Leads: "24", updatedAt: 'منذ ساعتين' },
-    { id: '0001312', title: 'إدارة الحجوزات', rating: '80%', status: 'نشط', Leads: "24", updatedAt: 'منذ ساعتين' },
-    { id: '0001313', title: 'إدارة الحجوزات', rating: '80%', status: 'نشط', Leads: "24", updatedAt: 'منذ ساعتين' },
-];
+
 
 export default function ProjectsTable({ slice }) {
 
