@@ -1,8 +1,11 @@
+"use client"
 import { projects } from "@/features/dashboards/owner/data/projects"
+import SessionsCard from "@/features/dashboards/owner/project/Seestion"
 import GithubIcon from "@/icons/GithubIcon"
 import LinkedIcon from "@/icons/LinkedIcon"
 import { Clock, Heart, MoreVertical } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 
 const page = () => {
     const userName = "توفيق أبو حصيرة"
@@ -32,6 +35,12 @@ const page = () => {
         };
     };
 
+    const handleLogoutAll = () => {
+
+    }
+
+    const handleLogoutOne = () => { }
+
     return (
         <main className="px-40 mt-5">
             <section className="grid grid-cols-2 ">
@@ -57,11 +66,11 @@ const page = () => {
                 </div>
                 <div className="flex flex-col">
                     <div className="flex justify-end">
-                        <button
+                        <Link href="/dashboard/idea-owner/edit-profile"
                             className="bg-[#1E4C6F] border-[#1E4C6F] group flex items-center justify-center w-30 text-white text-lg h-11 rounded-xl cursor-pointer hover:-translate-y-0.5 hover:bg-[#163852] transition-all duration-300 disabled:opacity-50"
                         >
                             تعديل
-                        </button>
+                        </Link>
                     </div>
                     <div>
                         <h2 className="text-lg font-semibold">المهارات والكفاءات</h2>
@@ -126,7 +135,12 @@ const page = () => {
             </section>
             <section className="mt-6">
                 <h2 className="text-2xl font-bold pr-3 border-r-5 rounded-sm border-[#1E4C6F]">إدارة الجلسات</h2>
-
+                <div className="mt-5">
+                    <SessionsCard
+                        onLogoutOne={(idx) => handleLogoutOne(idx)}
+                        onLogoutAll={() => handleLogoutAll()}
+                    />
+                </div>
             </section>
         </main>
     )

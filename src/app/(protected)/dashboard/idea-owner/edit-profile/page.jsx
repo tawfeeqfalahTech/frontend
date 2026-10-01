@@ -1,7 +1,9 @@
 "use client"
+import GithubIcon from '@/icons/GithubIcon'
 import LinkedIcon from '@/icons/LinkedIcon'
-import { BadgeCheck, Search, User2, LucideBookUser, Link2, Globe, CircleX, Plus } from 'lucide-react'
+import { BadgeCheck, Search, User2, LucideBookUser, Link2, Globe, CircleX, Plus, Camera } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useState } from 'react'
 
 const Page = () => {
@@ -44,15 +46,26 @@ const Page = () => {
 
     return (
         <main className="flex flex-col items-center justify-center">
-            <div className="relative size-35 rounded-full overflow-hidden ring-2 ring-[#B19971] ring-offset-4 ring-offset-white">
-                <Image
-                    alt="avatar"
-                    src="/images/avatar.png"
-                    fill
-                    priority
-                    unoptimized
-                    className="object-cover"
-                />
+            <div className="relative size-35">
+                <div className="relative size-full rounded-full overflow-hidden ring-2 ring-[#B19971] ring-offset-4 ring-offset-white">
+                    <Image
+                        alt="avatar"
+                        src="/images/avatar.png"
+                        fill
+                        priority
+                        unoptimized
+                        className="object-cover"
+                    />
+                </div>
+
+                <label
+                    htmlFor="avatar"
+                    className="absolute bottom-0 right-0 flex size-9 cursor-pointer items-center justify-center rounded-full bg-[#1E4C6F] text-white shadow-[0_0_15px_rgba(0,0,0,0.2)] ring-2 ring-white transition-colors hover:bg-[#1E4C6F]/90 focus-within:ring-[#1E4C6F]/40"
+                >
+                    <Camera size={18} />
+                    <input type="file" id="avatar" accept="image/*" className="sr-only" />
+                    <span className="sr-only">تغيير الصورة الشخصية</span>
+                </label>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl w-full mt-6">
@@ -199,6 +212,19 @@ const Page = () => {
                             })}
                         </ul>
                     )}
+                </section>
+                <section className='flex items-center gap-2'>
+                    <button
+                        className="bg-[#1E4C6F] border-[#1E4C6F] group flex items-center justify-center w-30 text-white text-lg h-11 rounded-xl cursor-pointer hover:-translate-y-0.5 hover:bg-[#163852] transition-all duration-300 disabled:opacity-50"
+                    >
+                        حفظ التغييرات
+                    </button>
+                    <Link
+                        href="/dashboard/idea-owner/profile"
+                        className="bg-transparent border-2 font-semibold border-[#1E4C6F] group flex items-center justify-center w-30 text-[#1E4C6F] text-lg h-11 rounded-xl cursor-pointer hover:-translate-y-0.5 hover:bg-gray-100 transition-all duration-300 disabled:opacity-50"
+                    >
+                        إلغاء
+                    </Link>
                 </section>
             </div>
         </main>
