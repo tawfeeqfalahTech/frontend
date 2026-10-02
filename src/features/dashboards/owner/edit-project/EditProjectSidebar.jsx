@@ -31,8 +31,8 @@ const tabs = [
 
 const EditProjectSidebar = ({ activeTab, onSelectTab }) => {
     return (
-        <aside className="w-full lg:w-72 bg-white rounded-2xl p-6 shadow-[0px_4px_32px_0px_rgba(30,76,111,0.08)] border border-gray-100 flex flex-col shrink-0">
-            <h3 className="text-sm font-semibold text-[#94A3B8] mb-6 px-3">
+        <aside className="w-full lg:w-64 bg-white rounded-2xl p-5 shadow-[0px_4px_32px_0px_rgba(30,76,111,0.08)] border border-gray-100 flex flex-col shrink-0">
+            <h3 className="text-xs font-semibold text-[#94A3B8] mb-4 px-2">
                 أقسام التعديل
             </h3>
 
@@ -46,13 +46,12 @@ const EditProjectSidebar = ({ activeTab, onSelectTab }) => {
                             key={tab.id}
                             type="button"
                             onClick={() => onSelectTab(tab.id)}
-                            className={`flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-base font-semibold transition-all duration-200 cursor-pointer ${
-                                isActive
+                            className={`flex items-center gap-3 px-3 py-3 rounded-xl font-semibold transition-all duration-200 cursor-pointer ${isActive
                                     ? "bg-[#E9EDF1] text-[#1E4C6F] shadow-xs"
                                     : "text-[#475569] hover:bg-gray-50 hover:text-[#1E4C6F]"
-                            }`}
+                                }`}
                         >
-                            <Icon className={`w-5 h-5 shrink-0 ${isActive ? "text-[#1E4C6F]" : "text-gray-400"}`} />
+                            <Icon className={`w-4 h-4 shrink-0 ${isActive ? "text-[#1E4C6F]" : "text-gray-400"}`} />
                             <span>{tab.label}</span>
                         </button>
                     )

@@ -21,7 +21,7 @@ const FigmaIcon = ({ className = "w-5 h-5" }) => (
     </svg>
 )
 
-const ProjectLinksTab = ({ onSave }) => {
+const ProjectLinksTab = () => {
     const [links, setLinks] = useState({
         website: "https://smartstore-demo.com",
         prototype: "https://www.figma.com/proto/smartstore-prototype",
@@ -36,28 +36,27 @@ const ProjectLinksTab = ({ onSave }) => {
         setIsSaving(true)
         setTimeout(() => {
             setIsSaving(false)
-            onSave?.("تم حفظ روابط المشروع بنجاح!")
         }, 600)
     }
 
     return (
-        <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-[0px_4px_32px_0px_rgba(30,76,111,0.06)] border border-gray-100 flex flex-col gap-8">
+        <div className="bg-white rounded-2xl p-5 sm:p-6 shadow-[0px_4px_32px_0px_rgba(30,76,111,0.06)] border border-gray-100 flex flex-col gap-6">
             {/* Header */}
-            <div className="border-b border-gray-100 pb-5">
-                <h2 className="text-2xl sm:text-[26px] font-bold text-[#0D202F]">
+            <div className="border-b border-gray-100 pb-4">
+                <h2 className="text-xl sm:text-[22px] font-bold text-[#0D202F]">
                     روابط المشروع والمنصات
                 </h2>
-                <p className="text-[#4B708C] text-sm sm:text-base mt-1.5">
+                <p className="text-[#4B708C] text-sm mt-1.5">
                     أضف الروابط الرسمية لمشروعك، مثل الموقع الإلكتروني والنموذج الأولي وحسابات التواصل لمساعدة المستثمرين في التعرف عليك.
                 </p>
             </div>
 
             {/* Links List */}
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-5">
                 {/* الموقع الإلكتروني */}
                 <div className="flex flex-col gap-2">
-                    <label className="text-base sm:text-lg font-semibold text-[#0D202F] flex items-center gap-2">
-                        <Globe className="w-5 h-5 text-[#1E4C6F]" />
+                    <label className="text-sm sm:text-base font-semibold text-[#0D202F] flex items-center gap-2">
+                        <Globe className="w-4 h-4 text-[#1E4C6F]" />
                         <span>رابط الموقع الإلكتروني الرسمي</span>
                     </label>
                     <input
@@ -65,14 +64,14 @@ const ProjectLinksTab = ({ onSave }) => {
                         value={links.website}
                         onChange={(e) => setLinks({ ...links, website: e.target.value })}
                         placeholder="https://yourproject.com"
-                        className="w-full bg-[#FFFFFF] border border-[#E2E8F0] focus:border-[#1E4C6F] focus:ring-1 focus:ring-[#1E4C6F] outline-none px-4 py-3.5 rounded-2xl text-base text-[#0D202F] shadow-[0px_4px_20px_0px_rgba(104,135,159,0.06)] dir-ltr text-left"
+                        className="w-full bg-[#FFFFFF] border border-[#E2E8F0] focus:border-[#1E4C6F] focus:ring-1 focus:ring-[#1E4C6F] outline-none px-3.5 py-3 rounded-xl text-sm text-[#0D202F] shadow-[0px_4px_20px_0px_rgba(104,135,159,0.06)] dir-ltr text-left"
                     />
                 </div>
 
                 {/* النموذج الأولي / Figma */}
                 <div className="flex flex-col gap-2">
-                    <label className="text-base sm:text-lg font-semibold text-[#0D202F] flex items-center gap-2">
-                        <FigmaIcon className="w-5 h-5 text-[#1E4C6F]" />
+                    <label className="text-sm sm:text-base font-semibold text-[#0D202F] flex items-center gap-2">
+                        <FigmaIcon className="w-4 h-4 text-[#1E4C6F]" />
                         <span>رابط النموذج الأولي أو التجريبي (Prototype / Demo)</span>
                     </label>
                     <input
@@ -80,14 +79,14 @@ const ProjectLinksTab = ({ onSave }) => {
                         value={links.prototype}
                         onChange={(e) => setLinks({ ...links, prototype: e.target.value })}
                         placeholder="https://figma.com/proto/... أو رابط تجريبي"
-                        className="w-full bg-[#FFFFFF] border border-[#E2E8F0] focus:border-[#1E4C6F] focus:ring-1 focus:ring-[#1E4C6F] outline-none px-4 py-3.5 rounded-2xl text-base text-[#0D202F] shadow-[0px_4px_20px_0px_rgba(104,135,159,0.06)] dir-ltr text-left"
+                        className="w-full bg-[#FFFFFF] border border-[#E2E8F0] focus:border-[#1E4C6F] focus:ring-1 focus:ring-[#1E4C6F] outline-none px-3.5 py-3 rounded-xl text-sm text-[#0D202F] shadow-[0px_4px_20px_0px_rgba(104,135,159,0.06)] dir-ltr text-left"
                     />
                 </div>
 
                 {/* LinkedIn */}
                 <div className="flex flex-col gap-2">
-                    <label className="text-base sm:text-lg font-semibold text-[#0D202F] flex items-center gap-2">
-                        <LinkedIcon className="w-5 h-5 text-[#0A66C2]" />
+                    <label className="text-sm sm:text-base font-semibold text-[#0D202F] flex items-center gap-2">
+                        <LinkedIcon className="w-4 h-4 text-[#0A66C2]" />
                         <span>صفحة LinkedIn الخاصة بالمشروع</span>
                     </label>
                     <input
@@ -95,14 +94,14 @@ const ProjectLinksTab = ({ onSave }) => {
                         value={links.linkedin}
                         onChange={(e) => setLinks({ ...links, linkedin: e.target.value })}
                         placeholder="https://linkedin.com/company/..."
-                        className="w-full bg-[#FFFFFF] border border-[#E2E8F0] focus:border-[#1E4C6F] focus:ring-1 focus:ring-[#1E4C6F] outline-none px-4 py-3.5 rounded-2xl text-base text-[#0D202F] shadow-[0px_4px_20px_0px_rgba(104,135,159,0.06)] dir-ltr text-left"
+                        className="w-full bg-[#FFFFFF] border border-[#E2E8F0] focus:border-[#1E4C6F] focus:ring-1 focus:ring-[#1E4C6F] outline-none px-3.5 py-3 rounded-xl text-sm text-[#0D202F] shadow-[0px_4px_20px_0px_rgba(104,135,159,0.06)] dir-ltr text-left"
                     />
                 </div>
 
                 {/* X / Twitter */}
                 <div className="flex flex-col gap-2">
-                    <label className="text-base sm:text-lg font-semibold text-[#0D202F] flex items-center gap-2">
-                        <TwitterXIcon className="w-5 h-5 text-gray-800" />
+                    <label className="text-sm sm:text-base font-semibold text-[#0D202F] flex items-center gap-2">
+                        <TwitterXIcon className="w-4 h-4 text-gray-800" />
                         <span>حساب منصة X (تويتر سابقاً)</span>
                     </label>
                     <input
@@ -110,14 +109,14 @@ const ProjectLinksTab = ({ onSave }) => {
                         value={links.twitter}
                         onChange={(e) => setLinks({ ...links, twitter: e.target.value })}
                         placeholder="https://x.com/yourproject"
-                        className="w-full bg-[#FFFFFF] border border-[#E2E8F0] focus:border-[#1E4C6F] focus:ring-1 focus:ring-[#1E4C6F] outline-none px-4 py-3.5 rounded-2xl text-base text-[#0D202F] shadow-[0px_4px_20px_0px_rgba(104,135,159,0.06)] dir-ltr text-left"
+                        className="w-full bg-[#FFFFFF] border border-[#E2E8F0] focus:border-[#1E4C6F] focus:ring-1 focus:ring-[#1E4C6F] outline-none px-3.5 py-3 rounded-xl text-sm text-[#0D202F] shadow-[0px_4px_20px_0px_rgba(104,135,159,0.06)] dir-ltr text-left"
                     />
                 </div>
 
                 {/* GitHub */}
                 <div className="flex flex-col gap-2">
-                    <label className="text-base sm:text-lg font-semibold text-[#0D202F] flex items-center gap-2">
-                        <GithubIcon className="w-5 h-5 text-gray-800" />
+                    <label className="text-sm sm:text-base font-semibold text-[#0D202F] flex items-center gap-2">
+                        <GithubIcon className="w-4 h-4 text-gray-800" />
                         <span>مستودع الكود البرمجي (GitHub / GitLab - اختياري)</span>
                     </label>
                     <input
@@ -125,17 +124,18 @@ const ProjectLinksTab = ({ onSave }) => {
                         value={links.github}
                         onChange={(e) => setLinks({ ...links, github: e.target.value })}
                         placeholder="https://github.com/..."
-                        className="w-full bg-[#FFFFFF] border border-[#E2E8F0] focus:border-[#1E4C6F] focus:ring-1 focus:ring-[#1E4C6F] outline-none px-4 py-3.5 rounded-2xl text-base text-[#0D202F] shadow-[0px_4px_20px_0px_rgba(104,135,159,0.06)] dir-ltr text-left"
+                        className="w-full bg-[#FFFFFF] border border-[#E2E8F0] focus:border-[#1E4C6F] focus:ring-1 focus:ring-[#1E4C6F] outline-none px-3.5 py-3 rounded-xl text-sm text-[#0D202F] shadow-[0px_4px_20px_0px_rgba(104,135,159,0.06)] dir-ltr text-left"
                     />
                 </div>
             </div>
 
             {/* Save Button */}
-            <div className="pt-4 border-t border-gray-100 flex justify-end">
+            <div className="pt-3 border-t border-gray-100 flex justify-end">
                 <SaveChangesButton
                     label="حفظ روابط المشروع"
                     onClick={handleSave}
                     loading={isSaving}
+                    compact
                 />
             </div>
         </div>

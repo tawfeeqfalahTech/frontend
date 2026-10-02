@@ -59,11 +59,10 @@ const RejectReasonModal = ({ isOpen, onClose, onConfirm, investorName = "الم�
                         {defaultReasons.map((reason, idx) => (
                             <label
                                 key={idx}
-                                className={`flex items-start gap-3 p-3.5 rounded-xl border cursor-pointer transition-all ${
-                                    selectedReason === reason
+                                className={`flex items-start gap-3 p-3.5 rounded-xl border cursor-pointer transition-all ${selectedReason === reason
                                         ? "border-red-300 bg-red-50/40 text-red-900"
                                         : "border-gray-200 hover:bg-gray-50 text-gray-700"
-                                }`}
+                                    }`}
                             >
                                 <input
                                     type="radio"

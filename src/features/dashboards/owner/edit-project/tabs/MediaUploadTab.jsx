@@ -3,7 +3,7 @@ import { useState, useRef } from "react"
 import { UploadCloud, Image as ImageIcon, Trash2, CheckCircle2, Star } from "lucide-react"
 import SaveChangesButton from "../components/SaveChangesButton"
 
-const MediaUploadTab = ({ onSave }) => {
+const MediaUploadTab = () => {
     const fileInputRef = useRef(null)
     const [isDragging, setIsDragging] = useState(false)
     const [isSaving, setIsSaving] = useState(false)
@@ -63,18 +63,17 @@ const MediaUploadTab = ({ onSave }) => {
         setIsSaving(true)
         setTimeout(() => {
             setIsSaving(false)
-            onSave?.("تم حفظ الصور والمرفقات بنجاح!")
         }, 600)
     }
 
     return (
-        <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-[0px_4px_32px_0px_rgba(30,76,111,0.06)] border border-gray-100 flex flex-col gap-8">
+        <div className="bg-white rounded-2xl p-5 sm:p-6 shadow-[0px_4px_32px_0px_rgba(30,76,111,0.06)] border border-gray-100 flex flex-col gap-6">
             {/* Header */}
-            <div className="border-b border-gray-100 pb-5">
-                <h2 className="text-2xl sm:text-[26px] font-bold text-[#0D202F]">
+            <div className="border-b border-gray-100 pb-4">
+                <h2 className="text-xl sm:text-[22px] font-bold text-[#0D202F]">
                     صور المشروع والمرفقات المرئية
                 </h2>
-                <p className="text-[#4B708C] text-sm sm:text-base mt-1.5">
+                <p className="text-[#4B708C] text-sm mt-1.5">
                     أضف صوراً توضيحية لنماذج وعمليات مشروعك لزيادة الثقة لدى المستثمرين.
                 </p>
             </div>
@@ -89,11 +88,10 @@ const MediaUploadTab = ({ onSave }) => {
                     setIsDragging(false)
                     handleFileSelect(e.dataTransfer.files)
                 }}
-                className={`border-2 border-dashed rounded-2xl p-8 sm:p-12 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all duration-200 ${
-                    isDragging
-                        ? "border-[#1E4C6F] bg-[#E9EDF1]/50 scale-[1.01]"
+                className={`border-2 border-dashed rounded-2xl p-6 sm:p-10 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all duration-200 ${isDragging
+                        ? "border-[#1E4C6F] bg-[#E9EDF1]/50"
                         : "border-[#1E4C6F]/40 bg-[#F9FAFB] hover:border-[#1E4C6F] hover:bg-[#F0F4F8]"
-                }`}
+                    }`}
             >
                 <input
                     ref={fileInputRef}
@@ -103,14 +101,14 @@ const MediaUploadTab = ({ onSave }) => {
                     className="hidden"
                     onChange={(e) => handleFileSelect(e.target.files)}
                 />
-                <div className="w-14 h-14 rounded-2xl bg-[#E9EDF1] flex items-center justify-center text-[#1E4C6F]">
-                    <UploadCloud className="w-8 h-8" />
+                <div className="w-12 h-12 rounded-2xl bg-[#E9EDF1] flex items-center justify-center text-[#1E4C6F]">
+                    <UploadCloud className="w-6 h-6" />
                 </div>
                 <div className="text-center">
-                    <p className="text-[#1E4C6F] font-bold text-base sm:text-lg">
+                    <p className="text-[#1E4C6F] font-bold text-sm sm:text-base">
                         اسحب الصور هنا أو تصفح ملفاتك
                     </p>
-                    <p className="text-gray-500 text-xs sm:text-sm mt-1">
+                    <p className="text-gray-500 text-[11px] sm:text-xs mt-1">
                         دعم صيغ PNG, JPG بحد أقصى 5 ميجابايت للملف
                     </p>
                 </div>
@@ -119,19 +117,18 @@ const MediaUploadTab = ({ onSave }) => {
             {/* Uploaded Images List */}
             {images.length > 0 && (
                 <div className="flex flex-col gap-4">
-                    <h3 className="text-base sm:text-lg font-bold text-[#0D202F]">
+                    <h3 className="text-sm sm:text-base font-bold text-[#0D202F]">
                         الصور المرفوعة ({images.length})
                     </h3>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                         {images.map((img) => (
                             <div
                                 key={img.id}
-                                className={`relative rounded-2xl overflow-hidden border transition-all duration-200 group bg-gray-50 flex flex-col ${
-                                    img.isCover ? "border-[#1E4C6F] ring-2 ring-[#1E4C6F]/20" : "border-gray-200 hover:border-gray-300"
-                                }`}
+                                className={`relative rounded-2xl overflow-hidden border transition-all duration-200 group bg-gray-50 flex flex-col ${img.isCover ? "border-[#1E4C6F] ring-2 ring-[#1E4C6F]/20" : "border-gray-200 hover:border-gray-300"
+                                    }`}
                             >
-                                <div className="relative h-44 w-full bg-gray-100 overflow-hidden">
+                                <div className="relative h-40 w-full bg-gray-100 overflow-hidden">
                                     <img
                                         src={img.url}
                                         alt={img.name}
@@ -148,12 +145,12 @@ const MediaUploadTab = ({ onSave }) => {
                                     )}
                                 </div>
 
-                                <div className="p-3.5 flex items-center justify-between gap-2 bg-white">
+                                <div className="p-3 flex items-center justify-between gap-2 bg-white">
                                     <div className="flex-1 min-w-0">
-                                        <p className="text-xs font-semibold text-[#0D202F] truncate">
+                                        <p className="text-[11px] font-semibold text-[#0D202F] truncate">
                                             {img.name}
                                         </p>
-                                        <p className="text-[11px] text-gray-500 mt-0.5">
+                                        <p className="text-[10px] text-gray-500 mt-0.5">
                                             {img.size}
                                         </p>
                                     </div>
@@ -186,11 +183,12 @@ const MediaUploadTab = ({ onSave }) => {
             )}
 
             {/* Save Button */}
-            <div className="pt-4 border-t border-gray-100 flex justify-end">
+            <div className="pt-3 border-t border-gray-100 flex justify-end">
                 <SaveChangesButton
                     label="حفظ الصور والمرفقات"
                     onClick={handleSave}
                     loading={isSaving}
+                    compact
                 />
             </div>
         </div>

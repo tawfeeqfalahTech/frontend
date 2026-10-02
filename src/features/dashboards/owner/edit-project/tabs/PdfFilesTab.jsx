@@ -3,7 +3,7 @@ import { useState, useRef } from "react"
 import { UploadCloud, FileText, Trash2, Download, ExternalLink } from "lucide-react"
 import SaveChangesButton from "../components/SaveChangesButton"
 
-const PdfFilesTab = ({ onSave }) => {
+const PdfFilesTab = () => {
     const fileInputRef = useRef(null)
     const [isDragging, setIsDragging] = useState(false)
     const [isSaving, setIsSaving] = useState(false)
@@ -47,18 +47,17 @@ const PdfFilesTab = ({ onSave }) => {
         setIsSaving(true)
         setTimeout(() => {
             setIsSaving(false)
-            onSave?.("تم حفظ ملفات PDF بنجاح!")
         }, 600)
     }
 
     return (
-        <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-[0px_4px_32px_0px_rgba(30,76,111,0.06)] border border-gray-100 flex flex-col gap-8">
+        <div className="bg-white rounded-2xl p-5 sm:p-6 shadow-[0px_4px_32px_0px_rgba(30,76,111,0.06)] border border-gray-100 flex flex-col gap-6">
             {/* Header */}
-            <div className="border-b border-gray-100 pb-5">
-                <h2 className="text-2xl sm:text-[26px] font-bold text-[#0D202F]">
+            <div className="border-b border-gray-100 pb-4">
+                <h2 className="text-xl sm:text-[22px] font-bold text-[#0D202F]">
                     ملفات PDF والمستندات
                 </h2>
-                <p className="text-[#4B708C] text-sm sm:text-base mt-1.5">
+                <p className="text-[#4B708C] text-sm mt-1.5">
                     أرفق دراسات الجدوى، خطط العمل، أو العروض التقديمية (Pitch Deck) لتمكين المستثمرين من دراسة المشروع.
                 </p>
             </div>
@@ -73,11 +72,10 @@ const PdfFilesTab = ({ onSave }) => {
                     setIsDragging(false)
                     handleFileSelect(e.dataTransfer.files)
                 }}
-                className={`border-2 border-dashed rounded-2xl p-8 sm:p-12 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all duration-200 ${
-                    isDragging
-                        ? "border-[#1E4C6F] bg-[#E9EDF1]/50 scale-[1.01]"
+                className={`border-2 border-dashed rounded-2xl p-6 sm:p-10 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all duration-200 ${isDragging
+                        ? "border-[#1E4C6F] bg-[#E9EDF1]/50"
                         : "border-[#1E4C6F]/40 bg-[#F9FAFB] hover:border-[#1E4C6F] hover:bg-[#F0F4F8]"
-                }`}
+                    }`}
             >
                 <input
                     ref={fileInputRef}
@@ -87,14 +85,14 @@ const PdfFilesTab = ({ onSave }) => {
                     className="hidden"
                     onChange={(e) => handleFileSelect(e.target.files)}
                 />
-                <div className="w-14 h-14 rounded-2xl bg-[#E9EDF1] flex items-center justify-center text-[#1E4C6F]">
-                    <UploadCloud className="w-8 h-8" />
+                <div className="w-12 h-12 rounded-2xl bg-[#E9EDF1] flex items-center justify-center text-[#1E4C6F]">
+                    <UploadCloud className="w-6 h-6" />
                 </div>
                 <div className="text-center">
-                    <p className="text-[#1E4C6F] font-bold text-base sm:text-lg">
+                    <p className="text-[#1E4C6F] font-bold text-sm sm:text-base">
                         اسحب ملفات PDF هنا أو تصفح جهازك
                     </p>
-                    <p className="text-gray-500 text-xs sm:text-sm mt-1">
+                    <p className="text-gray-500 text-[11px] sm:text-xs mt-1">
                         دعم ملفات PDF فقط بحد أقصى 25 ميجابايت للملف
                     </p>
                 </div>
@@ -151,11 +149,12 @@ const PdfFilesTab = ({ onSave }) => {
             )}
 
             {/* Save Button */}
-            <div className="pt-4 border-t border-gray-100 flex justify-end">
+            <div className="pt-3 border-t border-gray-100 flex justify-end">
                 <SaveChangesButton
                     label="حفظ ملفات PDF"
                     onClick={handleSave}
                     loading={isSaving}
+                    compact
                 />
             </div>
         </div>

@@ -10,11 +10,11 @@ const Sidebar = ({ isOpen, onClose, onLogoutClick }) => {
     const links = [
         { id: 1, name: "الرئيسية", href: "/dashboard/idea-owner", icon: <Home className="w-5 h-5" /> },
         { id: 2, name: "مشاريعي", href: "/dashboard/idea-owner/projects", icon: <FolderOpen className="w-5 h-5" /> },
-        { id: 3, name: "طلبات الإهتمام", href: "/dashboard/idea-owner/investors", icon: <HeartHandshake className="w-5 h-5" /> },
+        { id: 3, name: "طلبات الإهتمام", href: "/dashboard/idea-owner/eoi-requests", icon: <HeartHandshake className="w-5 h-5" /> },
         { id: 4, name: "سلة المحذوفات", href: "/dashboard/idea-owner/deleted", icon: <Trash2 className="w-5 h-5" /> },
     ]
 
-    if (path === `/dashboard/idea-owner/create-project` || path === `/dashboard/idea-owner/profile` || path === "/dashboard/idea-owner/deleted" || path === "/dashboard/idea-owner/view-project" || path === "/dashboard/idea-owner/edit-profile" || path === "/dashboard/idea-owner/edit-project" || path === "/dashboard/idea-owner/investors") return null
+    if (path === `/dashboard/idea-owner/create-project` || path === `/dashboard/idea-owner/profile` || path === "/dashboard/idea-owner/deleted" || path === "/dashboard/idea-owner/view-project" || path === "/dashboard/idea-owner/edit-profile" || path === "/dashboard/idea-owner/edit-project") return null
 
     return (
         <>
@@ -59,7 +59,7 @@ const Sidebar = ({ isOpen, onClose, onLogoutClick }) => {
                 </nav>
 
                 <div className="mt-auto pt-4 flex flex-col space-y-2">
-                    <Link
+                    {/* <Link
                         href="/owner/settings"
                         onClick={onClose}
                         className={`flex items-center gap-3 py-2.5 px-3 rounded-lg transition-colors duration-200 ${path === "/owner/settings"
@@ -69,7 +69,7 @@ const Sidebar = ({ isOpen, onClose, onLogoutClick }) => {
                     >
                         <Settings className="w-5 h-5" />
                         <span>الإعدادات</span>
-                    </Link>
+                    </Link> */}
 
                     <hr className="text-slate-200 mb-2 block" />
 

@@ -5,7 +5,6 @@ import RequestFilterTabs from "@/features/dashboards/owner/interest-requests/com
 import InterestRequestCard from "@/features/dashboards/owner/interest-requests/components/InterestRequestCard"
 import RejectReasonModal from "@/features/dashboards/owner/interest-requests/components/RejectReasonModal"
 import AcceptConfirmModal from "@/features/dashboards/owner/interest-requests/components/AcceptConfirmModal"
-import SuccessToast from "@/features/dashboards/owner/edit-project/components/SuccessToast"
 import { initialRequests } from "@/features/dashboards/owner/interest-requests/data/mockRequests"
 import { Inbox } from "lucide-react"
 
@@ -17,12 +16,6 @@ const InvestorsRequestsPage = () => {
     const [selectedRequest, setSelectedRequest] = useState(null)
     const [isRejectModalOpen, setIsRejectModalOpen] = useState(false)
     const [isAcceptModalOpen, setIsAcceptModalOpen] = useState(false)
-
-    // حالة رسائل النجاح
-    const [toast, setToast] = useState({
-        visible: false,
-        message: ""
-    })
 
     // حساب أعداد كل فلتر
     const filterCounts = useMemo(() => {
@@ -62,10 +55,6 @@ const InvestorsRequestsPage = () => {
             return r
         }))
 
-        setToast({
-            visible: true,
-            message: `تم رفض طلب ${selectedRequest.investorName} بنجاح.`
-        })
     }
 
     // فتح مودال القبول
@@ -91,34 +80,16 @@ const InvestorsRequestsPage = () => {
             return r
         }))
 
-        setToast({
-            visible: true,
-            message: `تم قبول طلب ${selectedRequest.investorName} بنجاح!`
-        })
-    }
-
-    // عرض المستند
-    const handleViewDocument = (req) => {
-        setToast({
-            visible: true,
-            message: `جاري فتح مستند الاتفاق الخاص بـ ${req.investorName}...`
-        })
     }
 
     return (
-        <div className="flex flex-col gap-6 pb-16 min-h-screen">
+        <div className="flex flex-col gap-[1.2rem] pb-[3.2rem] min-h-screen pr-55 max-[660px]:pr-0">
             {/* Header */}
             <DashboardHeader
                 route="طلبات الاهتمام"
                 paragraph="متابعة وإدارة طلبات المستثمرين المهتمين بتمويل ودعم مشروعك"
             />
 
-            {/* Success Toast */}
-            <SuccessToast
-                isVisible={toast.visible}
-                message={toast.message}
-                onClose={() => setToast({ ...toast, visible: false })}
-            />
 
             {/* Reject Modal */}
             <RejectReasonModal
@@ -137,7 +108,7 @@ const InvestorsRequestsPage = () => {
             />
 
             {/* Filter Tabs */}
-            <div className="mt-2">
+            <div className="mt-[0.4rem]">
                 <RequestFilterTabs
                     activeFilter={activeFilter}
                     onFilterChange={setActiveFilter}
@@ -147,32 +118,31 @@ const InvestorsRequestsPage = () => {
 
             {/* Requests List */}
             {filteredRequests.length > 0 ? (
-                <div className="flex flex-col gap-4 mt-2">
+                <div className="flex flex-col gap-[0.8rem] mt-[0.4rem]">
                     {filteredRequests.map((request) => (
                         <InterestRequestCard
                             key={request.id}
                             request={request}
                             onAccept={handleOpenAccept}
                             onReject={handleOpenReject}
-                            onViewDocument={handleViewDocument}
                         />
                     ))}
                 </div>
             ) : (
                 /* Empty State */
-                <div className="bg-white rounded-2xl p-16 border border-gray-100 shadow-sm flex flex-col items-center justify-center text-center gap-3 mt-4">
-                    <div className="w-16 h-16 rounded-2xl bg-[#E9EDF1] text-[#1E4C6F] flex items-center justify-center">
-                        <Inbox className="w-8 h-8" />
+                <div className="bg-white rounded-2xl p-[3.2rem] border border-gray-100 shadow-sm flex flex-col items-center justify-center text-center gap-[0.6rem] mt-[0.8rem]">
+                    <div className="w-[3.2rem] h-[3.2rem] rounded-2xl bg-[#E9EDF1] text-[#1E4C6F] flex items-center justify-center">
+                        <Inbox className="w-[1.6rem] h-[1.6rem]" />
                     </div>
-                    <h3 className="text-xl font-bold text-[#0D202F]">
+                    <h3 className="text-lg font-bold text-[#0D202F]">
                         لا توجد طلبات في هذا القسم
                     </h3>
-                    <p className="text-sm text-gray-500 max-w-sm">
+                    <p className="text-xs text-gray-500 max-w-sm">
                         لا توجد حالياً أي طلبات اهتمام تطابق تصنيف &quot;{
                             activeFilter === "pending" ? "قيد المراجعة" :
-                            activeFilter === "accepted" ? "مقبول" :
-                            activeFilter === "rejected" ? "مرفوض" :
-                            activeFilter === "cancelled" ? "ملغي" : "الكل"
+                                activeFilter === "accepted" ? "مقبول" :
+                                    activeFilter === "rejected" ? "مرفوض" :
+                                        activeFilter === "cancelled" ? "ملغي" : "الكل"
                         }&quot;.
                     </p>
                 </div>
