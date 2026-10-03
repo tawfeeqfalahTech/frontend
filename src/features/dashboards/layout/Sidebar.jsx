@@ -7,6 +7,8 @@ import { FolderOpen, HeartHandshake, Home, LogOut, Settings, Trash2, X } from "l
 const Sidebar = ({ isOpen, onClose, onLogoutClick }) => {
     const path = usePathname()
 
+    if (path === "/dashboard/idea-owner/evaluations") return null
+
     const links = [
         { id: 1, name: "الرئيسية", href: "/dashboard/idea-owner", icon: <Home className="w-5 h-5" /> },
         { id: 2, name: "مشاريعي", href: "/dashboard/idea-owner/projects", icon: <FolderOpen className="w-5 h-5" /> },
@@ -14,7 +16,7 @@ const Sidebar = ({ isOpen, onClose, onLogoutClick }) => {
         { id: 4, name: "سلة المحذوفات", href: "/dashboard/idea-owner/deleted", icon: <Trash2 className="w-5 h-5" /> },
     ]
 
-    if (path === `/dashboard/idea-owner/create-project` || path === `/dashboard/idea-owner/profile` || path === "/dashboard/idea-owner/deleted" || path === "/dashboard/idea-owner/view-project" || path === "/dashboard/idea-owner/edit-profile" || path === "/dashboard/idea-owner/edit-project") return null
+    if (path === `/dashboard/idea-owner/create-project` || path === `/dashboard/idea-owner/profile` || path === "/dashboard/idea-owner/deleted" || path === "/dashboard/idea-owner/view-project" || path === "/dashboard/idea-owner/profile/edit" || path === "/dashboard/idea-owner/edit-project") return null
 
     return (
         <>

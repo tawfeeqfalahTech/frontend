@@ -66,7 +66,7 @@ const page = () => {
                 </div>
                 <div className="flex flex-col">
                     <div className="flex justify-end">
-                        <Link href="/dashboard/idea-owner/edit-profile"
+                        <Link href="/dashboard/idea-owner/profile/edit"
                             className="bg-[#1E4C6F] border-[#1E4C6F] group flex items-center justify-center w-30 text-white text-lg h-11 rounded-xl cursor-pointer hover:-translate-y-0.5 hover:bg-[#163852] transition-all duration-300 disabled:opacity-50"
                         >
                             تعديل

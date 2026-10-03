@@ -22,7 +22,9 @@ const Navbar = ({ user, onMenuClick, onLogoutClick }) => {
         return () => document.removeEventListener("mousedown", handleClickOutside)
     }, [])
 
-    const isCreatProjectPage = path === "/dashboard/idea-owner/create-project" || path === "/dashboard/idea-owner/profile" || path === "/dashboard/idea-owner/deleted" || path === "/dashboard/idea-owner/view-project" || path === "/dashboard/idea-owner/edit-profile" || path === "/dashboard/idea-owner/edit-project"
+    const isCreatProjectPage = path === "/dashboard/idea-owner/create-project" || path === "/dashboard/idea-owner/profile" || path === "/dashboard/idea-owner/deleted" || path === "/dashboard/idea-owner/view-project" || path === "/dashboard/idea-owner/profile/edit" || path === "/dashboard/idea-owner/edit-project"
+
+    const isEvaluationsPage = path === "/dashboard/idea-owner/evaluations"
 
     // إغلاق قائمة المستخدم ثم فتح مودال تأكيد تسجيل الخروج (المُدار من DashboardShell)
     const handleLogoutClick = () => {
@@ -31,7 +33,7 @@ const Navbar = ({ user, onMenuClick, onLogoutClick }) => {
     }
 
     return (
-        <div className={`h-15 ${isCreatProjectPage ? "mr-0" : "mr-55"} max-[660px]:mr-0 flex items-center justify-between px-5 bg-white border-b border-slate-200 relative`}>
+        <div className={`h-15 ${isCreatProjectPage || isEvaluationsPage ? "mr-0" : "mr-55"} max-[660px]:mr-0 flex items-center justify-between px-5 bg-white border-b border-slate-200 relative`}>
             <div className="flex items-center gap-2">
                 <button onClick={onMenuClick} className="cursor-pointer min-[660px]:hidden">
                     <Menu size={20} />
