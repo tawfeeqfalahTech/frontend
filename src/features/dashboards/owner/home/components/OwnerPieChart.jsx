@@ -1,80 +1,43 @@
-"use client";
-import React from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+"use client"
+
+import ApexChart from "../../evaluations/components/ApexChart"
 
 const data = [
-    { name: 'نشط', value: 8, percentage: '33%', color: '#4EA853' },
-    { name: 'قيد التقييم', value: 10, percentage: '42%', color: '#F7931E' },
-    { name: 'مرفوض', value: 6, percentage: '25%', color: '#F14336' },
-];
+    { name: "نشط", value: 8, color: "#4EA853" },
+    { name: "قيد التقييم", value: 10, color: "#F7931E" },
+    { name: "مرفوض", value: 6, color: "#F14336" },
+]
 
-export default function ProjectsStatusChart() {
-    const totalProjects = data.reduce((acc, item) => acc + item.value, 0);
+const options = {
+    chart: {
+        type: "donut", fontFamily: "Cairo, sans-serif",
+        toolbar: { show: false }, animations: { enabled: false },
+        parentHeightOffset: 0, sparkline: { enabled: true },
+    },
+    labels: data.map(item => item.name),
+    colors: data.map(item => item.color),
+    legend: { show: false },
+    dataLabels: { enabled: false },
+    stroke: { width: 4, colors: ["#FFFFFF"] },
+    plotOptions: { pie: { expandOnClick: false, customScale: 0.91, donut: { size: "74.3%" } } },
+    tooltip: { y: { formatter: value => value + " مشروع" } },
+}
+
+export default function OwnerPieChart({ empty = false }) {
+    const totalProjects = empty ? 0 : data.reduce((sum, item) => sum + item.value, 0)
 
     return (
-        <div className="w-full bg-white rounded-2xl px-5 pt-5 pb-2 border border-slate-100 shadow-sm dir-rtl" dir="rtl">
-            <h3 className="text-lg font-bold text-slate-800 mb-4">
-                توزيع المشاريع حسب الحالة
-            </h3>
-
-            <div className="flex flex-col items-center justify-between gap-4 py-2">
-                <div className="relative w-44 h-44 flex-shrink-">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                            <Pie
-                                data={data}
-                                cx="50%"
-                                cy="50%"
-                                innerRadius={52}
-                                outerRadius={70}
-                                paddingAngle={4}
-                                dataKey="value"
-                                startAngle={90}
-                                endAngle={-270}
-                                stroke="none"
-                            >
-                                {data.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={entry.color} />
-                                ))}
-                            </Pie>
-                        </PieChart>
-                    </ResponsiveContainer>
-
-                    <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                        <span className="text-2xl font-extrabold text-slate-900 leading-none">
-                            {totalProjects}
-                        </span>
-                        <span className="text-[11px] font-semibold text-slate-500 mt-1">
-                            إجمالي المشاريع
-                        </span>
+        <section className="w-full min-w-0 rounded-2xl border border-slate-100 bg-white px-5 pb-2 pt-5 shadow-sm" dir="rtl" aria-labelledby="status-chart-title">
+            <h2 id="status-chart-title" className="mb-4 text-lg font-bold text-slate-800">توزيع المشاريع حسب الحالة</h2>
+            <div className="flex flex-col items-center gap-4 py-2">
+                <div className="relative h-44 w-44 shrink-0">
+                    {empty ? <div className="absolute inset-[18px] rounded-full border-[18px] border-slate-100" /> : <ApexChart type="donut" options={options} series={data.map(item => item.value)} height={176} width={176} label="توزيع المشاريع حسب الحالة" />}
+                    <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center">
+                        <span className="text-2xl font-extrabold leading-none text-slate-900">{totalProjects}</span>
+                        <span className="mt-1 text-[11px] font-semibold text-slate-500">إجمالي المشاريع</span>
                     </div>
                 </div>
-
-                {/* <div className="flex justify-center gap-4">
-                    {data.map((item, index) => (
-                        <div key={index} className="flex items-center justify-between gap-7 flex-row-reverse">
-                            <div className="text-center min-w-[40px]">
-                                <div className="text-base font-bold text-slate-900 leading-tight">
-                                    {item.value}
-                                </div>
-                                <div className="text-xs text-slate-500 font-medium">
-                                    {item.percentage}
-                                </div>
-                            </div>
-
-                            <div className="flex items-center flex-row-reverse gap-2">
-                                <span className="text-sm font-bold text-slate-800">
-                                    {item.name}
-                                </span>
-                                <span
-                                    className="w-3.5 h-3.5 rounded-full flex-shrink-0"
-                                    style={{ backgroundColor: item.color }}
-                                />
-                            </div>
-                        </div>
-                    ))}
-                </div> */}
             </div>
-        </div>
-    );
+        </section>
+    )
 }

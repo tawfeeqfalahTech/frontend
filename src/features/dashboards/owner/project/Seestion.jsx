@@ -29,7 +29,7 @@ export default function SessionsCard({
     return (
         <div
             dir="rtl"
-            className="w-full rounded-xl bg-white px-4 py-4 shadow-sm"
+            className="w-full rounded-xl bg-white border border-slate-100 px-4 py-4 shadow-lg"
         >
             <div className="divide-y divide-gray-100">
                 {sessions.map((s, idx) => (

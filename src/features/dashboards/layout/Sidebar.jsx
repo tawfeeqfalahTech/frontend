@@ -7,7 +7,7 @@ import { FolderOpen, HeartHandshake, Home, LogOut, Settings, Trash2, X } from "l
 const Sidebar = ({ isOpen, onClose, onLogoutClick }) => {
     const path = usePathname()
 
-    if (path === "/dashboard/idea-owner/evaluations") return null
+    if (path === "/dashboard/idea-owner/evaluations" || path.startsWith("/dashboard/investor/profile")) return null
 
     const links = [
         { id: 1, name: "الرئيسية", href: "/dashboard/idea-owner", icon: <Home className="w-5 h-5" /> },
@@ -16,11 +16,11 @@ const Sidebar = ({ isOpen, onClose, onLogoutClick }) => {
         { id: 4, name: "سلة المحذوفات", href: "/dashboard/idea-owner/deleted", icon: <Trash2 className="w-5 h-5" /> },
     ]
 
-    if (path === `/dashboard/idea-owner/create-project` || path === `/dashboard/idea-owner/profile` || path === "/dashboard/idea-owner/deleted" || path === "/dashboard/idea-owner/view-project" || path === "/dashboard/idea-owner/profile/edit" || path === "/dashboard/idea-owner/edit-project") return null
+    if (path === `/dashboard/idea-owner/create-project` || path === `/dashboard/idea-owner/profile` || path === "/dashboard/idea-owner/view-project" || path === "/dashboard/idea-owner/profile/edit" || path === "/dashboard/idea-owner/edit-project") return null
 
     return (
         <>
-            <aside className={`w-55 h-screen bg-white fixed bottom-0 top-0 right-0 flex flex-col px-6 pb-6 pt-3 border-l border-slate-200 shadow-xl z-50 transition-transform duration-200 max-[660px]:w-72 ${isOpen ? "translate-x-0" : "max-[660px]:translate-x-full"}`}>
+            <aside className={`w-56 h-screen bg-white fixed bottom-0 top-0 right-0 flex flex-col px-6 pb-6 pt-3 border-l border-slate-200 shadow-xl z-50 transition-transform duration-200 ${isOpen ? "translate-x-0" : "max-[660px]:translate-x-full"}`}>
                 <div className="flex items-center gap-3">
                     <Image
                         src="/images/logo.jpg"

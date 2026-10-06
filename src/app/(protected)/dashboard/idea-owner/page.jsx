@@ -1,27 +1,25 @@
-import OwnerCards from '../../../../features/dashboards/owner/home/components/OwnerCards'
-import OwnerLineChart from '../../../../features/dashboards/owner/home/components/OwnerLineChart'
-import OwnerPieChart from '../../../../features/dashboards/owner/home/components/OwnerPieChart'
-import OwnerTable from '../../../../features/dashboards/owner/home/components/OwnerTable'
-import DashboardHeader from '../../../../features/dashboards/shared/DashboardHeader'
+import OwnerCards from "@/features/dashboards/owner/home/components/OwnerCards"
+import OwnerLineChart from "@/features/dashboards/owner/home/components/OwnerLineChart"
+import OwnerPieChart from "@/features/dashboards/owner/home/components/OwnerPieChart"
+import OwnerTable from "@/features/dashboards/owner/home/components/OwnerTable"
+import DashboardHeader from "@/features/dashboards/shared/DashboardHeader"
+import { projects } from "@/features/dashboards/owner/data/projects"
 
-const page = () => {
+export default async function Page({ searchParams }) {
+    const params = await searchParams
+    const dashboardProjects = params?.state === "empty" ? [] : projects
+
     return (
-        <div className='pr-55 max-[660px]:pr-0'>
-            <DashboardHeader route="الرئيسية" paragraph="مرحبا بك مجدداً, إليك نظرة عامة على مشاريعك" buttonLabel="مشروع جديد" />
-            <OwnerCards />
-            <div className='grid grid-cols-4 gap-3 mt-5'>
-                <div className='col-span-2'>
-                    <OwnerLineChart />
-                </div>
-                <div className='col-span-2'>
-                    <OwnerPieChart />
-                </div>
-                <div className='col-span-4'>
-                    <OwnerTable slice={3} />
-                </div>
+        <div className="min-w-0 pr-55 text-[#0D202F] max-[660px]:pr-0" dir="rtl">
+            <DashboardHeader route="الرئيسية" paragraph="مرحباً بك مجدداً، إليك نظرة عامة على مشاريعك" buttonLabel="مشروع جديد" />
+            <OwnerCards projects={dashboardProjects} />
+            <div className="mt-5 grid min-w-0 grid-cols-1 items-start gap-3 min-[1100px]:grid-cols-2">
+                <OwnerLineChart empty={dashboardProjects.length === 0} />
+                <OwnerPieChart empty={dashboardProjects.length === 0} />
+            </div>
+            <div className="mt-5 min-w-0">
+                <OwnerTable slice={4} projects={dashboardProjects} />
             </div>
         </div>
     )
 }
-
-export default page

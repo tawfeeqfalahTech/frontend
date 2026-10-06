@@ -3,10 +3,10 @@ import Link from "next/link"
 
 const content = {
     reports: {
-        image: "/images/reports/empty-report.svg",
-        title: "لا توجد تقارير بعد",
-        description: "قيّم مشروعك للحصول على تقرير تفصيلي.\nستظهر تقاريرك هنا لتراجعها وتتابع تطوّر مشروعك.",
-        action: "تقييم المشروع",
+        image: "/images/evaluations-embty-state.png",
+        title: "لا يوجد سجل تقييم بعد",
+        description: "ابدأ بتقييم مشروعك للحصول على رؤى تفصيلية حول أداء مشروعك ومقارنته بالمؤشرات المرجعية.",
+        action: "تقييم الآن",
     },
     report: {
         image: "/images/reports/empty-report.svg",
@@ -18,17 +18,18 @@ const content = {
 
 const EvaluationEmptyState = ({ variant = "reports", actionHref = "/dashboard/idea-owner/evaluations?state=single" }) => {
     const { image, title, description, action } = content[variant]
+    const isReports = variant === "reports"
 
     return (
-        <section aria-label={title} className="flex flex-col items-center gap-6 rounded-2xl bg-white px-4 py-12 text-center sm:p-20">
-            <div className="relative h-[205px] w-[302px] max-w-full shrink-0 overflow-hidden" aria-hidden="true">
-                <Image src={image} width={302} height={205} alt="" priority />
+        <section aria-label={title} className={`flex flex-col items-center bg-white text-center ${isReports ? "gap-[18px] rounded-xl px-3 py-10 sm:p-[60px]" : "gap-6 rounded-2xl px-4 py-12 sm:p-20"}`}>
+            <div className={`relative max-w-full shrink-0 overflow-hidden ${isReports ? "h-[153.75px] w-[226.5px]" : "h-[205px] w-[302px]"}`} aria-hidden="true">
+                <Image src={image} width={302} height={205} className={isReports ? "h-auto w-[226.5px]" : undefined} alt="" priority unoptimized />
             </div>
-            <div className="flex w-full max-w-[520px] flex-col gap-2">
-                <h2 className="text-2xl font-bold leading-[1.5] text-[#0D202F] sm:text-[30px]">{title}</h2>
-                <p className="whitespace-pre-line text-lg leading-[1.5] text-[#4B5563] sm:text-2xl">{description}</p>
+            <div className={`flex w-full flex-col ${isReports ? "max-w-[390px] gap-[6px]" : "max-w-[520px] gap-2"}`}>
+                <h2 className={`font-bold leading-[1.5] text-[#0D202F] ${isReports ? "text-[22.5px]" : "text-2xl sm:text-[30px]"}`}>{title}</h2>
+                <p className={`whitespace-pre-line text-lg leading-[1.5] text-[#4B5563] ${isReports ? "" : "sm:text-2xl"}`}>{description}</p>
             </div>
-            <Link href={actionHref} className="flex min-h-[65px] w-full max-w-[334px] items-center justify-center rounded-2xl bg-[#1E4C6F] px-4 py-2.5 text-xl font-semibold leading-9 text-white transition-colors hover:bg-[#163852] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1E4C6F] sm:text-2xl">
+            <Link href={actionHref} className={`flex w-full items-center justify-center bg-[#1E4C6F] font-semibold text-white transition-colors hover:bg-[#163852] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1E4C6F] ${isReports ? "min-h-[48.75px] max-w-[250.5px] rounded-xl px-3 py-[7.5px] text-lg leading-[27px]" : "min-h-[65px] max-w-[334px] rounded-2xl px-4 py-2.5 text-xl leading-9 sm:text-2xl"}`}>
                 {action}
             </Link>
         </section>

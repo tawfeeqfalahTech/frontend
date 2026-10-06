@@ -5,6 +5,7 @@ export const projects = [
     rating: "50%",
     status: "نشط",
     Leads: "24",
+    views: 24,
     updatedAt: "منذ ساعتين",
   },
   {
@@ -13,6 +14,7 @@ export const projects = [
     rating: "0%",
     status: "مرفوض",
     Leads: "24",
+    views: 24,
     updatedAt: "منذ ساعتين",
   },
   {
@@ -21,6 +23,7 @@ export const projects = [
     rating: "50%",
     status: "قيد التقييم",
     Leads: "24",
+    views: 24,
     updatedAt: "منذ ساعتين",
   },
   {
@@ -29,6 +32,7 @@ export const projects = [
     rating: "80%",
     status: "نشط",
     Leads: "24",
+    views: 24,
     updatedAt: "منذ ساعتين",
   },
   {
@@ -37,6 +41,7 @@ export const projects = [
     rating: "80%",
     status: "نشط",
     Leads: "24",
+    views: 24,
     updatedAt: "منذ ساعتين",
   },
   {
@@ -45,6 +50,7 @@ export const projects = [
     rating: "80%",
     status: "نشط",
     Leads: "24",
+    views: 24,
     updatedAt: "منذ ساعتين",
   },
   {
@@ -53,6 +59,7 @@ export const projects = [
     rating: "80%",
     status: "نشط",
     Leads: "24",
+    views: 24,
     updatedAt: "منذ ساعتين",
   },
   {
@@ -61,6 +68,7 @@ export const projects = [
     rating: "80%",
     status: "نشط",
     Leads: "24",
+    views: 24,
     updatedAt: "منذ ساعتين",
   },
 ];

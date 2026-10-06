@@ -39,8 +39,8 @@ const EvaluationsPage = ({ state = "history", projectName = "نوفا AI", repor
     }
 
     if (allReports.length === 0) return (
-        <div className="mx-auto flex max-w-[1280px] flex-col gap-10 pt-5 text-[#0D202F]" dir="rtl">
-            <h1 className="text-2xl font-bold leading-[1.5] sm:text-[30px]">سجل التقارير — مشروع {projectName}</h1>
+        <div className="mx-auto flex max-w-[960px] flex-col gap-[30px] pt-[15px] text-[#0D202F]" dir="rtl">
+            <h1 className="text-[22.5px] font-bold leading-[1.5]">سجل التقييمات — مشروع {projectName}</h1>
             <EvaluationEmptyState variant="reports" />
             {reportModal}
         </div>
@@ -49,7 +49,7 @@ const EvaluationsPage = ({ state = "history", projectName = "نوفا AI", repor
     return (
         <div className="mx-auto flex max-w-[1152px] flex-col gap-[22px] text-[#0D202F]" dir="rtl">
             <h1 className="text-[22px] font-bold leading-[41px]">سجل التقييمات — مشروع {projectName}</h1>
-
+            { }
             <EvaluationSummary remaining={remaining} onReevaluate={handleReevaluate} latest={latest} />
             {notice && <p role="status" className="rounded-[11px] bg-[#E9EDF1] p-[14px] text-[13px] text-[#1E4C6F]">{notice}</p>}
             {isFirstEvaluation ? <EvaluationDetails evaluation={latest} first /> : <>

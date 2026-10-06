@@ -6,8 +6,9 @@ import UserDropdownMenu from "../layout/UserDropdownMenu"
 import { usePathname } from "next/navigation"
 
 const Navbar = ({ user, onMenuClick, onLogoutClick }) => {
-    const route = "الرئيسية"
     const path = usePathname()
+    const isInvestorProfile = path.startsWith("/dashboard/investor/profile")
+    const route = isInvestorProfile ? (path.endsWith("/edit") ? "تعديل الملف الشخصي" : "الملف الشخصي") : "الرئيسية"
     // حالة قائمة المستخدم (القائمة المنسدلة للأفاتار)
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
     const userMenuRef = useRef(null)
@@ -22,7 +23,7 @@ const Navbar = ({ user, onMenuClick, onLogoutClick }) => {
         return () => document.removeEventListener("mousedown", handleClickOutside)
     }, [])
 
-    const isCreatProjectPage = path === "/dashboard/idea-owner/create-project" || path === "/dashboard/idea-owner/profile" || path === "/dashboard/idea-owner/deleted" || path === "/dashboard/idea-owner/view-project" || path === "/dashboard/idea-owner/profile/edit" || path === "/dashboard/idea-owner/edit-project"
+    const isCreatProjectPage = isInvestorProfile || path === "/dashboard/idea-owner/create-project" || path === "/dashboard/idea-owner/profile" || path === "/dashboard/idea-owner/view-project" || path === "/dashboard/idea-owner/profile/edit" || path === "/dashboard/idea-owner/edit-project"
 
     const isEvaluationsPage = path === "/dashboard/idea-owner/evaluations"
 
