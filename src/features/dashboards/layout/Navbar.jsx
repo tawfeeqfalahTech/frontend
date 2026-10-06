@@ -66,7 +66,7 @@ const Navbar = ({ user, onMenuClick, onLogoutClick }) => {
 
                     {isUserMenuOpen && (
                         <div className="absolute left-0 mt-2 z-50 animate-in fade-in zoom-in-95 duration-150">
-                            <UserDropdownMenu onLogout={handleLogoutClick} />
+                            <UserDropdownMenu onLogout={handleLogoutClick} onClick={() => setIsUserMenuOpen(false)} />
                         </div>
                     )}
                 </div>

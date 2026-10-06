@@ -1,5 +1,6 @@
 import { File } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 const page = () => {
     const title = "المؤشرات المالية والتشغيلية"
     const items = [
@@ -26,7 +27,7 @@ const page = () => {
         <main className="px-30">
             <section>
                 <div>
-                    <h1 className="text-3xl font-semibold">منصة 'سند': الذكاء الاصطناعي لتحليل المستندات القانونية </h1>
+                    <h1 className="text-3xl font-semibold">منصة &apos;سند&apos;: الذكاء الاصطناعي لتحليل المستندات القانونية </h1>
                 </div>
                 <p className="text-[#4B5563] text-sm font-semibold mt-1">منصة سحابية متقدمة تستخدم نماذج اللغات الكبيرة المعربة لتحليل العقود واستخراج الثغرات القانونية.</p>
                 <div className="relative mt-4 w-full h-45 rounded-xl overflow-hidden">
@@ -44,6 +45,21 @@ const page = () => {
                     <div>
                         <div
                             className="w-80 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm"
+                        >
+                            <h3 className="mb-4 text-[15px] border-b border-gray-100 pb-3 font-bold text-gray-900">مالك الفكرة</h3>
+                            <div className="flex items-center gap-3">
+                                <div className="w-13 h-13 relative">
+                                    <Image src="/images/avatar.png" alt="Owner" width={80} height={80} className="rounded-full absolute" />
+                                </div>
+                                <div>
+                                    <h4 className="text-sm font-bold text-gray-900">د. عبد الرحمن آل سعود</h4>
+                                    <p className="text-xs text-[#4B708C] font-semibold">a.alsaud@sanad.ai</p>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div
+                            className="w-80 mt-4 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm"
                         >
                             <h3 className="mb-4 text-[15px] border-b border-gray-100 pb-3 font-bold text-gray-900">{title}</h3>
 
@@ -114,7 +130,7 @@ const page = () => {
                         >
                             <h3 className="mb-2 text-lg font-bold text-gray-900">{title}</h3>
                             <hr className="text-gray-100 block my-4" />
-                            <p className="mb-3 leading-5 text-xs font-semibold text-[#68879F]">تتمحور فكرة "سند" حول توفير محرك ذكاء اصطناعي سيادي مبني بالكامل ومخصص لفهم الصياغات اللغوية الفقهية والقانونية المستخدمة في المحاكم وصياغات العقود العربية. يعالج النظام ثغرات الصياغة بدقة تفوق المحركات التقليدية بمعدل %40 من خلال نماذج تعلم عميق مدربة على أرشيف ضخم من الوثائق المحررة والأنظمة الرسمية السعودية والخليجية.</p>
+                            <p className="mb-3 leading-5 text-xs font-semibold text-[#68879F]">تتمحور فكرة &quot;سند&quot; حول توفير محرك ذكاء اصطناعي سيادي مبني بالكامل ومخصص لفهم الصياغات اللغوية الفقهية والقانونية المستخدمة في المحاكم وصياغات العقود العربية. يعالج النظام ثغرات الصياغة بدقة تفوق المحركات التقليدية بمعدل %40 من خلال نماذج تعلم عميق مدربة على أرشيف ضخم من الوثائق المحررة والأنظمة الرسمية السعودية والخليجية.</p>
 
                             <h4 className="mb-3 text-sm font-bold text-gray-900">التصنيفات والمجال البرمجي</h4>
 
@@ -151,6 +167,7 @@ const page = () => {
                             className="w-full mt-4 max-w-3xl rounded-2xl border border-gray-100 bg-white p-6 shadow-sm"
                         >
                             <h3 className="mb-2 text-lg font-bold text-gray-900">التقييم الفني الإجمالي</h3>
+                            <Link href="/dashboard/idea-owner/evaluations" className="text-sm font-semibold text-[#1E4C6F] hover:underline">عرض سجل التقييمات</Link>
 
                             <div className="mt-4 bg-[#EDF7EE] w-full h-30 rounded-xl overflow-hidden flex items-center justify-between px-5">
                                 <p className="text-[#204A22] text-sm w-full max-w-md font-bold">حاز المشروع على تقييم عام متفوق بناءً على المعايير القانونية والتقنية المعتمدة لدى المنصة.</p>

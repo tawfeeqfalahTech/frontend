@@ -6,7 +6,7 @@ import { LayoutDashboard, User, LogOut } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { getDashboardPath } from "@/lib/auth-routes";
 
-export default function UserDropdownMenu({ onLogout }) {
+export default function UserDropdownMenu({ onLogout, onClick }) {
     const { user } = useAuth()
     return (
         <div className="w-55 bg-white rounded-2xl shadow-xl border border-gray-100 p-4 dir-rtl text-right font-sans">
@@ -37,6 +37,7 @@ export default function UserDropdownMenu({ onLogout }) {
 
             <div className="py-3 flex flex-col gap-1 border-b border-gray-100">
                 <Link
+                    onClick={onClick}
                     href={getDashboardPath(user.data?.role)}
                     className="flex items-center justify-between px-2 py-2 rounded-xl text-[#1E4C6F] hover:bg-gray-50 transition-colors group"
                 >
@@ -45,6 +46,7 @@ export default function UserDropdownMenu({ onLogout }) {
                 </Link>
 
                 <Link
+                    onClick={onClick}
                     href={`${getDashboardPath(user.data?.role)}/profile`}
                     className="flex items-center justify-between px-2 py-2 rounded-xl text-[#1E4C6F] hover:bg-gray-50 transition-colors group"
                 >

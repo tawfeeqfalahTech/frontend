@@ -39,6 +39,8 @@ const page = () => {
 
     }
 
+    const handleLogoutAllSessions = () => { }
+
     const handleLogoutOne = () => { }
 
     return (
@@ -135,10 +137,11 @@ const page = () => {
             </section>
             <section className="mt-6">
                 <h2 className="text-2xl font-bold pr-3 border-r-5 rounded-sm border-[#1E4C6F]">إدارة الجلسات</h2>
-                <div className="mt-5">
+                <div className="mt-4">
                     <SessionsCard
                         onLogoutOne={(idx) => handleLogoutOne(idx)}
                         onLogoutAll={() => handleLogoutAll()}
+                        onLogoutAllSessions={() => handleLogoutAllSessions()}
                     />
                 </div>
             </section>
