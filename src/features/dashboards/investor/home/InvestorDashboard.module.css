@@ -1,0 +1,99 @@
+.statCard {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: linear-gradient(120deg, var(--stat-tint), #fff 65%);
+    transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.statCard::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 1rem;
+    width: 2.5rem;
+    height: 3px;
+    border-radius: 0 0 3px 3px;
+    background: var(--stat-accent);
+}
+
+.statDecoration {
+    position: absolute;
+    z-index: -1;
+    inset-block-start: -3.5rem;
+    inset-inline-end: -2rem;
+    width: 9rem;
+    height: 9rem;
+    border: 1px solid var(--stat-soft);
+    border-radius: 50%;
+    box-shadow: 0 0 0 14px var(--stat-tint), 0 0 0 15px var(--stat-soft);
+    opacity: 0.55;
+    pointer-events: none;
+}
+
+.statIcon {
+    background: var(--stat-soft);
+    color: var(--stat-accent);
+    box-shadow: 0 0 0 5px #ffffffa6;
+}
+
+.statHint {
+    color: var(--stat-accent);
+}
+
+.statDot {
+    background: var(--stat-accent);
+}
+
+.projectGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+    gap: 0.875rem;
+}
+
+@media (min-width: 1280px) {
+    .projectGrid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (hover: hover) {
+    .statCard:hover {
+        border-color: var(--stat-soft);
+        box-shadow: 0 6px 18px #1e4c6f0d;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .statCard {
+        animation: statEnter 420ms ease-out both;
+        animation-delay: var(--stat-delay);
+        transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .statIcon {
+        transition: transform 180ms ease;
+    }
+
+    @media (hover: hover) {
+        .statCard:hover {
+            transform: translateY(-3px);
+        }
+
+        .statCard:hover .statIcon {
+            transform: rotate(-6deg);
+        }
+    }
+}
+
+@keyframes statEnter {
+    from {
+        opacity: 0;
+        translate: 0 6px;
+    }
+
+    to {
+        opacity: 1;
+        translate: 0 0;
+    }
+}

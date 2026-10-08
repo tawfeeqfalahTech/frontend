@@ -1,4 +1,5 @@
 import { HomeIcon } from '@/icons/HomeIcon'
+import { cardSurfaceClass } from '@/features/dashboards/shared/dashboardStyles'
 
 const OwnerCards = () => {
     const cards = [
@@ -13,7 +14,7 @@ const OwnerCards = () => {
                 {cards.map((card) => (
                     <div
                         key={card.id}
-                        className="bg-white rounded-2xl p-5 max-[1095px]:px-3 max-[1095px]:py-5 border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-200"
+                        className={`${cardSurfaceClass} rounded-2xl p-5 max-[1095px]:px-3 max-[1095px]:py-5 hover:shadow-md transition-shadow duration-200`}
                     >
                         <div className="flex items-start justify-between">
                             <div>

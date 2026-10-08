@@ -5,17 +5,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Bookmark, X } from "lucide-react";
 import DeletedProjectsEmptyState from "@/features/dashboards/owner/delete-project/components/DeletedProjectsEmptyState";
+import { iconActionClass, outlineClass, primaryClass, surfaceClass } from "@/features/dashboards/shared/dashboardStyles";
 import { suggestedProjects } from "./data";
 
 export const base = "/dashboard/investor";
-export const primaryClass = "inline-flex min-h-9 items-center justify-center rounded-lg bg-[#1E4C6F] px-5 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#163852] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4C6F]";
-export const outlineClass = "inline-flex min-h-8 items-center justify-center rounded-lg border border-[#9CB1C1] px-3 py-1.5 text-xs text-[#1E4C6F] transition-colors hover:bg-[#EDF3F7] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4C6F]";
-export const surfaceClass = "rounded-xl bg-white shadow-[0_2px_14px_rgba(30,76,111,0.07)]";
+export { primaryClass, surfaceClass };
 
 export function SectionHeading({ id, title, href, linkLabel = "عرض جميع الطلبات" }) {
-    return <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-        <h2 id={id} className="border-s-[3px] border-[#1E4C6F] ps-2 text-base font-bold text-[#163852]">{title}</h2>
-        {href && <Link href={href} className="text-xs text-[#1E4C6F] hover:underline">{linkLabel}</Link>}
+    return <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <h2 id={id} className="border-s-[3px] border-[#1E4C6F] ps-2 text-lg font-bold text-[#1E4C6F]">{title}</h2>
+        {href && <Link href={href} className="rounded text-sm font-semibold text-[#1E4C6F] hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1E4C6F]">{linkLabel}</Link>}
     </div>;
 }
 
@@ -26,56 +25,60 @@ export function EmptyState({ title, description, explore = false }) {
 }
 
 export function ProjectCard({ project, saved, onSave, onDetails }) {
-    return <article className={`${surfaceClass} overflow-hidden`}>
-        <div className="relative h-36 overflow-hidden sm:h-40 lg:h-44">
-            <Image src={project.cover} alt={`واجهة ${project.title}`} fill sizes="(max-width: 639px) 100vw, (max-width: 1023px) 40vw, 30vw" className="object-cover" />
-            <span className="absolute end-3 top-3 rounded-md bg-[#1E4C6F]/90 px-2.5 py-1 text-[10px] text-white">{project.category}</span>
+    return <article className={`${surfaceClass} group flex h-full min-w-0 flex-col overflow-hidden transition-shadow duration-200 hover:shadow-md`}>
+        <div className="relative h-28 overflow-hidden">
+            <Image src={project.cover} alt={`واجهة ${project.title}`} fill sizes="(min-width: 1280px) calc((100vw - 310px) / 4), (min-width: 1000px) calc((100vw - 300px) / 3), (min-width: 768px) calc((100vw - 285px) / 2), (min-width: 661px) calc(100vw - 268px), (min-width: 510px) calc((100vw - 65px) / 2), calc(100vw - 48px)" className="object-cover motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover:scale-[1.025]" />
+            <span className="absolute end-2.5 top-2.5 rounded-md bg-[#1E4C6F]/95 px-2 py-1 text-[10px] font-semibold text-white">{project.category}</span>
         </div>
-        <div className="p-4">
-            <h3 className="text-sm font-bold text-[#163852]">{project.title}</h3>
-            <p className="mt-1.5 min-h-10 text-xs leading-5 text-gray-400">{project.description}</p>
-            <dl className="mt-2 space-y-1 text-[11px] text-[#B19971]">
-                <div className="flex gap-1"><dt>جودة الفكرة:</dt><dd dir="ltr">{project.score}%</dd></div>
+        <div className="flex flex-1 flex-col p-3.5">
+            <h3 className="truncate text-sm font-bold leading-6 text-[#0D202F]" title={project.title}>{project.title}</h3>
+            <p className="mt-1 min-h-10 line-clamp-2 text-xs leading-5 text-[#4B708C]">{project.description}</p>
+            <dl className="mt-2 space-y-1 text-[11px] font-medium text-[#9E7F4D]">
+                <div className="flex gap-1"><dt>جودة الفكرة:</dt><dd dir="ltr" className="font-semibold">{project.score}%</dd></div>
                 <div className="flex gap-1"><dt className="sr-only">مرحلة المشروع</dt><dd>{project.stage}</dd></div>
             </dl>
-            <div className="mt-2 flex items-center justify-between gap-2 text-[11px]">
-                <span className="text-gray-400">{project.sector}</span>
-                <button type="button" aria-label={`${saved ? "إلغاء حفظ" : "حفظ"} ${project.title}`} aria-pressed={saved} onClick={() => onSave(project.id)} className="flex min-h-9 items-center gap-1.5 rounded-md px-1 text-[#1E4C6F] hover:bg-slate-50">
-                    <Bookmark size={15} className={saved ? "fill-[#1E4C6F]" : ""} />{saved ? "محفوظ" : "حفظ"}
+            <div className="mt-auto flex items-center justify-between gap-2 pt-1.5 text-[11px]">
+                <span className="text-slate-500">{project.sector}</span>
+                <button type="button" aria-label={`${saved ? "إلغاء حفظ" : "حفظ"} ${project.title}`} aria-pressed={saved} onClick={() => onSave(project.id)} className="inline-flex min-h-9 items-center gap-1.5 rounded-lg px-2 font-semibold text-[#1E4C6F] transition-colors hover:bg-[#E9EDF1] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4C6F]">
+                    <Bookmark size={16} aria-hidden="true" className={saved ? "fill-[#1E4C6F]" : ""} />{saved ? "محفوظ" : "حفظ"}
                 </button>
             </div>
         </div>
-        <button type="button" onClick={() => onDetails(project)} className="flex min-h-10 w-full items-center justify-center gap-2 border-t border-slate-100 text-xs text-[#1E4C6F] transition-colors hover:bg-[#F3F7FA]">عرض التفاصيل<ArrowLeft size={14} /></button>
+        <button type="button" onClick={() => onDetails(project)} aria-label={`عرض تفاصيل ${project.title}`} className="flex min-h-10 w-full items-center justify-center gap-2 border-t border-[#E5EDF3] text-xs font-semibold text-[#1E4C6F] transition-colors hover:bg-[#E9EDF1] focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-[#1E4C6F]">عرض التفاصيل<ArrowLeft size={14} aria-hidden="true" className="motion-safe:transition-transform motion-safe:group-hover:-translate-x-0.5" /></button>
     </article>;
 }
 
 export function ProjectAvatar({ project }) {
-    return <div className="relative size-11 shrink-0 overflow-hidden rounded-full"><Image src={project.cover} alt="" fill sizes="44px" className="object-cover" /></div>;
+    return <div className="relative size-11 shrink-0 overflow-hidden rounded-full border border-[#E5EDF3] bg-[#E9EDF1]"><Image src={project.cover} alt="" fill sizes="44px" className="object-cover" /></div>;
 }
 
 export function RequestRow({ request, onDetails }) {
     const project = suggestedProjects.find((item) => item.id === request.projectId);
     const accepted = request.status === "accepted";
-    return <li className={`${surfaceClass} flex items-center gap-3 p-4`}>
+    return <li className={`${surfaceClass} grid grid-cols-[2.75rem_minmax(0,1fr)] items-center gap-3 p-4 transition-shadow duration-200 hover:shadow-md sm:grid-cols-[2.75rem_minmax(0,1fr)_auto] sm:p-5`}>
         <ProjectAvatar project={project} />
-        <div className="min-w-0 flex-1">
-            <h3 className="text-xs font-bold leading-6 text-[#163852]">{project.title}</h3>
-            <p className="truncate text-[10px] text-gray-400">{project.description}</p>
+        <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+                <h3 className="text-sm font-bold leading-6 text-[#0D202F]">{project.title}</h3>
+                <span className={`rounded-lg px-2 py-1 text-xs font-semibold ${accepted ? "bg-[#EDF7EE] text-[#367C39]" : "bg-[#FEF3C7] text-[#B45309]"}`}>{accepted ? "مقبول" : "قيد المراجعة"}</span>
+            </div>
+            <p className="mt-1 line-clamp-2 text-xs leading-6 text-[#4B708C]">{project.description}</p>
         </div>
-        <div className="flex shrink-0 flex-col items-center gap-2">
-            <span className={`rounded px-2 py-0.5 text-[10px] ${accepted ? "bg-[#EFF5E9] text-[#7A9C59]" : "bg-[#F7F3E9] text-[#B19971]"}`}>{accepted ? "مقبول" : "قيد المراجعة"}</span>
+        <div className="col-span-2 flex flex-wrap items-center justify-between gap-2 border-t border-[#E5EDF3] pt-3 sm:col-span-1 sm:flex-col sm:items-end sm:border-0 sm:pt-0">
+            <time className="text-xs text-slate-500">{request.date}</time>
             <button type="button" onClick={() => onDetails(project, request)} className={outlineClass}>{accepted ? "تواصل مع المالك" : "عرض الطلب"}</button>
-            <time className="text-[10px] text-gray-400">{request.date}</time>
         </div>
     </li>;
 }
 
 export function SavedRow({ project, onDetails, onSave }) {
-    return <li className={`${surfaceClass} flex items-center gap-3 p-4`}>
+    return <li className={`${surfaceClass} grid grid-cols-[2.75rem_minmax(0,1fr)] items-center gap-3 p-4 transition-shadow duration-200 hover:shadow-md sm:grid-cols-[2.75rem_minmax(0,1fr)_auto] sm:p-5`}>
         <ProjectAvatar project={project} />
-        <div className="min-w-0 flex-1"><h3 className="text-xs font-bold leading-6">{project.title}</h3><p className="text-[10px] text-gray-400">{project.sector}</p></div>
-        <button type="button" onClick={() => onDetails(project)} className={outlineClass}>عرض</button>
-        <button type="button" onClick={() => onSave(project.id)} aria-label={`إلغاء حفظ ${project.title}`} className="flex size-8 shrink-0 items-center justify-center rounded-lg text-[#1E4C6F] hover:bg-slate-100"><Bookmark size={15} className="fill-[#1E4C6F]" /></button>
+        <div className="min-w-0"><h3 className="text-sm font-bold leading-6 text-[#0D202F]">{project.title}</h3><p className="mt-1 text-xs text-[#4B708C]">{project.sector}</p></div>
+        <div className="col-span-2 flex items-center justify-between gap-2 border-t border-[#E5EDF3] pt-3 sm:col-span-1 sm:border-0 sm:pt-0">
+            <button type="button" onClick={() => onDetails(project)} aria-label={`عرض ${project.title}`} className={outlineClass}>عرض</button>
+            <button type="button" onClick={() => onSave(project.id)} aria-label={`إلغاء حفظ ${project.title}`} className={iconActionClass}><Bookmark size={16} aria-hidden="true" className="fill-[#1E4C6F]" /></button>
+        </div>
     </li>;
 }
 
@@ -87,12 +90,12 @@ export function ProjectDialog({ selection, onClose }) {
         if (!selection && dialog.open) dialog.close();
     }, [selection]);
     const project = selection?.project;
-    return <dialog ref={dialogRef} onClose={onClose} onClick={(event) => { if (event.target === event.currentTarget) onClose(); }} aria-labelledby="investor-project-title" className="fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-xl overflow-y-auto rounded-2xl border-0 bg-white p-0 text-[#163852] shadow-2xl backdrop:bg-[#0D202F]/50">
+    return <dialog ref={dialogRef} dir="rtl" onClose={onClose} onClick={(event) => { if (event.target === event.currentTarget) onClose(); }} aria-labelledby="investor-project-title" className="fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-xl overflow-y-auto rounded-2xl border-0 bg-white p-0 text-[#0D202F] shadow-xl backdrop:bg-[#0D202F]/40">
         {project && <div className="p-5 sm:p-7">
-            <div className="flex items-start justify-between gap-4"><h2 id="investor-project-title" className="text-xl font-bold">{project.title}</h2><button type="button" onClick={onClose} aria-label="إغلاق التفاصيل" className="flex size-9 shrink-0 items-center justify-center rounded-full hover:bg-slate-100"><X size={20} /></button></div>
+            <div className="flex items-start justify-between gap-4"><h2 id="investor-project-title" className="text-xl font-bold">{project.title}</h2><button type="button" onClick={onClose} aria-label="إغلاق التفاصيل" className={iconActionClass}><X size={20} /></button></div>
             <div className="relative mt-5 h-52 overflow-hidden rounded-xl"><Image src={project.cover} alt={`واجهة ${project.title}`} fill sizes="560px" className="object-cover" /></div>
-            <p className="mt-5 text-sm leading-7 text-gray-500">{project.description}</p>
-            <dl className="mt-5 grid grid-cols-3 gap-3 text-xs">{[{ label: "القطاع", value: project.sector }, { label: "جودة الفكرة", value: `${project.score}%` }, { label: "المرحلة", value: project.stage }].map((item) => <div key={item.label} className="rounded-lg bg-slate-50 p-3"><dt className="text-gray-400">{item.label}</dt><dd className="mt-2 font-semibold">{item.value}</dd></div>)}</dl>
+            <p className="mt-5 text-sm leading-7 text-[#4B708C]">{project.description}</p>
+            <dl className="mt-5 grid gap-3 text-sm sm:grid-cols-3">{[{ label: "القطاع", value: project.sector }, { label: "جودة الفكرة", value: `${project.score}%` }, { label: "المرحلة", value: project.stage }].map((item) => <div key={item.label} className="rounded-lg bg-[#E9EDF1] p-3"><dt className="text-xs text-[#4B708C]">{item.label}</dt><dd className="mt-2 font-semibold">{item.value}</dd></div>)}</dl>
             {selection.request && <div className="mt-5 rounded-xl bg-[#F3F7FA] p-4 text-sm leading-7"><p>حالة الطلب: <strong>{selection.request.status === "accepted" ? "مقبول" : "قيد المراجعة"}</strong></p><p className="mt-1 text-xs text-gray-500">{selection.request.status === "accepted" ? "تم قبول طلب اهتمامك. بيانات التواصل مع المالك غير متاحة حالياً." : "طلب اهتمامك قيد المراجعة من صاحب المشروع."}</p></div>}
             <button type="button" onClick={onClose} className={`${primaryClass} mt-6`}>إغلاق</button>
         </div>}

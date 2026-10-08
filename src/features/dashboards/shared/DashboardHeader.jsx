@@ -1,5 +1,6 @@
 import { LucidePlus } from 'lucide-react'
 import Link from 'next/link'
+import { primaryClass } from './dashboardStyles'
 
 const DashboardHeader = ({ route, paragraph, buttonLabel }) => {
     return (
@@ -10,7 +11,7 @@ const DashboardHeader = ({ route, paragraph, buttonLabel }) => {
             </div>
             <div className='shrink-0'>
                 {buttonLabel && (
-                    <Link href="/dashboard/idea-owner/create-project" className='flex justify-center items-center gap-1 text-sm bg-[#1E4C6F] hover:bg-[#4b708c] font-semibold text-white transition-colors duration-200 h-11 w-35 cursor-pointer rounded-lg'>
+                    <Link href="/dashboard/idea-owner/create-project" className={`${primaryClass} w-35`}>
                         <LucidePlus className='w-5 h-5' />
                         {buttonLabel}
                     </Link>
