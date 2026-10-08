@@ -1,4 +1,4 @@
-import Image from "next/image"
+import { LightbulbOff } from "lucide-react"
 import EvaluationScore from "./EvaluationScore"
 import EvaluationDimensionsChart from "./EvaluationDimensionsChart"
 
@@ -16,7 +16,7 @@ const EvaluationDetails = ({ evaluation, first = false }) => (
             </div>
         </div>
         {first && <div className="mt-[22px] flex items-center gap-[9px] rounded-[9px] bg-[#B8862E]/[0.06] p-[14px] text-[13px] text-[#B8862E]">
-            <Image src="/images/evaluations/lightbulb-off.svg" width={18} height={18} alt="" />
+            <LightbulbOff size={18} className="shrink-0" aria-hidden="true" />
             <p>أعد تقييم مشروعك لاحقاً لرؤية تطورك عبر الزمن</p>
         </div>}
     </section>

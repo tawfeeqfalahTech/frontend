@@ -13,7 +13,7 @@ export default async function Page({ searchParams }) {
         <div className="min-w-0 pr-55 text-[#0D202F] max-[660px]:pr-0" dir="rtl">
             <DashboardHeader route="الرئيسية" paragraph="مرحباً بك مجدداً، إليك نظرة عامة على مشاريعك" buttonLabel="مشروع جديد" />
             <OwnerCards projects={dashboardProjects} />
-            <div className="mt-5 grid min-w-0 grid-cols-1 items-start gap-3 min-[1100px]:grid-cols-2">
+            <div className="mt-5 grid min-w-0 grid-cols-1 items-stretch gap-3 min-[1100px]:grid-cols-2">
                 <OwnerLineChart empty={dashboardProjects.length === 0} />
                 <OwnerPieChart empty={dashboardProjects.length === 0} />
             </div>

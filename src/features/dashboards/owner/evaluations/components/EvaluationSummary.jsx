@@ -1,4 +1,4 @@
-import Image from "next/image"
+import { Clock } from "lucide-react"
 import EvaluationScore from "./EvaluationScore"
 
 const EvaluationSummary = ({ remaining, onReevaluate, latest }) => {
@@ -18,7 +18,7 @@ const EvaluationSummary = ({ remaining, onReevaluate, latest }) => {
             </div>
             <div className="flex w-full shrink-0 flex-col items-stretch gap-2.5 sm:w-[270px]">
                 {remaining > 0 && <span className="flex items-center justify-center gap-1 rounded-[7px] border border-[#B8862E] bg-[#B8862E]/[0.06] px-2 py-1 text-[11px] text-[#B8862E]">
-                    <Image src="/images/evaluations/clock.svg" width={13} height={13} alt="" />
+                    <Clock size={13} className="shrink-0" aria-hidden="true" />
                     التقييم القادم متاح خلال {time}
                 </span>}
                 <button type="button" onClick={onReevaluate} disabled={remaining > 0} aria-disabled={remaining > 0} className="flex h-12 w-full cursor-pointer items-center justify-center rounded-xl bg-[#1E4C6F] px-4 text-[17px] font-semibold text-white transition-colors duration-200 hover:bg-[#163852] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4C6F] disabled:cursor-not-allowed disabled:bg-[#BEBEBE] disabled:text-[#575757] disabled:shadow-none disabled:hover:bg-[#BEBEBE]">

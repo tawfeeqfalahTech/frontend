@@ -1,9 +1,11 @@
 "use client";
 import Image from "next/image";
+import { Loader2 } from "lucide-react";
 import { useEffect, useRef } from "react";
 
 export default function LogoutConfirmModal({
     open,
+    loading = false,
     onConfirm,
     onCancel,
 }) {
@@ -12,11 +14,11 @@ export default function LogoutConfirmModal({
     useEffect(() => {
         if (!open) return;
         function handleEscape(e) {
-            if (e.key === "Escape") onCancel?.();
+            if (e.key === "Escape" && !loading) onCancel?.();
         }
         document.addEventListener("keydown", handleEscape);
         return () => document.removeEventListener("keydown", handleEscape);
-    }, [open, onCancel]);
+    }, [open, onCancel, loading]);
 
     if (!open) return null;
 
@@ -24,7 +26,7 @@ export default function LogoutConfirmModal({
         <div
             className="fixed inset-0 z-50 flex items-center justify-center shadow-2xl bg-slate-900/40 px-4"
             onMouseDown={(e) => {
-                if (e.target === e.currentTarget) onCancel?.();
+                if (e.target === e.currentTarget && !loading) onCancel?.();
             }}
         >
             <div
@@ -32,6 +34,7 @@ export default function LogoutConfirmModal({
                 dir="rtl"
                 role="alertdialog"
                 aria-modal="true"
+                aria-busy={loading}
                 aria-labelledby="logout-confirm-title"
                 className="w-92.5 rounded-2xl bg-white px-3.5 py-3.5 text-center shadow-2xl"
             >
@@ -58,14 +61,21 @@ export default function LogoutConfirmModal({
                     <button
                         type="button"
                         onClick={onConfirm}
-                        className="w-full rounded-xl bg-[#1E4C6F] cursor-pointer py-3 text-[15px] font-semibold text-white transition hover:bg-[#0e3450]"
+                        disabled={loading}
+                        className="w-full rounded-xl bg-[#1E4C6F] cursor-pointer py-3 text-[15px] font-semibold text-white transition hover:bg-[#0e3450] disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                        تأكيد
+                        {loading ? (
+                            <span role="status" className="flex items-center justify-center gap-2">
+                                <Loader2 aria-hidden="true" className="h-5 w-5 animate-spin" />
+                                جاري تسجيل الخروج...
+                            </span>
+                        ) : "تأكيد"}
                     </button>
                     <button
                         type="button"
                         onClick={onCancel}
-                        className="w-full rounded-xl border border-slate-300 bg-white py-3 text-[15px] font-semibold text-slate-600 transition hover:bg-slate-100"
+                        disabled={loading}
+                        className="w-full rounded-xl border border-slate-300 bg-white py-3 text-[15px] font-semibold text-slate-600 transition hover:bg-slate-100 disabled:opacity-60 disabled:cursor-not-allowed"
                     >
                         إلغاء
                     </button>

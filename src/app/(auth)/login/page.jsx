@@ -9,7 +9,7 @@ const Page = () => {
         <div className="relative min-h-screen w-full overflow-hidden">
             <AuthHero />
             <div className="relative z-10 grid grid-cols-2 max-[1163px]:grid-cols-1 min-h-screen mx-15 max-[520px]:mx-5">
-                <div className="flex items-center max-[1163px]:justify-center h-screen max-[520px]:my-10">
+                <div className="flex items-center max-[1163px]:justify-center min-h-screen py-6">
                     <div className="bg-white rounded-2xl w-full max-w-100 px-6 pb-5 pt-9.5">
                         <AuthHeader head="تسجيل الدخول" paragraph="مرحبا بعودتك! سجل دخولك للوصول إلى حسابك" />
                         <div className="mt-6">

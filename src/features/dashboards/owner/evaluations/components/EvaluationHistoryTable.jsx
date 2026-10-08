@@ -6,7 +6,7 @@ const EvaluationHistoryTable = ({ evaluations, onViewReport }) => (
                     <tr>{["تاريخ التقييم", "الدرجة الكلية", "الفرق", "الإجراء"].map(label => <th key={label} scope="col" className="p-[18px] font-semibold" dir="rtl">{label}</th>)}</tr>
                 </thead>
                 <tbody className="leading-[26px] text-[#111827]">
-                    {[...evaluations].reverse().map((evaluation, index) => <tr key={evaluation.id} className="bg-[url('/images/evaluations/table-line.svg')] bg-[length:100%_1px] bg-bottom bg-no-repeat last:bg-none">
+                    {[...evaluations].reverse().map((evaluation, index) => <tr key={evaluation.id} className="border-b border-[#E5E7EB] last:border-b-0">
                         <td className="p-[18px]" dir="rtl">{evaluation.date}</td>
                         <td className="p-[18px]"><span className="inline-block rounded-[7px] bg-[#F9FAFB] px-[11px] py-[4px]">{evaluation.score} / 100</span></td>
                         <td className="p-[18px]">{index > 0 && evaluation.difference != null ? <span className="rounded-[5px] bg-[#2F8F6F]/[0.08] px-[9px] py-[4px] font-mono text-[13px] font-bold text-[#2F8F6F]">▲+{evaluation.difference}</span> : <span className="sr-only">لا يوجد فرق معروض</span>}</td>

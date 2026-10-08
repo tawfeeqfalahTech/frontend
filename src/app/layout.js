@@ -9,6 +9,9 @@ const cairo = Cairo({
 });
 
 export const metadata = {
+  icons: {
+    icon: { url: "/images/favicon.svg", type: "image/svg+xml" },
+  },
   title: "إحياء - منصة لإدارة المشاريع",
   description: "وصف المشروع",
 };

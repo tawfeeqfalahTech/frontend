@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { cache } from "react";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getDashboardPath } from "./auth-routes";
 
 export const getAuthUser = cache(async function getAuthUser() {
@@ -42,7 +42,11 @@ export const requierRole = async (role) => {
   const userRole = getUserRole(user);
 
   if (userRole !== role) {
-    redirect(getDashboardPath(userRole));
+    if (role === "admin") {
+      notFound();
+    } else {
+      redirect(getDashboardPath(userRole));
+    }
   }
 
   return user;
