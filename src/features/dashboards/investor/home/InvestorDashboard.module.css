@@ -51,6 +51,43 @@
     gap: 0.875rem;
 }
 
+.detailCard {
+    position: relative;
+    border-radius: 1rem;
+    transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.detailCard {
+    isolation: isolate;
+    background: linear-gradient(120deg, var(--row-tint), #fff 70%);
+}
+
+.detailCard::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 1.25rem;
+    width: 2.5rem;
+    height: 3px;
+    border-radius: 0 0 3px 3px;
+    background: var(--row-accent);
+}
+
+.statusBadge,
+.rowAction {
+    background: var(--row-soft);
+    color: var(--row-accent);
+}
+
+.rowAction {
+    border-color: transparent;
+}
+
+.savedAction {
+    border-color: #e5edf4;
+    background: #e5edf4;
+}
+
 @media (min-width: 1280px) {
     .projectGrid {
         grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -58,6 +95,16 @@
 }
 
 @media (hover: hover) {
+    .detailCard:hover {
+        border-color: var(--row-soft);
+        box-shadow: 0 6px 18px #1e4c6f0d;
+    }
+
+    .rowAction:hover {
+        border-color: var(--row-accent);
+        background: var(--row-tint);
+    }
+
     .statCard:hover {
         border-color: var(--stat-soft);
         box-shadow: 0 6px 18px #1e4c6f0d;

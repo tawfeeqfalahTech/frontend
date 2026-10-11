@@ -2,7 +2,7 @@ import { LucidePlus } from 'lucide-react'
 import Link from 'next/link'
 import { primaryClass } from './dashboardStyles'
 
-const DashboardHeader = ({ route, paragraph, buttonLabel }) => {
+const DashboardHeader = ({ route, paragraph, buttonLabel, action }) => {
     return (
         <div className='flex flex-wrap items-center justify-between gap-4'>
             <div className='flex min-w-0 flex-col'>
@@ -10,12 +10,12 @@ const DashboardHeader = ({ route, paragraph, buttonLabel }) => {
                 <p className='text-[#B19971] font-semibold'>{paragraph}</p>
             </div>
             <div className='shrink-0'>
-                {buttonLabel && (
+                {action || (buttonLabel && (
                     <Link href="/dashboard/idea-owner/create-project" className={`${primaryClass} w-35`}>
                         <LucidePlus className='w-5 h-5' />
                         {buttonLabel}
                     </Link>
-                )}
+                ))}
             </div>
 
         </div>

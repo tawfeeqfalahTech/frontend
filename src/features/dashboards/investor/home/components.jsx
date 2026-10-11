@@ -3,10 +3,11 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Bookmark, X } from "lucide-react";
+import { ArrowLeft, Bookmark, CheckCheck, Clock3, X } from "lucide-react";
 import DeletedProjectsEmptyState from "@/features/dashboards/owner/delete-project/components/DeletedProjectsEmptyState";
 import { iconActionClass, outlineClass, primaryClass, surfaceClass } from "@/features/dashboards/shared/dashboardStyles";
 import { suggestedProjects } from "./data";
+import styles from "./InvestorDashboard.module.css";
 
 export const base = "/dashboard/investor";
 export { primaryClass, surfaceClass };
@@ -26,25 +27,24 @@ export function EmptyState({ title, description, explore = false }) {
 
 export function ProjectCard({ project, saved, onSave, onDetails }) {
     return <article className={`${surfaceClass} group flex h-full min-w-0 flex-col overflow-hidden transition-shadow duration-200 hover:shadow-md`}>
-        <div className="relative h-28 overflow-hidden">
+        <div className="relative h-40 w-full shrink-0 overflow-hidden">
             <Image src={project.cover} alt={`واجهة ${project.title}`} fill sizes="(min-width: 1280px) calc((100vw - 310px) / 4), (min-width: 1000px) calc((100vw - 300px) / 3), (min-width: 768px) calc((100vw - 285px) / 2), (min-width: 661px) calc(100vw - 268px), (min-width: 510px) calc((100vw - 65px) / 2), calc(100vw - 48px)" className="object-cover motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover:scale-[1.025]" />
-            <span className="absolute end-2.5 top-2.5 rounded-md bg-[#1E4C6F]/95 px-2 py-1 text-[10px] font-semibold text-white">{project.category}</span>
+            <span className="absolute end-2.5 top-2.5 max-w-[calc(100%-1.25rem)] truncate rounded-md bg-[#1E4C6F]/95 px-2 py-1 text-[11px] font-semibold text-white" title={project.sector}>{project.sector}</span>
         </div>
-        <div className="flex flex-1 flex-col p-3.5">
-            <h3 className="truncate text-sm font-bold leading-6 text-[#0D202F]" title={project.title}>{project.title}</h3>
+        <div className="flex flex-1 flex-col p-3">
+            <h3 className="line-clamp-2 text-sm font-bold leading-6 text-[#0D202F]" title={project.title}>{project.title}</h3>
             <p className="mt-1 min-h-10 line-clamp-2 text-xs leading-5 text-[#4B708C]">{project.description}</p>
-            <dl className="mt-2 space-y-1 text-[11px] font-medium text-[#9E7F4D]">
-                <div className="flex gap-1"><dt>جودة الفكرة:</dt><dd dir="ltr" className="font-semibold">{project.score}%</dd></div>
-                <div className="flex gap-1"><dt className="sr-only">مرحلة المشروع</dt><dd>{project.stage}</dd></div>
+            <dl className="mt-auto flex flex-wrap items-center justify-between gap-x-2 gap-y-1 pt-2 text-[11px] font-medium leading-5">
+                <div className="flex items-center gap-1 text-[#876A3E]"><dt>جودة الفكرة:</dt><dd dir="ltr" className="font-bold">{project.score}%</dd></div>
+                <div className="flex items-center gap-1.5 text-[#4B708C]"><span aria-hidden="true" className="size-1.5 shrink-0 rounded-full bg-[#9CB1C1]" /><dt className="sr-only">مرحلة المشروع</dt><dd>{project.stage}</dd></div>
             </dl>
-            <div className="mt-auto flex items-center justify-between gap-2 pt-1.5 text-[11px]">
-                <span className="text-slate-500">{project.sector}</span>
-                <button type="button" aria-label={`${saved ? "إلغاء حفظ" : "حفظ"} ${project.title}`} aria-pressed={saved} onClick={() => onSave(project.id)} className="inline-flex min-h-9 items-center gap-1.5 rounded-lg px-2 font-semibold text-[#1E4C6F] transition-colors hover:bg-[#E9EDF1] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4C6F]">
-                    <Bookmark size={16} aria-hidden="true" className={saved ? "fill-[#1E4C6F]" : ""} />{saved ? "محفوظ" : "حفظ"}
-                </button>
-            </div>
         </div>
-        <button type="button" onClick={() => onDetails(project)} aria-label={`عرض تفاصيل ${project.title}`} className="flex min-h-10 w-full items-center justify-center gap-2 border-t border-[#E5EDF3] text-xs font-semibold text-[#1E4C6F] transition-colors hover:bg-[#E9EDF1] focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-[#1E4C6F]">عرض التفاصيل<ArrowLeft size={14} aria-hidden="true" className="motion-safe:transition-transform motion-safe:group-hover:-translate-x-0.5" /></button>
+        <div className="flex items-center gap-2 border-t border-[#E5EDF3] p-2">
+            <button type="button" onClick={() => onDetails(project)} aria-label={`عرض تفاصيل ${project.title}`} className="inline-flex min-h-11 min-w-0 flex-1 items-center justify-center gap-2 rounded-lg bg-[#1E4C6F] px-2 text-xs font-semibold text-white transition-colors hover:bg-[#4B708C] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4C6F]">عرض التفاصيل<ArrowLeft size={14} aria-hidden="true" /></button>
+            <button type="button" aria-label={`${saved ? "إلغاء حفظ" : "حفظ"} ${project.title}`} aria-pressed={saved} onClick={() => onSave(project.id)} className={`inline-flex min-h-11 shrink-0 items-center justify-center gap-1.5 rounded-lg border px-2.5 text-xs font-semibold text-[#1E4C6F] transition-colors hover:bg-[#E5EDF4] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4C6F] ${saved ? "border-[#C9D9E5] bg-[#E5EDF4]" : "border-[#E5EDF3] bg-white"}`}>
+                <Bookmark size={16} aria-hidden="true" className={saved ? "fill-[#1E4C6F]" : ""} />{saved ? "محفوظ" : "حفظ"}
+            </button>
+        </div>
     </article>;
 }
 
@@ -55,29 +55,30 @@ export function ProjectAvatar({ project }) {
 export function RequestRow({ request, onDetails }) {
     const project = suggestedProjects.find((item) => item.id === request.projectId);
     const accepted = request.status === "accepted";
-    return <li className={`${surfaceClass} grid grid-cols-[2.75rem_minmax(0,1fr)] items-center gap-3 p-4 transition-shadow duration-200 hover:shadow-md sm:grid-cols-[2.75rem_minmax(0,1fr)_auto] sm:p-5`}>
+    const StatusIcon = accepted ? CheckCheck : Clock3;
+    return <li style={{ "--row-accent": accepted ? "#367C59" : "#9E7F4D", "--row-soft": accepted ? "#E1EEE6" : "#EDE5D8", "--row-tint": accepted ? "#F5FAF7" : "#FCFAF6" }} className={`${surfaceClass} ${styles.detailCard} grid grid-cols-[2.75rem_minmax(0,1fr)] items-center gap-x-3 gap-y-3 p-4 sm:p-5`}>
         <ProjectAvatar project={project} />
         <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
                 <h3 className="text-sm font-bold leading-6 text-[#0D202F]">{project.title}</h3>
-                <span className={`rounded-lg px-2 py-1 text-xs font-semibold ${accepted ? "bg-[#EDF7EE] text-[#367C39]" : "bg-[#FEF3C7] text-[#B45309]"}`}>{accepted ? "مقبول" : "قيد المراجعة"}</span>
+                <span className={`${styles.statusBadge} inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-semibold`}><StatusIcon size={13} aria-hidden="true" />{accepted ? "مقبول" : "قيد المراجعة"}</span>
             </div>
             <p className="mt-1 line-clamp-2 text-xs leading-6 text-[#4B708C]">{project.description}</p>
         </div>
-        <div className="col-span-2 flex flex-wrap items-center justify-between gap-2 border-t border-[#E5EDF3] pt-3 sm:col-span-1 sm:flex-col sm:items-end sm:border-0 sm:pt-0">
-            <time className="text-xs text-slate-500">{request.date}</time>
-            <button type="button" onClick={() => onDetails(project, request)} className={outlineClass}>{accepted ? "تواصل مع المالك" : "عرض الطلب"}</button>
+        <div className="col-span-2 flex flex-wrap items-center justify-between gap-2 border-t border-[#E5EDF3] pt-3">
+            <time className="inline-flex items-center gap-1.5 text-[11px] text-[#4B708C]"><Clock3 size={13} aria-hidden="true" />{request.date}</time>
+            <button type="button" onClick={() => onDetails(project, request)} className={`${outlineClass} ${styles.rowAction}`}>{accepted ? "تواصل مع المالك" : "عرض الطلب"}<ArrowLeft size={13} aria-hidden="true" /></button>
         </div>
     </li>;
 }
 
 export function SavedRow({ project, onDetails, onSave }) {
-    return <li className={`${surfaceClass} grid grid-cols-[2.75rem_minmax(0,1fr)] items-center gap-3 p-4 transition-shadow duration-200 hover:shadow-md sm:grid-cols-[2.75rem_minmax(0,1fr)_auto] sm:p-5`}>
+    return <li style={{ "--row-accent": "#1E4C6F", "--row-soft": "#E5EDF4", "--row-tint": "#F6F9FC" }} className={`${surfaceClass} ${styles.detailCard} grid grid-cols-[2.75rem_minmax(0,1fr)] items-center gap-x-3 gap-y-3 p-4 sm:p-5`}>
         <ProjectAvatar project={project} />
-        <div className="min-w-0"><h3 className="text-sm font-bold leading-6 text-[#0D202F]">{project.title}</h3><p className="mt-1 text-xs text-[#4B708C]">{project.sector}</p></div>
-        <div className="col-span-2 flex items-center justify-between gap-2 border-t border-[#E5EDF3] pt-3 sm:col-span-1 sm:border-0 sm:pt-0">
-            <button type="button" onClick={() => onDetails(project)} aria-label={`عرض ${project.title}`} className={outlineClass}>عرض</button>
-            <button type="button" onClick={() => onSave(project.id)} aria-label={`إلغاء حفظ ${project.title}`} className={iconActionClass}><Bookmark size={16} aria-hidden="true" className="fill-[#1E4C6F]" /></button>
+        <div className="min-w-0"><h3 className="text-sm font-bold leading-6 text-[#0D202F]">{project.title}</h3><p className="mt-1 text-xs leading-6 text-[#4B708C]">{project.sector}</p></div>
+        <div className="col-span-2 flex items-center justify-between gap-2 border-t border-[#E5EDF3] pt-3">
+            <button type="button" onClick={() => onDetails(project)} aria-label={`عرض ${project.title}`} className={`${outlineClass} ${styles.rowAction}`}>عرض التفاصيل<ArrowLeft size={13} aria-hidden="true" /></button>
+            <button type="button" onClick={() => onSave(project.id)} aria-label={`إلغاء حفظ ${project.title}`} aria-pressed="true" className={`${iconActionClass} ${styles.savedAction}`}><Bookmark size={16} aria-hidden="true" className="fill-[#1E4C6F]" /></button>
         </div>
     </li>;
 }

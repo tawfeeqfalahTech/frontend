@@ -2,17 +2,24 @@
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { Bookmark, Compass, FolderOpen, HeartHandshake, Home, LogOut, Trash2, X } from "lucide-react"
+import { BarChart3, Bookmark, Compass, FolderOpen, HeartHandshake, Home, LogOut, Sparkles, Trash2, Users, X } from "lucide-react"
 import { getDashboardPath } from "@/lib/auth-routes"
 
 const Sidebar = ({ role, isOpen, onClose, onLogoutClick }) => {
     const path = usePathname()
     const isInvestor = path.startsWith("/dashboard/investor")
+    const isAdmin = path.startsWith("/dashboard/admin")
     const homeHref = role ? getDashboardPath(role) : "/dashboard"
 
     if (path === "/dashboard/idea-owner/evaluations" || path.startsWith("/dashboard/investor/profile")) return null
 
-    const links = isInvestor ? [
+    const links = isAdmin ? [
+        { id: 1, name: "التحليلات", href: "/dashboard/admin", icon: <BarChart3 className="w-5 h-5" /> },
+        { id: 2, name: "المستخدمون", href: "/dashboard/admin/users", icon: <Users className="w-5 h-5" /> },
+        { id: 3, name: "المشاريع", href: "/dashboard/admin#projects", icon: <FolderOpen className="w-5 h-5" /> },
+        { id: 4, name: "تقييمات AI", href: "/dashboard/admin#ai", icon: <Sparkles className="w-5 h-5" /> },
+        { id: 5, name: "طلبات الاهتمام", href: "/dashboard/admin#requests", icon: <HeartHandshake className="w-5 h-5" /> },
+    ] : isInvestor ? [
         { id: 1, name: "الرئيسية", href: "/dashboard/investor", icon: <Home className="w-5 h-5" /> },
         { id: 2, name: "استكشاف المشاريع", href: "/dashboard/investor/projects", icon: <Compass className="w-5 h-5" /> },
         { id: 3, name: "المشاريع المحفوظة", href: "/dashboard/investor/saved", icon: <Bookmark className="w-5 h-5" /> },

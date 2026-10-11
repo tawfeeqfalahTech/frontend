@@ -8,7 +8,8 @@ import { usePathname } from "next/navigation"
 
 const pageTitles = {
     "/dashboard": "الرئيسية",
-    "/dashboard/admin": "الرئيسية",
+    "/dashboard/admin": "التحليلات",
+    "/dashboard/admin/users": "المستخدمون",
     "/dashboard/idea-owner": "الرئيسية",
     "/dashboard/idea-owner/projects": "مشاريعي",
     "/dashboard/idea-owner/eoi-requests": "طلبات الاهتمام",
@@ -32,6 +33,7 @@ const Navbar = ({ user, onMenuClick, onLogoutClick }) => {
     const isProjectDetails = path === "/dashboard/idea-owner/view-project"
     const isInvestorProfile = path.startsWith("/dashboard/investor/profile")
     const isInvestor = path.startsWith("/dashboard/investor")
+    const isAdmin = path.startsWith("/dashboard/admin")
     const route = pageTitles[path.replace(/\/$/, "")] || "لوحة التحكم"
     // حالة قائمة المستخدم (القائمة المنسدلة للأفاتار)
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
@@ -76,8 +78,8 @@ const Navbar = ({ user, onMenuClick, onLogoutClick }) => {
                     <label htmlFor="navbar-project-search" className="sr-only">ابحث عن مشروع</label>
                     <input id="navbar-project-search" name="q" placeholder="ابحث عن مشروع" className="h-10 w-44 rounded-xl border border-slate-200 bg-white ps-11 pe-4 text-sm text-[#163852] shadow-[0_2px_14px_rgba(30,76,111,0.07)] outline-none transition-colors placeholder:text-gray-400 hover:border-[#9CB1C1] focus:border-[#1E4C6F] focus:ring-2 focus:ring-[#1E4C6F]/15 lg:w-56" />
                     <button type="submit" aria-label="البحث" className="absolute inset-y-1 start-1 flex size-8 cursor-pointer items-center justify-center rounded-lg text-[#7C8B97] transition-colors hover:bg-[#EDF3F7] hover:text-[#1E4C6F] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4C6F] group-focus-within:text-[#1E4C6F]"><Search size={18} /></button>
-                </form> : <MessageCircleMoreIcon className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer transition-colors" />}
-                {isInvestor ? <Link href="/dashboard/investor#updates" aria-label="آخر التحديثات" className="flex size-8 items-center justify-center text-gray-600 hover:text-[#1E4C6F]"><Bell className="w-5 h-5" /></Link> : <div className="relative cursor-pointer">
+                </form> : !isAdmin && <MessageCircleMoreIcon className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer transition-colors" />}
+                {isAdmin ? <Link href="/dashboard/admin#requests" className="rounded-lg px-2 py-1 text-xs font-semibold text-[#4B708C] hover:bg-[#EDF3F7] focus-visible:outline-2 focus-visible:outline-[#1E4C6F]">طلبات الاهتمام</Link> : isInvestor ? <Link href="/dashboard/investor#updates" aria-label="آخر التحديثات" className="flex size-8 items-center justify-center text-gray-600 hover:text-[#1E4C6F]"><Bell className="w-5 h-5" /></Link> : <div className="relative cursor-pointer">
                     <span className="absolute top-0 right-0.75 bg-red-500 w-2.25 h-2.25 block rounded-full border-2 border-white" />
                     <Bell className="w-5.5 h-5.5 text-gray-600 hover:text-gray-900 transition-colors" />
                 </div>}
