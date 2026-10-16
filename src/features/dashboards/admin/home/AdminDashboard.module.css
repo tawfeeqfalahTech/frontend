@@ -52,6 +52,68 @@
 
 .skeleton { background: #e9eff4; }
 
+.chartCard {
+    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+}
+
+.sectorContent {
+    direction: rtl;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 190.8px;
+    align-items: center;
+    flex: 1;
+    gap: 20px;
+    margin-block-start: 16px;
+    min-height: 228px;
+}
+
+.sectorPlot {
+    width: 190.8px;
+    height: 190.8px;
+}
+
+@container (max-width: 360px) {
+    .sectorContent {
+        grid-template-columns: minmax(0, 1fr) 148.4px;
+        gap: 12px;
+    }
+
+    .sectorPlot {
+        width: 148.4px;
+        height: 148.4px;
+    }
+}
+
+@container (max-width: 280px) {
+    .sectorContent {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .sectorPlot {
+        grid-row: 1;
+        justify-self: center;
+    }
+}
+
+.chart :global(.apexcharts-tooltip) {
+    direction: rtl;
+    text-align: right;
+    border: 1px solid #e5edf3;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px #1e4c6f14;
+}
+
+.chart :global(.apexcharts-tooltip-title) {
+    background: #f6f9fc;
+    border-bottom-color: #e5edf3;
+}
+
+.chart :global(.apexcharts-tooltip-text-y-value) {
+    margin-inline: 0;
+}
+
 @media (hover: hover) {
     .statCard:hover {
         border-color: var(--stat-soft);

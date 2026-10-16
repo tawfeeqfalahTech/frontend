@@ -4,6 +4,7 @@ import { Globe } from "lucide-react"
 import GithubIcon from "@/icons/GithubIcon"
 import LinkedIcon from "@/icons/LinkedIcon"
 import SaveChangesButton from "../components/SaveChangesButton"
+import EmptyState from "@/features/dashboards/shared/EmptyState"
 
 const TwitterXIcon = ({ className = "w-5 h-5" }) => (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -21,8 +22,8 @@ const FigmaIcon = ({ className = "w-5 h-5" }) => (
     </svg>
 )
 
-const ProjectLinksTab = () => {
-    const [links, setLinks] = useState({
+const ProjectLinksTab = ({ empty = false }) => {
+    const [links, setLinks] = useState(empty ? { website: "", prototype: "", linkedin: "", twitter: "", github: "" } : {
         website: "https://smartstore-demo.com",
         prototype: "https://www.figma.com/proto/smartstore-prototype",
         linkedin: "https://linkedin.com/company/smartstore-app",
@@ -52,6 +53,7 @@ const ProjectLinksTab = () => {
             </div>
 
             {/* Links List */}
+            {!Object.values(links).some(value => value.trim()) && <EmptyState compact icon={Globe} title="لم تُضف روابط للمشروع بعد" description="أضف موقع المشروع أو نموذجه الأولي أو حساباته في الحقول أدناه." />}
             <div className="flex flex-col gap-5">
                 {/* الموقع الإلكتروني */}
                 <div className="flex flex-col gap-2">

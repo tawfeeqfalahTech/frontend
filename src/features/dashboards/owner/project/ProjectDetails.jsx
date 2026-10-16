@@ -3,12 +3,13 @@
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { CircleSlash, File, Play } from "lucide-react"
+import { CircleSlash, File, Link2, Play, Tags, Video } from "lucide-react"
+import EmptyState from "@/features/dashboards/shared/EmptyState"
 
 const assetPath = "/images/project-details"
 const cardClass = "rounded-2xl bg-white shadow-[0_4px_32px_#1e4c6f33]"
 const actionClass = "inline-flex min-h-[65px] w-full items-center justify-center rounded-2xl px-2.5 text-2xl font-semibold leading-9 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1E4C6F] sm:w-[183px]"
-const tags = ["الذكاء الاصطناعي", "تقنيات قانونية RegTech", "معالجة اللغات الطبيعية NLP", "SaaS"]
+const defaultTags = ["الذكاء الاصطناعي", "تقنيات قانونية RegTech", "معالجة اللغات الطبيعية NLP", "SaaS"]
 const metrics = [
     { label: "الميزانية المتوقعة", value: "500k - 1.5M USD", direction: "ltr" },
     { label: "حالة العرض", value: "متاح للمستثمرين" },
@@ -18,7 +19,7 @@ const defaultFiles = [
     { name: "العرض التقديمي للمستثمرين.pdf", size: "4.2 MB" },
     { name: "دراسة الجدوى الفنية والتقنية.pdf", size: "8.1 MB" },
 ]
-const socialLinks = [
+const defaultSocialLinks = [
     { label: "انستقرام", url: "instagram.com/sanad-ai" },
     { label: "فيسبوك", url: "facebook.com/sanad-ai" },
     { label: "جيت هب", url: "github.com/sanad-ai" },
@@ -32,9 +33,8 @@ function CardHeading({ children }) {
     </>
 }
 
-export default function ProjectDetails({ projectId, videoUrl, files = defaultFiles }) {
+export default function ProjectDetails({ projectId, videoUrl, files = defaultFiles, socialLinks = defaultSocialLinks, tags = defaultTags }) {
     const [isPlaying, setIsPlaying] = useState(false)
-    const [videoNotice, setVideoNotice] = useState("")
     const projectQuery = projectId ? `&id=${encodeURIComponent(projectId)}` : ""
     const evaluationHref = `/dashboard/idea-owner/evaluations?state=empty${projectQuery}`
     const editHref = `/dashboard/idea-owner/edit-project${projectId ? `?id=${encodeURIComponent(projectId)}` : ""}`
@@ -69,6 +69,7 @@ export default function ProjectDetails({ projectId, videoUrl, files = defaultFil
                         <p className="text-[15px] leading-[22.5px] text-[#68879F]">تتمحور فكرة &quot;سند&quot; حول توفير محرك ذكاء اصطناعي سيادي مبني بالكامل ومخصص لفهم الصياغات اللغوية الفقهية والقانونية المستخدمة في المحاكم وصياغات العقود العربية. يعالج النظام ثغرات الصياغة بدقة تفوق المحركات التقليدية بمعدل %40 من خلال نماذج تعلم عميق مدربة على أرشيف ضخم من الوثائق المحررة والأنظمة الرسمية السعودية والخليجية.</p>
                         <div className="flex flex-col gap-3">
                             <h3 className="text-[15px] font-bold leading-[22.5px]">التصنيفات والمجال البرمجي</h3>
+                            {tags.length === 0 && <EmptyState compact icon={Tags} title="لم تُضف تصنيفات للمشروع" description="أضف مجالات المشروع وتقنياته ليسهل العثور عليه." actionLabel="إضافة تصنيفات" actionHref={`${editHref}${projectId ? "&" : "?"}tab=basic-info`} />}
                             <div dir="ltr" className="flex flex-wrap justify-end gap-2">
                                 {tags.map(tag => <span key={tag} dir="auto" className="rounded-full bg-[#E9EDF1] px-3 py-1 text-xs font-semibold leading-[18px] text-[#1E4C6F]">{tag}</span>)}
                             </div>
@@ -77,16 +78,15 @@ export default function ProjectDetails({ projectId, videoUrl, files = defaultFil
 
                     <section className={`${cardClass} flex flex-col gap-4 p-5 sm:p-8`} aria-label="الفيديو التعريفي وقصة المشروع">
                         <h2 className="text-[19px] font-semibold leading-[28.5px]">الفيديو التعريفي وقصة المشروع</h2>
-                        <div className="relative flex h-[200px] items-center justify-center overflow-hidden rounded-xl bg-[#111827]">
+                        {!videoUrl ? <EmptyState compact icon={Video} title="لا يوجد فيديو تعريفي للمشروع" description="أضف فيديو قصيراً تعرض فيه فكرتك للمستثمرين." actionLabel="إضافة فيديو" actionHref={`${editHref}${projectId ? "&" : "?"}tab=video`} /> : <div className="relative flex h-[200px] items-center justify-center overflow-hidden rounded-xl bg-[#111827]">
                             {isPlaying && videoUrl ? <video src={videoUrl} poster={`${assetPath}/video.png`} controls autoPlay className="h-full w-full" aria-label="الفيديو التعريفي للمشروع" /> : <>
                                 <Image src={`${assetPath}/video.png`} alt="معاينة الفيديو التعريفي للمشروع" fill sizes="(max-width: 1023px) calc(100vw - 88px), (max-width: 1328px) 58vw, 791px" className="object-cover" />
                                 <div aria-hidden="true" className="absolute inset-0 bg-[#111827]/40" />
-                                <button type="button" aria-label="تشغيل الفيديو التعريفي" onClick={() => videoUrl ? setIsPlaying(true) : setVideoNotice("لا يتوفر رابط الفيديو لهذا المشروع حالياً.")} className="relative flex size-[52px] items-center justify-center rounded-full bg-white shadow-[0_4px_12px_#0003] transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+                                <button type="button" aria-label="تشغيل الفيديو التعريفي" onClick={() => setIsPlaying(true)} className="relative flex size-[52px] items-center justify-center rounded-full bg-white shadow-[0_4px_12px_#0003] transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
                                     <Play size={20} className="text-[#111827]" aria-hidden="true" />
                                 </button>
                             </>}
-                        </div>
-                        {videoNotice && <p role="status" className="text-sm text-[#4B708C]">{videoNotice}</p>}
+                        </div>}
                     </section>
 
                     <section className={`${cardClass} flex flex-col items-center gap-6 px-5 py-12 text-center sm:px-12`} aria-labelledby="project-unevaluated-title">
@@ -123,6 +123,7 @@ export default function ProjectDetails({ projectId, videoUrl, files = defaultFil
 
                     <section className={`${cardClass} flex flex-col gap-4 p-6`}>
                         <CardHeading>المستندات والملفات المرفقة</CardHeading>
+                        {files.length === 0 && <EmptyState compact icon={File} title="لا توجد مستندات مرفقة" description="أرفق دراسة الجدوى أو العرض التقديمي لمشروعك." actionLabel="إضافة مستند" actionHref={`${editHref}${projectId ? "&" : "?"}tab=pdf`} />}
                         <ul className="flex flex-col gap-4">
                             {files.map(file => <li key={file.name} className="flex flex-wrap items-center justify-between gap-2 rounded-lg bg-[#F9FAFB] p-3">
                                 <div className="flex min-w-0 items-center gap-2">
@@ -136,6 +137,7 @@ export default function ProjectDetails({ projectId, videoUrl, files = defaultFil
 
                     <section className={`${cardClass} flex flex-col gap-4 p-6`}>
                         <CardHeading>روابط السوشال ميديا</CardHeading>
+                        {socialLinks.length === 0 && <EmptyState compact icon={Link2} title="لا توجد روابط للمشروع" description="أضف الموقع الإلكتروني أو حسابات المشروع." actionLabel="إضافة روابط" actionHref={`${editHref}${projectId ? "&" : "?"}tab=links`} />}
                         <dl className="flex flex-col gap-4">
                             {socialLinks.map(({ label, url }) => <div key={url} className="flex flex-wrap items-center justify-between gap-2 border-b border-[#F9FAFB] py-3 last:border-0">
                                 <dt className="text-[15px] font-semibold leading-[22.5px] text-[#4B708C]">{label}</dt>

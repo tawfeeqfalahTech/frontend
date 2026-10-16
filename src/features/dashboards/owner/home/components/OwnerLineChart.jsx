@@ -1,7 +1,8 @@
 "use client"
 
 import { useMemo } from "react"
-import { ArrowUpRight } from "lucide-react"
+import { ArrowUpRight, UsersRound } from "lucide-react"
+import EmptyState from "@/features/dashboards/shared/EmptyState"
 import ApexChart from "../../evaluations/components/ApexChart"
 
 const weeklyInterest = [24, 40, 18, 32, 55, 48, 70]
@@ -47,7 +48,7 @@ export default function OwnerLineChart({ empty = false }) {
                 </div>
             </div>
             <div className="h-48 min-w-0 overflow-hidden">
-                <ApexChart type="area" options={options} series={series} height={192} label="عدد المهتمين خلال الأيام السبعة الماضية" />
+                {empty ? <EmptyState compact icon={UsersRound} title="لا يوجد اهتمام بالمشاريع بعد" description="ستظهر إحصائيات الإقبال هنا عندما يبدأ المستثمرون بالاهتمام بمشاريعك." /> : <ApexChart type="area" options={options} series={series} height={192} label="عدد المهتمين خلال الأيام السبعة الماضية" />}
             </div>
         </section>
     )

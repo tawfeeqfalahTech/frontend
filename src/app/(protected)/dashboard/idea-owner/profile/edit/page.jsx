@@ -5,6 +5,7 @@ import { BadgeCheck, Search, User2, LucideBookUser, Link2, Globe, CircleX, Plus,
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
+import EmptyState from '@/features/dashboards/shared/EmptyState'
 
 const Page = () => {
     const [userName, setUserName] = useState("")
@@ -128,7 +129,7 @@ const Page = () => {
                                 placeholder="اكتب المهارة واضغط Enter للحفظ"
                             />
                         </div>
-                        {skills.length > 0 && (
+                        {skills.length === 0 ? <EmptyState compact icon={BadgeCheck} title="لم تُضف أي مهارات بعد" description="اكتب مهارة في الحقل أعلاه واضغط Enter لإضافتها إلى ملفك." /> : (
                             <ul className="flex flex-wrap gap-2 pt-2">
                                 {skills.map((s) => (
                                     <li
@@ -186,7 +187,7 @@ const Page = () => {
                         </div>
                     )}
 
-                    {links.length > 0 && (
+                    {links.length === 0 ? <EmptyState compact icon={Link2} title="لا توجد روابط تواصل بعد" description="أضف روابط حساباتك ليتمكن المستثمرون من التعرف عليك والتواصل معك." actionLabel="إضافة رابط" onAction={() => setShowLinkForm(true)} /> : (
                         <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
                             {links.map((l) => {
                                 const Icon = getLinkIcon(l)

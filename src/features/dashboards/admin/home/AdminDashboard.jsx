@@ -16,11 +16,11 @@ function SummaryCards({ data }) {
         { id: "ai", href: "#ai-note", label: "متوسط تقييم AI العام", value: data.evaluation.average === null ? "—" : `${formatNumber(data.evaluation.average)}%`, Icon: Sparkles, accent: "#9E7F4D", soft: "#EDE5D8", tint: "#FCFAF6" },
     ];
     return <div className="grid grid-cols-1 gap-4 min-[760px]:grid-cols-3">
-        {cards.map(({ id, href, label, value, Icon, accent, soft, tint, details }, index) => <a key={id} id={id} href={href} style={{ "--stat-accent": accent, "--stat-soft": soft, "--stat-tint": tint, "--stat-delay": `${index * 70}ms` }} className={`${surfaceClass} ${styles.statCard} min-w-0 scroll-mt-6 rounded-2xl p-4 sm:p-5`}>
+        {cards.map(({ id, href, label, value, Icon, accent, soft, tint, details }, index) => <a key={id} id={id} href={href} style={{ "--stat-accent": accent, "--stat-soft": soft, "--stat-tint": tint, "--stat-delay": `${index * 70}ms` }} className={`${surfaceClass} ${styles.statCard} min-w-0 scroll-mt-6 rounded-2xl p-4`}>
             <span aria-hidden="true" className={styles.statDecoration} />
-            <div className="flex items-center justify-between gap-3"><h2 className="text-sm font-semibold text-[#4B708C]">{label}</h2><span className={`${styles.statIcon} flex size-10 shrink-0 items-center justify-center rounded-xl`}><Icon size={20} aria-hidden="true" /></span></div>
-            <p dir="ltr" className="mt-3 text-right text-[34px] font-extrabold leading-none tracking-tight tabular-nums">{value}</p>
-            {details ? <dl className="mt-5 flex flex-wrap gap-x-4 gap-y-2 border-t border-[#E5EDF3] pt-3 text-[11px] leading-5 text-[#64748B]">{details.map((detail) => <div key={detail.label} className="flex items-center gap-1.5"><dd className="font-bold tabular-nums text-[#4B708C]">{formatNumber(detail.value)}</dd><dt>{detail.label}</dt></div>)}</dl> : <p id="ai-note" className="mt-5 scroll-mt-6 border-t border-[#EBE3D7] pt-3 text-[11px] leading-5 text-[#9E7F4D]">{data.evaluation.count ? <>بناءً على تقييم <b className="tabular-nums">{formatNumber(data.evaluation.count)}</b> مشروعاً</> : "لا توجد مشاريع مقيّمة بعد"}</p>}
+            <div className="flex items-center justify-between gap-3"><h2 className="text-xs font-semibold text-[#4B708C]">{label}</h2><span className={`${styles.statIcon} flex size-8 shrink-0 items-center justify-center rounded-lg`}><Icon size={17} aria-hidden="true" /></span></div>
+            <p dir="ltr" className="mt-2 text-right text-[28px] font-extrabold leading-none tracking-tight tabular-nums">{value}</p>
+            {details ? <dl className="mt-3 flex flex-wrap gap-x-3 gap-y-1 border-t border-[#E5EDF3] pt-2 text-[11px] leading-5 text-[#64748B]">{details.map((detail) => <div key={detail.label} className="flex items-center gap-1.5"><dd className="font-bold tabular-nums text-[#4B708C]">{formatNumber(detail.value)}</dd><dt>{detail.label}</dt></div>)}</dl> : <p id="ai-note" className="mt-3 scroll-mt-6 border-t border-[#EBE3D7] pt-2 text-[11px] leading-5 text-[#9E7F4D]">{data.evaluation.count ? <>بناءً على تقييم <b className="tabular-nums">{formatNumber(data.evaluation.count)}</b> مشروعاً</> : "لا توجد مشاريع مقيّمة بعد"}</p>}
         </a>)}
     </div>;
 }
@@ -83,12 +83,11 @@ export default function AdminDashboard({ data, state = "" }) {
         <div className="mt-5 space-y-5">
             <div className="flex flex-wrap items-center justify-between gap-2 text-xs leading-6">
                 <p className="text-[#64748B]">{hasData ? "ملخص النشاط في المنصة" : "لا توجد بيانات في المنصة حتى الآن"}</p>
-                {data.source === "demo" && <span className="rounded-full border border-[#EBE3D7] bg-[#FCFAF6] px-3 py-0.5 font-semibold text-[#9E7F4D]">بيانات تجريبية</span>}
             </div>
             <SummaryCards data={data} />
-            <div className="grid gap-5 min-[1100px]:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]"><ActivityChart data={data.activity} /><SectorChart data={data.sectors} /></div>
+            <div className="grid items-stretch gap-4 min-[1100px]:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]"><ActivityChart data={data.activity} /><SectorChart data={data.sectors} /></div>
             <InterestRequests data={data.requests} />
         </div>
-        <p role={exportFailed ? "alert" : "status"} aria-live="polite" className={`mt-4 min-h-5 text-xs ${exportFailed ? "text-[#B45353]" : "text-[#1E4C6F]"}`}>{notice}</p>
+        <p role={exportFailed ? "alert" : "status"} aria-live="polite" className={notice ? `mt-4 text-xs ${exportFailed ? "text-[#B45353]" : "text-[#1E4C6F]"}` : "sr-only"}>{notice}</p>
     </AdminFrame>;
 }

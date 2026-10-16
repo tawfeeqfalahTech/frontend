@@ -11,7 +11,7 @@ const Sidebar = ({ role, isOpen, onClose, onLogoutClick }) => {
     const isAdmin = path.startsWith("/dashboard/admin")
     const homeHref = role ? getDashboardPath(role) : "/dashboard"
 
-    if (path === "/dashboard/idea-owner/evaluations" || path.startsWith("/dashboard/investor/profile")) return null
+    if (path === "/dashboard/idea-owner/evaluations" || path === "/dashboard/investor/projects" || path.startsWith("/dashboard/investor/profile")) return null
 
     const links = isAdmin ? [
         { id: 1, name: "التحليلات", href: "/dashboard/admin", icon: <BarChart3 className="w-5 h-5" /> },

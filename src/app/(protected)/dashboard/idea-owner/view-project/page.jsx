@@ -1,9 +1,12 @@
-import { File } from "lucide-react"
+import { File, ImageOff, Link2, Tags, Video } from "lucide-react"
 import Image from "next/image"
 import ProjectEvaluation from "@/features/dashboards/owner/project/ProjectEvaluation"
+import EmptyState from "@/features/dashboards/shared/EmptyState"
 const page = async ({ searchParams }) => {
-    const params = await searchParams
-    const state = ["completed", "report", "unevaluated", "evaluating", "failed"].includes(params.state) ? params.state : "completed"
+    const params = await searchParams || {}
+    const empty = params.state === "empty"
+    const state = empty ? "unevaluated" : ["completed", "report", "unevaluated", "evaluating", "failed"].includes(params.state) ? params.state : "completed"
+    const editHref = (tab) => `/dashboard/idea-owner/edit-project?tab=${tab}${params.id ? `&id=${encodeURIComponent(params.id)}` : ""}`
     const title = "المؤشرات المالية والتشغيلية"
     const items = [
         { label: "الميزانية المتوقعة", value: "500k - 1.5M USD" },
@@ -12,18 +15,18 @@ const page = async ({ searchParams }) => {
     ]
 
     const titlee = "المستندات والملفات المرفقة"
-    const files = [
+    const files = empty || params.state === "empty-files" ? [] : [
         { name: "العرض التقديمي للمستثمرين.pdf", size: "4.2 MB" },
         { name: "دراسة الجدوى الفنية والتقنية.pdf", size: "8.1 MB" },
     ]
 
-    const links = [
+    const links = empty || params.state === "empty-links" ? [] : [
         { label: "انستقرام", url: "instagram.com/sanad-ai" },
         { label: "فيسبوك", url: "facebook.com/sanad-ai" },
         { label: "رابط المشروع", url: "sand.com/sanad-ai" },
     ]
 
-    const tags = ["الذكاء الاصطناعي", "RegTech", "تقنيات قانونية", "NLP", "معالجة اللغات الطبيعية", "SaaS"]
+    const tags = empty ? [] : ["الذكاء الاصطناعي", "RegTech", "تقنيات قانونية", "NLP", "معالجة اللغات الطبيعية", "SaaS"]
 
     return (
         <main className="min-w-0 px-0 sm:px-4 lg:px-6 xl:px-30">
@@ -32,7 +35,7 @@ const page = async ({ searchParams }) => {
                     <h1 className="text-xl leading-relaxed font-semibold sm:text-2xl xl:text-3xl xl:leading-9">منصة &apos;سند&apos;: الذكاء الاصطناعي لتحليل المستندات القانونية </h1>
                 </div>
                 <p className="text-[#4B5563] text-sm font-semibold mt-1">منصة سحابية متقدمة تستخدم نماذج اللغات الكبيرة المعربة لتحليل العقود واستخراج الثغرات القانونية.</p>
-                <div className="relative mt-4 w-full h-40 sm:h-45 rounded-xl overflow-hidden">
+                {empty ? <div className="mt-4 rounded-xl border border-[#E5EDF3] bg-white"><EmptyState compact icon={ImageOff} title="لم تُضف صورة غلاف للمشروع" description="أضف صورة تعبّر عن فكرتك وتُظهر مشروعك للمستثمرين." actionLabel="إضافة صور" actionHref={editHref("media")} /></div> : <div className="relative mt-4 w-full h-40 sm:h-45 rounded-xl overflow-hidden">
                     <Image
                         src="/images/cover-image.png"
                         alt="cover"
@@ -41,7 +44,7 @@ const page = async ({ searchParams }) => {
                         className="object-cover"
                         priority
                     />
-                </div>
+                </div>}
                 <div className="flex flex-col gap-4 mt-5 lg:flex-row">
 
                     <div className="order-2 w-full min-w-0 shrink-0 lg:order-1 lg:w-72 xl:w-80">
@@ -85,6 +88,7 @@ const page = async ({ searchParams }) => {
                         >
                             <h3 className="mb-3 text-[15px] font-bold text-gray-900">{titlee}</h3>
 
+                            {files.length === 0 && <EmptyState compact icon={File} title="لا توجد مستندات مرفقة" description="أرفق دراسة الجدوى أو العرض التقديمي لعرض تفاصيل مشروعك." actionLabel="إضافة مستند" actionHref={editHref("pdf")} />}
                             <div className="flex flex-col space-y-2">
                                 {files.map((file, idx) => (
                                     <div
@@ -108,6 +112,7 @@ const page = async ({ searchParams }) => {
                         >
                             <h3 className="mb-4 text-[15px] border-b border-gray-100 pb-3 font-bold text-gray-900">روابط السوشيال ميديا</h3>
 
+                            {links.length === 0 && <EmptyState compact icon={Link2} title="لا توجد روابط للمشروع" description="أضف موقع المشروع أو روابط حساباته لتسهيل الوصول إليه." actionLabel="إضافة روابط" actionHref={editHref("links")} />}
                             <div className="divide-y divide-gray-100">
                                 {links.map((item, idx) => (
                                     <div
@@ -136,6 +141,7 @@ const page = async ({ searchParams }) => {
 
                             <h4 className="mb-3 text-sm font-bold text-gray-900">التصنيفات والمجال البرمجي</h4>
 
+                            {tags.length === 0 && <EmptyState compact icon={Tags} title="لم تُضف تصنيفات للمشروع" description="حدّد مجالات المشروع وتقنياته ليسهل على المستثمرين العثور عليه." actionLabel="إضافة تصنيفات" actionHref={editHref("basic-info")} />}
                             <div className="flex flex-wrap gap-2">
                                 {tags.map((tag, idx) => (
                                     <span
@@ -153,7 +159,7 @@ const page = async ({ searchParams }) => {
                         >
                             <h3 className="mb-2 text-lg font-bold text-gray-900">الفيديو التعريفي وقصة المشروع</h3>
 
-                            <div className="relative mt-4 w-full h-40 rounded-xl overflow-hidden">
+                            {empty || params.state === "empty-video" ? <EmptyState compact icon={Video} title="لا يوجد فيديو تعريفي للمشروع" description="أضف فيديو قصيراً تشرح فيه فكرتك للمستثمرين." actionLabel="إضافة فيديو" actionHref={editHref("video")} /> : <div className="relative mt-4 w-full h-40 rounded-xl overflow-hidden">
                                 <Image
                                     src="/images/video-player.png"
                                     alt="cover"
@@ -162,7 +168,7 @@ const page = async ({ searchParams }) => {
                                     className="object-cover"
                                     priority
                                 />
-                            </div>
+                            </div>}
                         </div>
 
                         <ProjectEvaluation key={`${params.id || "sanad"}-${state}`} initialState={state} projectId={params.id || "sanad"} />

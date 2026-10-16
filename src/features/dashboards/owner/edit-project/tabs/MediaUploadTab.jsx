@@ -2,13 +2,14 @@
 import { useState, useRef } from "react"
 import { UploadCloud, Image as ImageIcon, Trash2, CheckCircle2, Star } from "lucide-react"
 import SaveChangesButton from "../components/SaveChangesButton"
+import EmptyState from "@/features/dashboards/shared/EmptyState"
 
-const MediaUploadTab = () => {
+const MediaUploadTab = ({ empty = false }) => {
     const fileInputRef = useRef(null)
     const [isDragging, setIsDragging] = useState(false)
     const [isSaving, setIsSaving] = useState(false)
 
-    const [images, setImages] = useState([
+    const [images, setImages] = useState(empty ? [] : [
         {
             id: 1,
             url: "/images/cover-image.png",
@@ -99,7 +100,7 @@ const MediaUploadTab = () => {
                     multiple
                     accept="image/png,image/jpeg,image/webp"
                     className="hidden"
-                    onChange={(e) => handleFileSelect(e.target.files)}
+                    onChange={(e) => { handleFileSelect(e.target.files); e.target.value = ""; }}
                 />
                 <div className="w-12 h-12 rounded-2xl bg-[#E9EDF1] flex items-center justify-center text-[#1E4C6F]">
                     <UploadCloud className="w-6 h-6" />
@@ -115,7 +116,7 @@ const MediaUploadTab = () => {
             </div>
 
             {/* Uploaded Images List */}
-            {images.length > 0 && (
+            {images.length === 0 ? <EmptyState compact icon={ImageIcon} title="لا توجد صور للمشروع" description="أضف صوراً توضح فكرتك. ستُستخدم الصورة الأولى كغلاف للمشروع." actionLabel="إضافة صور" onAction={() => fileInputRef.current?.click()} /> : (
                 <div className="flex flex-col gap-4">
                     <h3 className="text-sm sm:text-base font-bold text-[#0D202F]">
                         الصور المرفوعة ({images.length})

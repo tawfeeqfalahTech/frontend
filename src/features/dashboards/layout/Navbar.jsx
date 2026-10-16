@@ -21,7 +21,7 @@ const pageTitles = {
     "/dashboard/idea-owner/profile": "الملف الشخصي",
     "/dashboard/idea-owner/profile/edit": "تعديل الملف الشخصي",
     "/dashboard/investor": "الرئيسية",
-    "/dashboard/investor/projects": "استكشاف المشاريع",
+    "/dashboard/investor/projects": "المشاريع",
     "/dashboard/investor/saved": "المشاريع المحفوظة",
     "/dashboard/investor/requests": "طلباتي",
     "/dashboard/investor/profile": "الملف الشخصي",
@@ -32,6 +32,7 @@ const Navbar = ({ user, onMenuClick, onLogoutClick }) => {
     const path = usePathname()
     const isProjectDetails = path === "/dashboard/idea-owner/view-project"
     const isInvestorProfile = path.startsWith("/dashboard/investor/profile")
+    const isInvestorProjects = path === "/dashboard/investor/projects"
     const isInvestor = path.startsWith("/dashboard/investor")
     const isAdmin = path.startsWith("/dashboard/admin")
     const route = pageTitles[path.replace(/\/$/, "")] || "لوحة التحكم"
@@ -60,11 +61,11 @@ const Navbar = ({ user, onMenuClick, onLogoutClick }) => {
     }
 
     return (
-        <div className={`h-15 ${isCreatProjectPage || isEvaluationsPage ? "mr-0" : "mr-55"} max-[660px]:mr-0 flex items-center justify-between px-5 bg-white border-b border-slate-200 relative ${isProjectDetails ? "gap-3 max-[660px]:px-3" : ""}`}>
+        <div className={`h-15 ${isCreatProjectPage || isEvaluationsPage || isInvestorProjects ? "mr-0" : "mr-55"} max-[660px]:mr-0 flex items-center justify-between px-5 bg-white border-b border-slate-200 relative ${isProjectDetails ? "gap-3 max-[660px]:px-3" : ""}`}>
             <div className={`flex items-center gap-2 ${isProjectDetails ? "min-w-0" : ""}`}>
-                <button onClick={onMenuClick} aria-label="فتح القائمة" className="cursor-pointer min-[660px]:hidden">
+                {!isInvestorProjects && <button onClick={onMenuClick} aria-label="فتح القائمة" className="cursor-pointer min-[660px]:hidden">
                     <Menu size={20} />
-                </button>
+                </button>}
                 <div>
                     <div className="font-semibold text-lg max-[660px]:text-sm max-[660px]:leading-5">
                         لوحة التحكم/

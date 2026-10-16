@@ -3,9 +3,9 @@ import { useState } from "react"
 import { Play, Trash2, Link as LinkIcon, Video, AlertCircle } from "lucide-react"
 import SaveChangesButton from "../components/SaveChangesButton"
 
-const VideoTab = () => {
+const VideoTab = ({ empty = false }) => {
     // رابط الفيديو التجريبي المضاف مسبقاً
-    const [videoUrl, setVideoUrl] = useState("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+    const [videoUrl, setVideoUrl] = useState(empty ? "" : "https://www.youtube.com/watch?v=dQw4w9WgXcQ")
     const [isSaving, setIsSaving] = useState(false)
 
     const handleRemoveVideo = () => {

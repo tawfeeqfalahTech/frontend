@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { CircleSlash, Clock3, TriangleAlert } from "lucide-react"
 import { PolarAngleAxis, PolarGrid, PolarRadiusAxis, Radar, RadarChart, ResponsiveContainer } from "recharts"
 import { projectDetails } from "./projectDetails"
+import { evaluationHref } from "../evaluations/data/evaluationReport"
 
 const cardClass = "w-full min-w-0 mt-4 max-w-3xl rounded-2xl border border-gray-100 bg-white p-4 sm:p-6 shadow-sm"
 const buttonClass = "inline-flex min-h-10 items-center justify-center rounded-lg bg-[#1E4C6F] px-5 py-2 text-sm font-semibold text-white hover:bg-[#163852] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4C6F] disabled:opacity-60"
@@ -63,8 +64,8 @@ export default function ProjectEvaluation({ initialState = "completed", projectI
         <section className={cardClass}>
             <h3 className="mb-2 text-lg font-bold text-gray-900">التقييم الفني الإجمالي</h3>
             <div className="flex flex-wrap items-center justify-between gap-2 text-sm font-semibold text-[#1E4C6F]">
-                <Link href={`/dashboard/idea-owner/evaluations${projectId ? `?id=${encodeURIComponent(projectId)}` : ""}`} className="hover:underline">عرض سجل التقييمات</Link>
-                {state !== "report" && <button type="button" onClick={() => changeState("report")} className="hover:underline focus-visible:outline-2 focus-visible:outline-offset-2">عرض التقرير التفصيلي</button>}
+                <Link href={evaluationHref({ projectId })} className="hover:underline">عرض سجل التقييمات</Link>
+                <Link href={evaluationHref({ projectId, reportId: "latest" })} className="hover:underline focus-visible:outline-2 focus-visible:outline-offset-2">عرض التقرير التفصيلي</Link>
             </div>
             <div className="mt-4 grid grid-cols-1 gap-3 text-center min-[400px]:grid-cols-3">
                 <div className="flex min-w-0 min-h-16 flex-col justify-center gap-1 rounded-lg bg-[#EDF7EE] px-2 py-3 text-[#4CAF50]"><strong className="text-base">{evaluation.score}%</strong><span className="text-xs leading-5">درجة التقييم الإجمالية</span></div>

@@ -26,6 +26,7 @@ const TagInput = ({ tags = [], onChange }) => {
 
     return (
         <div className="flex flex-col gap-3">
+            {tags.length === 0 && <p role="status" className="rounded-lg bg-[#F8FAFC] px-3 py-2 text-xs leading-6 text-[#68879F]">لا توجد وسوم بعد. أضف التقنيات والمجالات المرتبطة بمشروعك من الحقل أدناه.</p>}
             <div className="flex flex-wrap items-center gap-2">
                 {tags.map((tag, idx) => (
                     <span
@@ -51,7 +52,7 @@ const TagInput = ({ tags = [], onChange }) => {
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyDown={handleKeyDown}
                     placeholder="أضف وسماً واضغط Enter..."
-                    className="flex-1 bg-white border border-[#E9EDF1] focus:border-[#1E4C6F] focus:ring-1 focus:ring-[#1E4C6F] outline-none px-4 py-2.5 rounded-xl text-sm text-[#0D202F] transition-all"
+                    className="min-w-0 flex-1 bg-white border border-[#E9EDF1] focus:border-[#1E4C6F] focus:ring-1 focus:ring-[#1E4C6F] outline-none px-4 py-2.5 rounded-xl text-sm text-[#0D202F] transition-all"
                 />
                 <button
                     type="button"

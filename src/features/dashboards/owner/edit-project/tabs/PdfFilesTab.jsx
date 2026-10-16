@@ -2,13 +2,14 @@
 import { useState, useRef } from "react"
 import { UploadCloud, FileText, Trash2, Download, ExternalLink } from "lucide-react"
 import SaveChangesButton from "../components/SaveChangesButton"
+import EmptyState from "@/features/dashboards/shared/EmptyState"
 
-const PdfFilesTab = () => {
+const PdfFilesTab = ({ empty = false }) => {
     const fileInputRef = useRef(null)
     const [isDragging, setIsDragging] = useState(false)
     const [isSaving, setIsSaving] = useState(false)
 
-    const [documents, setDocuments] = useState([
+    const [documents, setDocuments] = useState(empty ? [] : [
         {
             id: 1,
             name: "دراسة الجدوى الاقتصادية الشاملة 2026.pdf",
@@ -83,7 +84,7 @@ const PdfFilesTab = () => {
                     multiple
                     accept=".pdf,application/pdf"
                     className="hidden"
-                    onChange={(e) => handleFileSelect(e.target.files)}
+                    onChange={(e) => { handleFileSelect(e.target.files); e.target.value = ""; }}
                 />
                 <div className="w-12 h-12 rounded-2xl bg-[#E9EDF1] flex items-center justify-center text-[#1E4C6F]">
                     <UploadCloud className="w-6 h-6" />
@@ -99,7 +100,7 @@ const PdfFilesTab = () => {
             </div>
 
             {/* Uploaded Documents List */}
-            {documents.length > 0 && (
+            {documents.length === 0 ? <EmptyState compact icon={FileText} title="لا توجد مستندات مرفقة" description="أضف دراسة الجدوى أو العرض التقديمي لمساعدة المستثمرين على فهم مشروعك." actionLabel="إضافة مستند" onAction={() => fileInputRef.current?.click()} /> : (
                 <div className="flex flex-col gap-4">
                     <h3 className="text-base sm:text-lg font-bold text-[#0D202F]">
                         المستندات الحالية ({documents.length})

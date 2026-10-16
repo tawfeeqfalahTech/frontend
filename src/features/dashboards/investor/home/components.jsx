@@ -3,8 +3,8 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Bookmark, CheckCheck, Clock3, X } from "lucide-react";
-import DeletedProjectsEmptyState from "@/features/dashboards/owner/delete-project/components/DeletedProjectsEmptyState";
+import { ArrowLeft, Bookmark, CheckCheck, Clock3, FolderOpen, X } from "lucide-react";
+import DashboardEmptyState from "@/features/dashboards/shared/EmptyState";
 import { iconActionClass, outlineClass, primaryClass, surfaceClass } from "@/features/dashboards/shared/dashboardStyles";
 import { suggestedProjects } from "./data";
 import styles from "./InvestorDashboard.module.css";
@@ -19,10 +19,10 @@ export function SectionHeading({ id, title, href, linkLabel = "عرض جميع �
     </div>;
 }
 
-export function EmptyState({ title, description, explore = false }) {
-    return <DeletedProjectsEmptyState compact title={title} description={description}>
+export function EmptyState({ title, description, explore = false, icon = FolderOpen }) {
+    return <DashboardEmptyState title={title} description={description} icon={icon}>
         {explore && <Link href={`${base}/projects`} className={primaryClass}>استكشاف المشاريع</Link>}
-    </DeletedProjectsEmptyState>;
+    </DashboardEmptyState>;
 }
 
 export function ProjectCard({ project, saved, onSave, onDetails }) {

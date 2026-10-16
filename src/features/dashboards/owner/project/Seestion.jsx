@@ -1,8 +1,9 @@
 "use client"
 
-import { LogOut } from "lucide-react";
+import { LogOut, Monitor } from "lucide-react";
+import EmptyState from "@/features/dashboards/shared/EmptyState";
 
-const sessions = [
+const defaultSessions = [
     {
         label: "الجلسة الحالية",
         status: "active",
@@ -24,6 +25,7 @@ const sessions = [
 ]
 
 export default function SessionsCard({
+    sessions = defaultSessions,
     onLogoutOne,
 }) {
     return (
@@ -31,6 +33,7 @@ export default function SessionsCard({
             dir="rtl"
             className="w-full rounded-xl bg-white border border-slate-100 px-4 py-4 shadow-lg"
         >
+            {sessions.length === 0 ? <EmptyState compact icon={Monitor} title="لا توجد جلسات لعرضها" description="ستظهر الأجهزة والجلسات المسجّلة لحسابك هنا عند توفر بياناتها." /> : <>
             <div className="divide-y divide-gray-100">
                 {sessions.map((s, idx) => (
                     <div
@@ -85,6 +88,7 @@ export default function SessionsCard({
                     <LogOut className="shrink-0" size={20} />
                 </button>
             </div>
+            </>}
         </div>
     );
 }

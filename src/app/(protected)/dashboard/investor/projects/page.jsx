@@ -1,8 +1,9 @@
-import InvestorDashboard from "@/features/dashboards/investor/home/InvestorDashboard";
+import InvestorProjects from "@/features/dashboards/investor/projects/InvestorProjects";
 import { getDashboardState } from "@/features/dashboards/investor/home/data";
 
 export default async function Page({ searchParams }) {
     const params = await searchParams;
     const query = typeof params?.q === "string" ? params.q : "";
-    return <InvestorDashboard key={query} view="projects" query={query} data={getDashboardState()} />;
+    const state = ["empty", "empty-projects"].includes(params?.state) ? params.state : "";
+    return <InvestorProjects key={`${query}-${state}`} query={query} data={getDashboardState(state)} />;
 }

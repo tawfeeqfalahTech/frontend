@@ -1,6 +1,8 @@
 "use client"
 
 import ApexChart from "../../evaluations/components/ApexChart"
+import { ChartPie } from "lucide-react"
+import EmptyState from "@/features/dashboards/shared/EmptyState"
 
 const data = [
     { name: "نشط", value: 8, color: "#4EA853" },
@@ -39,9 +41,9 @@ export default function OwnerPieChart({ empty = false }) {
     return (
         <section className="flex w-full min-w-0 flex-col rounded-2xl border border-slate-100 bg-white px-4 pb-6 pt-4 shadow-sm" dir="rtl" aria-labelledby="status-chart-title">
             <h2 id="status-chart-title" className="mb-6 text-base font-bold text-slate-800">توزيع المشاريع حسب الحالة</h2>
-            <div className="flex flex-1 flex-col items-center justify-center gap-4">
+            {empty ? <EmptyState compact icon={ChartPie} title="لا توجد مشاريع لعرض توزيعها" description="عند إضافة مشروعك الأول، سيظهر توزيع المشاريع حسب حالتها هنا." /> : <div className="flex flex-1 flex-col items-center justify-center gap-4">
                 <div className="relative h-48 w-48 shrink-0">
-                    {empty ? <div className="absolute inset-5 rounded-full border-[20px] border-slate-100" /> : <ApexChart type="donut" options={options} series={data.map(item => item.value)} height={192} width={192} label="توزيع المشاريع حسب الحالة" />}
+                    <ApexChart type="donut" options={options} series={data.map(item => item.value)} height={192} width={192} label="توزيع المشاريع حسب الحالة" />
                     <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center">
                         <span className="text-2xl font-extrabold leading-none text-slate-900">{totalProjects}</span>
                         <span className="mt-1 text-xs font-semibold text-slate-500">إجمالي المشاريع</span>
@@ -55,7 +57,7 @@ export default function OwnerPieChart({ empty = false }) {
                         </li>
                     ))}
                 </ul>
-            </div>
+            </div>}
         </section>
     )
 }

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Bookmark, Check, CheckCheck, CircleAlert, Clock3, FileText, Send } from "lucide-react";
+import { Bell, Bookmark, Check, CheckCheck, CircleAlert, Clock3, FileText, Send } from "lucide-react";
 import DashboardHeader from "@/features/dashboards/shared/DashboardHeader";
 import useInvestorProfile from "../profile/useInvestorProfile";
 import useSavedProjects from "./useSavedProjects";
@@ -40,7 +40,7 @@ function Updates({ updates, requests, onDetails }) {
                 <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#E9EDF1] text-[#4B708C]"><Icon size={16} aria-hidden="true" /></span>
                 <span className="leading-6 text-[#4B708C]">{update.text}</span><time className="col-start-2 text-xs text-slate-500 sm:col-start-auto">{update.time}</time>
             </button></li>;
-        })}</ul> : <div className={surfaceClass}><EmptyState title="لا توجد تحديثات بعد" description="ستظهر هنا مستجدات طلباتك والمشاريع التي تتابعها." /></div>}
+        })}</ul> : <div className={surfaceClass}><EmptyState icon={Bell} title="لا توجد تحديثات بعد" description="ستظهر هنا مستجدات طلباتك والمشاريع التي تتابعها." /></div>}
     </section>;
 }
 
@@ -49,6 +49,7 @@ export default function InvestorDashboard({ data, view = "home", query = "", pre
     const { ids: savedIds, toggle } = useSavedProjects(data.savedIds, email || "current", Boolean(previewState));
     const [selection, setSelection] = useState(null);
     const [notice, setNotice] = useState("");
+    const availableProjects = data.projects ?? suggestedProjects;
     const complete = Boolean(profile.investmentType && profile.minInvestment !== "" && profile.maxInvestment !== "" && profile.bio.trim() && profile.sectors.length);
     const showProfileBanner = data.profileState === "incomplete" || (data.profileState === "auto" && !complete);
     const saved = savedIds.map((id) => suggestedProjects.find((project) => project.id === id)).filter(Boolean);
@@ -58,10 +59,10 @@ export default function InvestorDashboard({ data, view = "home", query = "", pre
         catch { setNotice("تعذر حفظ المشروع. تحقق من إعدادات التخزين في المتصفح وحاول مجددًا."); }
     };
     const headings = { home: "الرئيسية", projects: "استكشاف المشاريع", saved: "المشاريع المحفوظة", requests: "طلباتي" };
-    const renderCards = (projects) => <div className={styles.projectGrid}>{projects.map((project) => <ProjectCard key={project.id} project={project} saved={savedIds.includes(project.id)} onSave={saveProject} onDetails={openDetails} />)}</div>;
-    const requestContent = data.requests.length ? <ul className="space-y-3">{data.requests.map((request) => <RequestRow key={request.id} request={request} onDetails={openDetails} />)}</ul> : <div className={surfaceClass}><EmptyState title="لم ترسل أي طلب بعد" description="استكشف المشاريع وأبدِ اهتمامك بالفرص المناسبة لك." explore /></div>;
-    const savedContent = saved.length ? <ul className="space-y-3">{saved.slice(0, view === "home" ? 2 : saved.length).map((project) => <SavedRow key={project.id} project={project} onDetails={openDetails} onSave={saveProject} />)}</ul> : <div className={surfaceClass}><EmptyState title="احفظ المشاريع التي تهمك" description="مشاريعك المحفوظة ستظهر هنا لتعود إليها في أي وقت." explore /></div>;
-    const matches = suggestedProjects.filter((project) => `${project.title} ${project.sector} ${project.description}`.includes(query.trim()));
+    const renderCards = (projects) => projects.length ? <div className={styles.projectGrid}>{projects.map((project) => <ProjectCard key={project.id} project={project} saved={savedIds.includes(project.id)} onSave={saveProject} onDetails={openDetails} />)}</div> : <div className={surfaceClass}><EmptyState title="لا توجد مشاريع مقترحة حالياً" description="ستظهر هنا فرص جديدة عند نشر مشاريع تناسب اهتماماتك. يمكنك استكشاف المشاريع المتاحة الآن." explore /></div>;
+    const requestContent = data.requests.length ? <ul className="space-y-3">{data.requests.map((request) => <RequestRow key={request.id} request={request} onDetails={openDetails} />)}</ul> : <div className={surfaceClass}><EmptyState icon={Send} title="لم ترسل أي طلب بعد" description="استكشف المشاريع وأبدِ اهتمامك بالفرص المناسبة لك." explore /></div>;
+    const savedContent = saved.length ? <ul className="space-y-3">{saved.slice(0, view === "home" ? 2 : saved.length).map((project) => <SavedRow key={project.id} project={project} onDetails={openDetails} onSave={saveProject} />)}</ul> : <div className={surfaceClass}><EmptyState icon={Bookmark} title="احفظ المشاريع التي تهمك" description="مشاريعك المحفوظة ستظهر هنا لتعود إليها في أي وقت." explore /></div>;
+    const matches = availableProjects.filter((project) => `${project.title} ${project.sector} ${project.description}`.includes(query.trim()));
 
     return <div dir="rtl" className="min-w-0 pr-55 text-[#0D202F] max-[660px]:pr-0">
         <DashboardHeader route={headings[view]} paragraph={view === "home" ? "مرحباً بك مجدداً، إليك نظرة عامة على طلباتك والمشاريع التي تهمك" : "تابع الفرص الاستثمارية والمشاريع التي تهمك"} />
@@ -69,7 +70,7 @@ export default function InvestorDashboard({ data, view = "home", query = "", pre
         {view === "home" && <>
             <RequestSummary requests={data.requests} />
             {showProfileBanner && <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#EBE3D7] bg-[#F9F6F0] px-4 py-3"><p className="flex items-center gap-2 text-sm leading-6 text-[#9E7F4D]"><CircleAlert size={18} aria-hidden="true" className="shrink-0" />أكمل ملفك لرفع اهتمام المشاريع بمجالك</p><Link href={`${base}/profile/edit`} className={primaryClass}>أكمل ملفك</Link></div>}
-            <section aria-labelledby="suggested-title"><SectionHeading id="suggested-title" title="مشاريع مقترحة" href={`${base}/projects`} linkLabel="استكشاف المشاريع" />{renderCards(suggestedProjects.slice(0, 4))}</section>
+            <section aria-labelledby="suggested-title"><SectionHeading id="suggested-title" title="مشاريع مقترحة" href={`${base}/projects`} linkLabel="استكشاف المشاريع" />{renderCards(availableProjects.slice(0, 4))}</section>
             <div className="grid items-start gap-5 min-[1000px]:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
                 <section aria-labelledby="requests-title" className="min-w-0"><SectionHeading id="requests-title" title="طلباتي المرسلة" />{requestContent}</section>
                 <section aria-labelledby="saved-title" className="min-w-0"><SectionHeading id="saved-title" title="المشاريع المحفوظة" href={`${base}/saved`} linkLabel="عرض جميع المحفوظات" />{savedContent}</section>

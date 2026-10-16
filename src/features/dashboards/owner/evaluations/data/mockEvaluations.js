@@ -45,9 +45,9 @@ export const evaluationHistory = [
     id: "2025-09-15",
     date: "15 سبتمبر 2025",
     label: "15 سبتمبر",
-    score: 78,
+    score: 87,
     difference: null,
-    scores: [85, 72, 64, 90, 80],
+    scores: [85, 78, 82, 90, 88],
   },
 ];
 
