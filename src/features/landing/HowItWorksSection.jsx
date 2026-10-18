@@ -22,7 +22,7 @@ export default function HowItWorksSection() {
       title: "تواصل واستثمر",
       description: "احصل على تمويل مباشر وتواصل شفاف مع شبكة مستثمرين معتمدين ومهتمين بمجالك.",
       icon: Handshake,
-      action: { label: "استكشف الفرص", href: "/dashboard/idea-owner/projects" },
+      action: { label: "استكشف الفرص", href: "/explore" },
     },
   ];
 

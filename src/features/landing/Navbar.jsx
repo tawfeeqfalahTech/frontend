@@ -9,11 +9,11 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { label: "الرئيسية", href: "#hero" },
-    { label: "استكشف الفرص", href: "/dashboard/idea-owner/projects" },
-    { label: "كيف نعمل", href: "#how-it-works" },
-    { label: "لماذا إحياء", href: "#features" },
-    { label: "آراء الشركاء", href: "#testimonials" },
+    { label: "الرئيسية", href: "/" },
+    { label: "استكشف الفرص", href: "/explore" },
+    { label: "كيف نعمل", href: "/#how-it-works" },
+    { label: "لماذا إحياء", href: "/#features" },
+    { label: "آراء الشركاء", href: "/#testimonials" },
   ];
 
   return (

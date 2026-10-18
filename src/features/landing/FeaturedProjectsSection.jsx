@@ -66,7 +66,7 @@ export default function FeaturedProjectsSection() {
             </h2>
           </div>
           <Link
-            href="/dashboard/idea-owner/projects"
+            href="/explore"
             className="inline-flex items-center gap-2 text-base font-bold text-[#1E4C6F] hover:text-[#9E7F4D] transition-colors self-start md:self-end"
           >
             <span>عرض كل المشاريع المتاحة</span>
@@ -132,7 +132,7 @@ export default function FeaturedProjectsSection() {
 
                 {/* Details Button */}
                 <Link
-                  href="/dashboard/idea-owner/projects"
+                  href="/explore"
                   className="w-full pt-3 flex items-center justify-center gap-2 text-sm font-bold text-[#1E4C6F] group-hover:text-[#9E7F4D] border-t border-slate-100 transition-colors"
                 >
                   <span>عرض التفاصيل</span>

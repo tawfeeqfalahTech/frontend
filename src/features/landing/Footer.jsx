@@ -59,7 +59,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/dashboard/idea-owner/projects" className="hover:text-white transition-colors">
+                <Link href="/explore" className="hover:text-white transition-colors">
                   استكشف المشاريع
                 </Link>
               </li>

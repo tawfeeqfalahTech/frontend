@@ -55,7 +55,7 @@ export default function HeroSection() {
             </Link>
 
             <Link
-              href="/dashboard/idea-owner/projects"
+              href="/explore"
               className="px-8 py-4 rounded-2xl border-2 border-[#E9EDF1]/60 text-[#E9EDF1] font-bold text-lg hover:bg-white/10 hover:border-[#E9EDF1] transition-all flex items-center justify-center gap-2 group"
             >
               <span>استكشف المشاريع</span>

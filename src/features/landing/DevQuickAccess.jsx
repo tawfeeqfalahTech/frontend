@@ -9,6 +9,13 @@ export default function DevQuickAccess() {
 
   const sections = [
     {
+      title: "الصفحات العامة (Public Pages)",
+      links: [
+        { label: "Home (Landing Page)", href: "/" },
+        { label: "Explore Opportunities", href: "/explore" },
+      ],
+    },
+    {
       title: "صفحات أصحاب الأفكار (Idea Owner)",
       links: [
         { label: "Owner Dashboard", href: "/dashboard/idea-owner" },
