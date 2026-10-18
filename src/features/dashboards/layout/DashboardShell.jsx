@@ -42,7 +42,7 @@ const DashboardShell = ({ children }) => {
                 onMenuClick={handleOpenSidebar}
                 onLogoutClick={handleOpenLogoutModal}
             />
-            {isSidebarOpen && <button type="button" aria-label="إغلاق القائمة" onClick={handleCloseSidebar} className="fixed inset-0 z-40 bg-[#0D202F]/35 min-[660px]:hidden" />}
+            {isSidebarOpen && <button type="button" aria-label="إغلاق القائمة" onClick={handleCloseSidebar} className="fixed inset-0 z-40 bg-[#0D202F]/35 min-[661px]:hidden" />}
             <Sidebar
                 role={user?.role ?? user?.data?.role ?? user?.data?.user?.role ?? user?.user?.role}
                 isOpen={isSidebarOpen}

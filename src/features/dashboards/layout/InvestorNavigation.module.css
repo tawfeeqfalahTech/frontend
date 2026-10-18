@@ -1,0 +1,343 @@
+.sidebar {
+    height: 100dvh;
+    padding: 0 12px 20px;
+    border-color: #e5edf3;
+    background: linear-gradient(180deg, #f6f9fc 0, #fff 180px);
+    box-shadow: -4px 0 24px #1e4c6f05;
+    overflow-y: auto;
+    color: #0d202f;
+}
+
+.brand {
+    min-height: 80px;
+    padding: 12px 8px;
+    border-bottom: 1px solid #e5edf3;
+}
+
+.brandCaption {
+    display: block;
+    margin-top: 2px;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #4b708c;
+}
+
+.navigation {
+    margin-top: 24px;
+    gap: 6px;
+}
+
+.navigation > * {
+    margin-block: 0;
+}
+
+.navigationLabel {
+    padding: 0 14px 10px;
+    color: #7c8b97;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.navLink {
+    position: relative;
+    min-height: 54px;
+    gap: 10px;
+    padding: 8px 12px;
+    border: 1px solid transparent;
+    border-radius: 14px;
+    color: #4b708c;
+    font-size: 12px;
+    font-weight: 600;
+    transition: background 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+
+.navIcon {
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #f1f5f8;
+    color: #4b708c;
+}
+
+.activeLink,
+.activeLink:hover {
+    border-color: #dde7ef;
+    background: linear-gradient(110deg, #f6f9fc, #e5edf4);
+    color: #1e4c6f;
+    font-weight: 700;
+}
+
+.activeLink::before {
+    position: absolute;
+    inset-inline-start: -1px;
+    top: 17px;
+    bottom: 17px;
+    width: 3px;
+    border-radius: 3px;
+    background: #9e7f4d;
+    content: "";
+}
+
+.activeLink .navIcon {
+    background: #1e4c6f;
+    color: #fff;
+    box-shadow: 0 3px 8px #1e4c6f14;
+}
+
+.sidebarFooter {
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid #e5edf3;
+}
+
+.sidebarFooter hr {
+    display: none;
+}
+
+.profileLink {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    color: #1e4c6f;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.profileHint {
+    display: block;
+    margin-top: 3px;
+    color: #7c8b97;
+    font-size: 10px;
+    font-weight: 400;
+}
+
+.logoutButton {
+    min-height: 44px;
+    gap: 14px;
+    padding-inline: 20px;
+    border-radius: 12px;
+    color: #ab5656;
+}
+
+.logoutButton span {
+    font-size: 12px;
+}
+
+.navbar {
+    min-height: 80px;
+    height: auto;
+    gap: 16px;
+    padding: 14px 24px;
+    border-color: #e5edf3;
+    background: linear-gradient(100deg, #f6f9fc, #fff 60%);
+    color: #0d202f;
+}
+
+.breadcrumb {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.breadcrumbLabel {
+    color: #9e7f4d;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.breadcrumbRoute {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #1e4c6f;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.breadcrumbRoute a,
+.breadcrumbRoute svg {
+    color: #7c8b97;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.navbarActions {
+    flex-shrink: 0;
+    gap: 14px;
+}
+
+.search input {
+    border-color: #e5edf3;
+    background: #f6f9fc;
+    box-shadow: none;
+    font-size: 11px;
+}
+
+.iconButton {
+    display: inline-flex;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e5edf3;
+    border-radius: 12px;
+    background: #fff;
+    color: #4b708c;
+    cursor: pointer;
+    transition: background 180ms ease, border-color 180ms ease;
+}
+
+.accountButton {
+    display: flex;
+    max-width: 196px;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 12px 4px 4px;
+    border-inline-start: 1px solid #e5edf3;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: start;
+}
+
+.accountButton img {
+    width: 38px;
+    height: 38px;
+    border: 3px solid #fff;
+    border-radius: 12px;
+    box-shadow: 0 0 0 1px #e5edf3;
+}
+
+.accountText {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 3px;
+    color: #1e4c6f;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.accountText > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.accountRole {
+    color: #9e7f4d;
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.accountChevron {
+    flex-shrink: 0;
+    color: #7c8b97;
+    transition: transform 180ms ease;
+}
+
+.accountButton[aria-expanded="true"] .accountChevron {
+    transform: rotate(180deg);
+}
+
+.navLink:focus-visible,
+.profileLink:focus-visible,
+.logoutButton:focus-visible,
+.iconButton:focus-visible,
+.accountButton:focus-visible,
+.breadcrumbRoute a:focus-visible {
+    outline: 2px solid #1e4c6f;
+    outline-offset: 3px;
+}
+
+@media (hover: hover) {
+    .navLink:not(.activeLink):hover,
+    .profileLink:hover,
+    .accountButton:hover,
+    .iconButton:hover {
+        background: #edf3f7;
+        color: #1e4c6f;
+    }
+
+    .logoutButton:hover {
+        background: #fcf3f3;
+    }
+}
+
+@media (max-width: 1023px) {
+    .accountText,
+    .accountChevron {
+        display: none;
+    }
+
+    .navbarActions {
+        gap: 10px;
+    }
+}
+
+@media (min-width: 661px) {
+    .sidebar {
+        translate: 0;
+    }
+
+    .navbar:not(:global(.mr-0)) {
+        margin-right: 224px;
+    }
+
+    .brand > button,
+    .navbar > div:first-child > button {
+        display: none;
+    }
+}
+
+@media (max-width: 660px) {
+    .closedSidebar {
+        translate: 100%;
+    }
+
+    .navbar {
+        min-height: 76px;
+        gap: 10px;
+        padding: 12px 16px;
+    }
+
+    .breadcrumbRoute {
+        font-size: 12px;
+    }
+
+    .breadcrumbRoute a,
+    .breadcrumbRoute svg {
+        display: none;
+    }
+
+    .navbarActions {
+        gap: 8px;
+    }
+
+    .accountButton {
+        padding: 0;
+        border: 0;
+    }
+
+    .iconButton {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sidebar,
+    .navLink,
+    .iconButton,
+    .accountChevron {
+        transition: none;
+    }
+}

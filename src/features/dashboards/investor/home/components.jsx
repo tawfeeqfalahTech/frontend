@@ -21,7 +21,7 @@ export function SectionHeading({ id, title, href, linkLabel = "عرض جميع �
 
 export function EmptyState({ title, description, explore = false, icon = FolderOpen }) {
     return <DashboardEmptyState title={title} description={description} icon={icon}>
-        {explore && <Link href={`${base}/projects`} className={primaryClass}>استكشاف المشاريع</Link>}
+        {explore && <Link href="/explore" className={primaryClass}>استكشاف المشاريع</Link>}
     </DashboardEmptyState>;
 }
 

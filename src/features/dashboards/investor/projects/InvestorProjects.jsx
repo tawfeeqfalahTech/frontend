@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import { Grid2X2, List, SlidersHorizontal } from "lucide-react";
-import useInvestorProfile from "../profile/useInvestorProfile";
 import useSavedProjects from "../home/useSavedProjects";
 import { suggestedProjects } from "../home/data";
 import { EmptyState, ProjectCard, ProjectDialog } from "../home/components";
@@ -12,9 +11,8 @@ import styles from "./InvestorProjects.module.css";
 const initialFilters = { domains: [], statuses: [], rating: [0, 100], funding: [0, 5000000], technologies: ["React", "AI/ML"] };
 const normalize = (value) => value.normalize("NFKD").replace(/[\u064B-\u065F]/g, "").replace(/[أإآ]/g, "ا").toLowerCase().trim();
 
-export default function InvestorProjects({ data, query }) {
-    const { email } = useInvestorProfile();
-    const { ids: savedIds, toggle } = useSavedProjects(data.savedIds, email || "current", false);
+export default function InvestorProjects({ data, query = "", accountKey = "guest" }) {
+    const { ids: savedIds, toggle } = useSavedProjects(data.savedIds, accountKey, false);
     const [filters, setFilters] = useState(initialFilters);
     const [search, setSearch] = useState(query);
     const [sort, setSort] = useState("newest");
