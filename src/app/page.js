@@ -1,27 +1,55 @@
-import Link from "next/link";
+import Navbar from "@/features/landing/Navbar";
+import HeroSection from "@/features/landing/HeroSection";
+import StatsSection from "@/features/landing/StatsSection";
+import HowItWorksSection from "@/features/landing/HowItWorksSection";
+import FeaturesSection from "@/features/landing/FeaturesSection";
+import FeaturedProjectsSection from "@/features/landing/FeaturedProjectsSection";
+import TestimonialsSection from "@/features/landing/TestimonialsSection";
+import CtaBannerSection from "@/features/landing/CtaBannerSection";
+import Footer from "@/features/landing/Footer";
+import DevQuickAccess from "@/features/landing/DevQuickAccess";
 
-const page = () => {
-  return (
-    <div className="flex flex-col items-center justify-center">
-      <h1 className="text-4xl font-black mt-20">Landing page</h1>
-      <div className="grid grid-cols-2 gap-10 mt-30">
-        <div className="flex flex-col items-center">
-          <h2 className="text-2xl font-bold pb-1">Idea Owner pages</h2>
-          <Link href="/dashboard/idea-owner">Owner dashboard</Link>
-          <Link href="/dashboard/idea-owner/projects">Projects dashboard</Link>
-          <Link href="/dashboard/idea-owner/create-project">
-            Create Project
-          </Link>
-        </div>
-        <div className="flex flex-col items-center">
-          <h2 className="text-2xl font-bold pb-1">Auth pages</h2>
-          <Link href="/login">Login</Link>
-          <Link href="/register">Register</Link>
-          <Link href="/forgot-password">Forgot password</Link>
-        </div>
-      </div>
-    </div>
-  );
+export const metadata = {
+  title: "إحياء - منصتك لإحياء الأفكار وتنمية الاستثمار",
+  description:
+    "سوق إلكتروني ذكي يربط رواد الأعمال بالمستثمرين المعتمدين محلياً وعالمياً، بدراسات جدوى وتقييمات مدعومة بالذكاء الاصطناعي.",
 };
 
-export default page;
+export default function HomePage() {
+  return (
+    <div className="min-h-screen flex flex-col bg-white text-slate-900 selection:bg-[#9E7F4D] selection:text-white">
+      {/* 1. Header Navigation */}
+      <Navbar />
+
+      {/* 2. Main Content */}
+      <main className="flex-1">
+        {/* Hero Banner */}
+        <HeroSection />
+
+        {/* Counter Stats Bar */}
+        <StatsSection />
+
+        {/* How It Works (3 steps) */}
+        <HowItWorksSection />
+
+        {/* Features / Why Ihyaa (5 Pillars) */}
+        <FeaturesSection />
+
+        {/* Featured Projects / AI Evaluated Opportunities */}
+        <FeaturedProjectsSection />
+
+        {/* Testimonials */}
+        <TestimonialsSection />
+
+        {/* Call To Action Banner */}
+        <CtaBannerSection />
+      </main>
+
+      {/* 3. Footer */}
+      <Footer />
+
+      {/* 4. Floating Developer Navigation Helper */}
+      <DevQuickAccess />
+    </div>
+  );
+}
