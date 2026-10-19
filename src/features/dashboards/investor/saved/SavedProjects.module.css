@@ -1,0 +1,53 @@
+.content { margin-top: 28px; }
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+    gap: 14px;
+}
+
+.feedback {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+    margin-top: 16px;
+    color: #1e4c6f;
+    font-size: 13px;
+}
+
+.undo {
+    min-height: 44px;
+    padding: 8px 16px;
+    border: 1px solid #9cb1c1;
+    border-radius: 8px;
+    background: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.undo:hover { background: #e9edf1; }
+.undo:focus-visible { outline: 2px solid #1e4c6f; outline-offset: 3px; }
+.saveError { margin-top: 8px; color: #b42318; font-size: 13px; line-height: 1.8; }
+
+.skeleton { overflow: hidden; }
+.skeletonCover { height: 160px; background: #e9edf1; }
+.skeletonBody { display: grid; gap: 12px; padding: 16px 12px; }
+.skeletonTitle, .skeletonLine, .skeletonMeta, .skeletonFooter > div { height: 12px; border-radius: 5px; background: #e9edf1; }
+.skeletonTitle { width: 70%; height: 18px; margin-bottom: 4px; }
+.skeletonLine { width: 100%; }
+.skeletonMeta { width: 55%; margin-top: 8px; }
+.skeletonFooter { display: grid; grid-template-columns: 1fr 74px; gap: 8px; padding: 8px; border-top: 1px solid #e5edf3; }
+.skeletonFooter > div { height: 44px; }
+
+@media (min-width: 1280px) {
+    .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .skeleton { animation: pulse 1.6s ease-in-out infinite; }
+}
+
+@keyframes pulse {
+    50% { opacity: 0.5; }
+}

@@ -11,7 +11,6 @@ export default function AuthInput({ id, label, icon: Icon, error, showPassword, 
                     id={id}
                     aria-label={label}
                     aria-invalid={Boolean(error)}
-                    aria-describedby={error ? `${id}-error` : undefined}
                     placeholder={label}
                     className={`bg-white font-semibold w-full outline-none border-2 rounded-xl h-11 shadow-[0_0_15px_rgba(0,0,0,0.2)] pr-10.5 pl-10 disabled:opacity-60 [::-ms-reveal]:hidden [::-ms-clear]:hidden ${error ? 'border-red-500 focus:border-red-500' : 'border-transparent focus:border-[#5FABF8]'}`}
                 />
@@ -24,7 +23,6 @@ export default function AuthInput({ id, label, icon: Icon, error, showPassword, 
                     </button>
                 )}
             </div>
-            {error && <p id={`${id}-error`} role="alert" className="text-red-600 text-xs mt-0.5 leading-4">{error}</p>}
         </div>
     )
 }

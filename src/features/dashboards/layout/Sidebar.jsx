@@ -2,8 +2,8 @@
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { BarChart3, Bookmark, Compass, FolderOpen, HeartHandshake, Home, LogOut, Sparkles, Trash2, UserRound, Users, X } from "lucide-react"
-import styles from "./InvestorNavigation.module.css"
+import { LogOut, X } from "lucide-react"
+import { getDashboardLinks } from "./navigation"
 
 const Sidebar = ({ isOpen, onClose, onLogoutClick }) => {
     const path = usePathname()
@@ -12,30 +12,14 @@ const Sidebar = ({ isOpen, onClose, onLogoutClick }) => {
 
     if (path === "/dashboard/idea-owner/evaluations" || path.startsWith("/dashboard/investor/profile")) return null
 
-    const links = isAdmin ? [
-        { id: 1, name: "التحليلات", href: "/dashboard/admin", icon: <BarChart3 className="w-5 h-5" /> },
-        { id: 2, name: "المستخدمون", href: "/dashboard/admin/users", icon: <Users className="w-5 h-5" /> },
-        { id: 3, name: "المشاريع", href: "/dashboard/admin#projects", icon: <FolderOpen className="w-5 h-5" /> },
-        { id: 4, name: "تقييمات AI", href: "/dashboard/admin#ai", icon: <Sparkles className="w-5 h-5" /> },
-        { id: 5, name: "طلبات الاهتمام", href: "/dashboard/admin#requests", icon: <HeartHandshake className="w-5 h-5" /> },
-    ] : isInvestor ? [
-        { id: 1, name: "الرئيسية", href: "/dashboard/investor", icon: <Home className="w-5 h-5" /> },
-        { id: 2, name: "استكشاف المشاريع", href: "/explore", icon: <Compass className="w-5 h-5" /> },
-        { id: 3, name: "المشاريع المحفوظة", href: "/dashboard/investor/saved", icon: <Bookmark className="w-5 h-5" /> },
-        { id: 4, name: "طلباتي", href: "/dashboard/investor/requests", icon: <HeartHandshake className="w-5 h-5" /> },
-    ] : [
-        { id: 1, name: "الرئيسية", href: "/dashboard/idea-owner", icon: <Home className="w-5 h-5" /> },
-        { id: 2, name: "مشاريعي", href: "/dashboard/idea-owner/projects", icon: <FolderOpen className="w-5 h-5" /> },
-        { id: 3, name: "طلبات الإهتمام", href: "/dashboard/idea-owner/eoi-requests", icon: <HeartHandshake className="w-5 h-5" /> },
-        { id: 4, name: "سلة المحذوفات", href: "/dashboard/idea-owner/deleted", icon: <Trash2 className="w-5 h-5" /> },
-    ]
+    const links = getDashboardLinks(isAdmin ? "admin" : isInvestor ? "investor" : "idea_owner")
 
     if (path === `/dashboard/idea-owner/create-project` || path === `/dashboard/idea-owner/profile` || path === "/dashboard/idea-owner/view-project" || path === "/dashboard/idea-owner/profile/edit" || path === "/dashboard/idea-owner/edit-project") return null
 
     return (
         <>
-            <aside aria-label="القائمة الجانبية" className={`w-56 h-screen bg-white fixed bottom-0 top-0 right-0 flex flex-col px-6 pb-6 pt-3 border-l border-slate-200 shadow-xl z-50 transition-transform duration-200 ${isInvestor ? `${styles.sidebar} ${!isOpen ? styles.closedSidebar : ""}` : ""} ${isOpen ? "translate-x-0" : "max-[660px]:translate-x-full"}`}>
-                <div className={`flex items-center gap-3 ${isInvestor ? styles.brand : ""}`}>
+            <aside aria-label="القائمة الجانبية" className={`w-56 h-screen bg-white fixed bottom-0 top-0 right-0 flex flex-col px-6 pb-6 pt-3 border-l border-slate-200 shadow-xl z-50 transition-transform duration-200 ${isOpen ? "translate-x-0" : "max-[660px]:translate-x-full"}`}>
+                <div className="flex items-center gap-3">
                     <Link
                         href="/"
                         onClick={onClose}
@@ -51,45 +35,40 @@ const Sidebar = ({ isOpen, onClose, onLogoutClick }) => {
                             unoptimized
                             className="rounded-lg object-cover"
                         />
-                        <span className="text-3xl font-bold text-[#9E7F4D]">إحياء{isInvestor && <span className={styles.brandCaption}>مساحة المستثمر</span>}</span>
+                        <span className="text-3xl font-bold text-[#9E7F4D]">إحياء</span>
                     </Link>
                     <button
                         type="button"
                         onClick={onClose}
                         aria-label="إغلاق القائمة"
-                        className={`mr-auto min-[660px]:hidden ${isInvestor ? styles.iconButton : ""}`}
+                        className="mr-auto min-[661px]:hidden"
                     >
                         <X className="w-5 h-5" />
                     </button>
                 </div>
 
-                <nav aria-label="التنقل الرئيسي" className={`mt-8 flex-1 flex flex-col space-y-2 ${isInvestor ? styles.navigation : ""}`}>
-                    {isInvestor && <p className={styles.navigationLabel}>القائمة الرئيسية</p>}
+                <nav aria-label="التنقل الرئيسي" className="mt-8 flex-1 flex flex-col space-y-2">
                     {links.map((link) => {
                         const isActive = path === link.href
                         return (
                             <Link
-                                key={link.id}
+                                key={link.href}
                                 href={link.href}
                                 aria-current={isActive ? "page" : undefined}
                                 onClick={onClose}
                                 className={`flex items-center gap-3 py-3 px-3.5 rounded-lg transition-colors duration-200 ${isActive
                                     ? "text-[#D2C4AD] bg-[#1E4C6F] hover:bg-[#4b708c] font-bold"
                                     : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 font-semibold"
-                                    } ${isInvestor ? `${styles.navLink} ${isActive ? styles.activeLink : ""}` : ""}`}
+                                    }`}
                             >
-                                {isInvestor ? <span className={styles.navIcon}>{link.icon}</span> : link.icon}
+                                <link.icon className="w-5 h-5" />
                                 <span>{link.name}</span>
                             </Link>
                         )
                     })}
                 </nav>
 
-                <div className={`mt-auto pt-4 flex flex-col space-y-2 ${isInvestor ? styles.sidebarFooter : ""}`}>
-                    {isInvestor && <Link href="/dashboard/investor/profile" onClick={onClose} className={styles.profileLink}>
-                        <span className={styles.navIcon}><UserRound size={19} aria-hidden="true" /></span>
-                        <span>الملف الاستثماري<span className={styles.profileHint}>ملفك واهتماماتك</span></span>
-                    </Link>}
+                <div className="mt-auto pt-4 flex flex-col space-y-2">
                     {/* <Link
                         href="/owner/settings"
                         onClick={onClose}
@@ -106,7 +85,7 @@ const Sidebar = ({ isOpen, onClose, onLogoutClick }) => {
 
                     <button
                         onClick={() => onLogoutClick?.()}
-                        className={`flex items-center gap-3 py-3 cursor-pointer px-3 rounded-lg text-red-600 hover:bg-red-100 transition-colors duration-200 w-full text-right ${isInvestor ? styles.logoutButton : ""}`}
+                        className="flex items-center gap-3 py-3 cursor-pointer px-3 rounded-lg text-red-600 hover:bg-red-100 transition-colors duration-200 w-full text-right"
                     >
                         <LogOut className="w-4.5 h-4.5" />
                         <span className="font-semibold text-sm">تسجيل الخروج</span>

@@ -3,6 +3,7 @@ import { InboxIcon, Loader2, LockIcon } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { register } from '../../authApi'
 import { getAuthErrors, validateAuthForm } from '../../formErrors'
+import { notifyAuthConnectionError, notifyAuthErrors } from '../../authNotifications'
 import { useRouter } from 'next/navigation'
 import { setCookie } from '@/lib/action'
 import AuthInput from './AuthInput'
@@ -15,7 +16,6 @@ const SignUpForm = () => {
     const [agree, setAgree] = useState(false)
     const [loading, setLoading] = useState(false)
     const [errors, setErrors] = useState({})
-    const [formError, setFormError] = useState("")
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const submitting = useRef(false)
@@ -25,7 +25,6 @@ const SignUpForm = () => {
         setter(event.target.value)
         setErrors((previous) => ({ ...previous, [field]: undefined,
             ...(field === "password" ? { password_confirmation: undefined } : {}) }))
-        setFormError("")
     }
 
     const handleSubmit = async (event) => {
@@ -34,8 +33,10 @@ const SignUpForm = () => {
         const userData = { name: userName.trim(), email: email.trim(), password, password_confirmation: confirmPassword }
         const validation = validateAuthForm({ ...userData, agree }, true)
         setErrors(validation)
-        setFormError("")
-        if (Object.keys(validation).length) return
+        if (Object.keys(validation).length) {
+            notifyAuthErrors({ ...validation, agree: undefined })
+            return
+        }
         submitting.current = true
         setLoading(true)
         try {
@@ -44,13 +45,13 @@ const SignUpForm = () => {
             if (!res.ok) {
                 const result = getAuthErrors(data, res.status, ["name", "email", "password", "password_confirmation"])
                 setErrors(result.fieldErrors)
-                setFormError(result.formError)
+                notifyAuthErrors(result.fieldErrors, result.formError)
                 return
             }
             await setCookie("pending_verify_email", userData.email, 420)
             router.push('/verify-otp')
         } catch {
-            setFormError("تعذر إتمام إنشاء الحساب. تحقق من اتصال الإنترنت وحاول مجدداً.")
+            notifyAuthConnectionError()
         } finally {
             submitting.current = false
             setLoading(false)
@@ -80,13 +81,14 @@ const SignUpForm = () => {
             <div className="py-3">
                 <div className="flex gap-2">
                     <input id="agree" name="agree" type="checkbox" required checked={agree} disabled={loading}
-                        aria-invalid={Boolean(errors.agree)} aria-describedby={errors.agree ? "agree-error" : undefined}
-                        onChange={(event) => { setAgree(event.target.checked); setErrors((previous) => ({ ...previous, agree: undefined })); setFormError("") }} />
+                        aria-invalid={Boolean(errors.agree)}
+                        aria-describedby={errors.agree ? "agree-error" : undefined}
+                        className={errors.agree ? "outline-2 outline-red-500 rounded-sm" : undefined}
+                        onChange={(event) => { setAgree(event.target.checked); setErrors((previous) => ({ ...previous, agree: undefined })) }} />
                     <label htmlFor="agree" className="font-semibold text-sm select-none">الموافقة على<span className="text-[#5FABF8]"> الشروط والأحكام وسياسة الخصوصية</span></label>
                 </div>
-                {errors.agree && <p id="agree-error" role="alert" className="text-red-600 text-xs mt-0.5 leading-4">{errors.agree}</p>}
+                {errors.agree && <p id="agree-error" role="alert" className="text-red-600 text-xs mt-1 leading-4">{errors.agree}</p>}
             </div>
-            {formError && <p role="alert" className="text-red-600 text-sm mb-3 leading-relaxed">{formError}</p>}
             <button type="submit" disabled={loading} className="bg-[#1E4C6F] w-full text-white text-lg h-11 rounded-xl cursor-pointer shadow-xl hover:-translate-y-0.5 hover:bg-[#163852] hover:shadow-2xl transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0">
                 {loading ? <span role="status" className="flex gap-2 items-center justify-center"><Loader2 aria-hidden="true" className="animate-spin w-5 h-5" />جاري إنشاء الحساب...</span> : "إنشاء حساب"}
             </button>

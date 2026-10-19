@@ -1,7 +1,7 @@
 "use client";
 import { useState, useRef } from "react";
 
-export default function OtpInput({ length = 6, onComplete, onSubmit, loading = false, cooldown, isChecking, isResending }) {
+export default function OtpInput({ length = 6, onComplete, onSubmit, onChange, error = false, loading = false, cooldown, isChecking, isResending }) {
     const [otp, setOtp] = useState(new Array(length).fill(""));
     const inputRefs = useRef([]);
 
@@ -12,6 +12,7 @@ export default function OtpInput({ length = 6, onComplete, onSubmit, loading = f
         const newOtp = [...otp];
         newOtp[index] = value.substring(value.length - 1);
         setOtp(newOtp);
+        onChange?.();
 
         const combinedOtp = newOtp.join("");
         if (combinedOtp.length === length && onComplete) {
@@ -43,6 +44,7 @@ export default function OtpInput({ length = 6, onComplete, onSubmit, loading = f
         });
 
         setOtp(newOtp);
+        onChange?.();
 
         const focusIndex = Math.min(digits.length, length - 1);
         inputRefs.current[focusIndex]?.focus();
@@ -55,10 +57,7 @@ export default function OtpInput({ length = 6, onComplete, onSubmit, loading = f
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const combinedOtp = otp.join("");
-        if (combinedOtp.length === length && onSubmit) {
-            onSubmit(combinedOtp);
-        }
+        onSubmit?.();
     };
 
     return (
@@ -71,18 +70,19 @@ export default function OtpInput({ length = 6, onComplete, onSubmit, loading = f
                         inputMode="numeric"
                         maxLength={1}
                         disabled={loading}
+                        aria-label={`الرقم ${index + 1} من رمز التحقق`}
+                        aria-invalid={Boolean(error)}
                         ref={(el) => (inputRefs.current[index] = el)}
                         value={digit}
                         onChange={(e) => handleChange(e, index)}
                         onKeyDown={(e) => handleKeyDown(e, index)}
                         onPaste={handlePaste}
-                        className="w-13 h-13 text-center text-xl shadow-xl font-bold rounded-xl border border-slate-200 bg-white text-slate-800 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all disabled:opacity-50"
+                        className={`w-13 h-13 text-center text-xl shadow-xl font-bold rounded-xl border bg-white text-slate-800 focus:bg-white focus:ring-2 outline-none transition-all disabled:opacity-50 ${error ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : "border-slate-200 focus:border-blue-500 focus:ring-blue-500/20"}`}
                     />
                 ))}
             </div>
             <button
                 type="submit"
-                onClick={onSubmit}
                 disabled={loading || cooldown > 0}
                 className="bg-[#1E4C6F] w-full mt-4 text-white text-lg py-2 rounded-xl cursor-pointer shadow-xl hover:-translate-y-0.5 hover:bg-[#163852] hover:shadow-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >

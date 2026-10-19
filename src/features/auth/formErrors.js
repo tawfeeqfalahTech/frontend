@@ -13,6 +13,12 @@ export function validateAuthForm(values, isRegister = false) {
 }
 
 export function getAuthErrors(data, status, fields) {
+    if (status >= 500) {
+        return {
+            fieldErrors: {},
+            formError: "نواجه مشكلة مؤقتة في الخادم. يرجى المحاولة مرة أخرى لاحقاً.",
+        };
+    }
     const fieldErrors = {};
     const unassigned = [];
     for (const [field, messages] of Object.entries(data?.errors || {})) {
@@ -28,9 +34,7 @@ export function getAuthErrors(data, status, fields) {
     }
     const fallback = status === 429
         ? "محاولات كثيرة. يرجى الانتظار ثم المحاولة مجدداً."
-        : status >= 500
-            ? "تعذر إتمام الطلب حالياً. يرجى المحاولة لاحقاً."
-            : "تعذر إتمام الطلب. يرجى مراجعة البيانات والمحاولة مجدداً.";
+        : "تعذر إتمام الطلب. يرجى مراجعة البيانات والمحاولة مجدداً.";
     return {
         fieldErrors,
         formError: unassigned.length ? unassigned.join(" ") : Object.keys(fieldErrors).length ? "" : message || fallback,

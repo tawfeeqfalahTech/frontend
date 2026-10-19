@@ -1,4 +1,5 @@
 "use client";
+import AuthVisual from "@/features/auth/components/shared/AuthVisual";
 import AuthHero from "@/features/auth/components/shared/AuthHero";
 import AuthHeader from "@/features/auth/components/shared/AuthHeader";
 import OtpInput from "@/features/auth/components/OtpForm";
@@ -6,13 +7,15 @@ import { resendOtp, verifyOtp } from "@/features/auth/authApi";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { deleteCookie, setCookie, getCookie } from "@/lib/action";
+import { toast } from "sonner";
+import { getAuthErrors } from "@/features/auth/formErrors";
+import { notifyAuthConnectionError, notifyAuthErrors } from "@/features/auth/authNotifications";
 
 const Page = () => {
     const [email, setEmail] = useState("");
     const [isMounted, setIsMounted] = useState(false);
 
-    const [message, setMessage] = useState("");
-    const [statusMessage, setStatusMessage] = useState(null)
+    const [codeError, setCodeError] = useState(false);
 
     const COOLDOWN = 90
     const [cooldown, setCooldown] = useState(0)
@@ -23,23 +26,16 @@ const Page = () => {
 
     useEffect(() => {
 
-        const firstSent = localStorage.getItem("firstVerificationSent");
-
-        if (firstSent) {
-            const elapsed = Math.floor(
-                (Date.now() - Number(firstSent)) / 1000
-            );
-
-            if (elapsed < 90) {
-                setCooldown(90 - elapsed);
-            }
-        }
-
         let isSubscribed = true;
 
         async function initPage() {
             const pendingEmail = await getCookie("pending_verify_email");
             if (isSubscribed) {
+                const firstSent = Number(localStorage.getItem("firstVerificationSent"));
+                if (firstSent) {
+                    const elapsed = Math.floor((Date.now() - firstSent) / 1000);
+                    setCooldown(Math.max(0, COOLDOWN - elapsed));
+                }
                 if (pendingEmail) {
                     setEmail(pendingEmail);
                 }
@@ -61,11 +57,15 @@ const Page = () => {
     }, [cooldown])
 
     const handleResend = async () => {
-        if (cooldown > 0 || isResending) return;
+        if (cooldown > 0 || isResending || isChecking) return;
+        if (!email) {
+            notifyAuthErrors({}, "لم يتم العثور على البريد الإلكتروني. يرجى محاولة التسجيل مجدداً.");
+            return;
+        }
 
         const lastSent = Number(localStorage.getItem("firstVerificationSent"));
         if (lastSent && Date.now() - lastSent < COOLDOWN * 1000) {
-            toast.error("Please wait before resending.");
+            notifyAuthErrors({}, "يرجى الانتظار قبل طلب رمز تحقق جديد.");
             return;
         }
 
@@ -76,18 +76,18 @@ const Page = () => {
             const data = await res.json().catch(() => ({}))
 
             if (!res.ok) {
-                const errorMessage = data.message || `HTTP Error: ${res.status}`
-                throw new Error(errorMessage)
+                const result = getAuthErrors(data, res.status, []);
+                notifyAuthErrors(result.fieldErrors, result.formError);
+                return;
             }
 
             localStorage.setItem("firstVerificationSent", Date.now());
             setCooldown(COOLDOWN);
-            setStatusMessage("success");
-            setMessage(data.message)
+            setCodeError(false);
+            toast.success("تم إرسال رمز تحقق جديد إلى بريدك الإلكتروني.");
 
-        } catch (error) {
-            setStatusMessage("faild");
-            setMessage(error.message)
+        } catch {
+            notifyAuthConnectionError();
         } finally {
             setIsResending(false);
         }
@@ -95,15 +95,15 @@ const Page = () => {
 
     const verifyEmail = async (otpCode) => {
 
-        if (isChecking) return;
+        if (isChecking || isResending) return;
 
         if (!email) {
-            alert("لم يتم العثور على البريد الإلكتروني. يرجى محاولة التسجيل مجدداً.");
+            notifyAuthErrors({}, "لم يتم العثور على البريد الإلكتروني. يرجى محاولة التسجيل مجدداً.");
             return;
         }
 
         setIsChecking(true);
-        setMessage("");
+        setCodeError(false);
 
         try {
             const res = await verifyOtp({
@@ -114,10 +114,10 @@ const Page = () => {
             const data = await res.json().catch(() => ({}));
 
             if (!res.ok) {
-                const errorMessage = data.message || `خطأ في الطلب: ${res.status}`;
-                setMessage(errorMessage);
-                setStatusMessage("faild")
-                throw new Error(errorMessage)
+                const result = getAuthErrors(data, res.status, ["code"]);
+                setCodeError(Boolean(result.fieldErrors.code) || [400, 401, 422].includes(res.status));
+                notifyAuthErrors(result.fieldErrors, result.formError);
+                return;
             }
 
             await setCookie("pending_selection_role", email, 60 * 7)
@@ -127,9 +127,8 @@ const Page = () => {
 
             router.push("/auth/select-role");
 
-        } catch (error) {
-            setMessage(error.message || "حدث خطأ غير متوقع في الاتصال");
-            setStatusMessage("faild")
+        } catch {
+            notifyAuthConnectionError();
         } finally {
             setIsChecking(false);
         }
@@ -157,14 +156,11 @@ const Page = () => {
                                 isChecking={isChecking}
                                 isResending={isResending}
                                 loading={isChecking || isResending}
+                                error={codeError}
+                                onChange={() => setCodeError(false)}
                             />
                         </div>
 
-                        {message && (
-                            <p className={`${statusMessage === "success" ? "text-emerald-600" : "text-red-500"} text-xs text-center font-semibold mt-4`}>
-                                {message}
-                            </p>
-                        )}
                         {cooldown > 0 && (
                             <p className="text-xs text-center font-semibold mt-4 flex justify-center">
                                 إعادة إرسال الرمز خلال{" "}
@@ -174,95 +170,15 @@ const Page = () => {
                     </div>
                 </div>
 
-                <div className="flex absolute max-[1163px]:hidden max-[1300px]:-left-17 -left-10 bottom-28 flex-col mt-auto">
-                    <div>
-                        <h2 className="text-center text-white font-bold text-3xl">
-                            خطوة واحدة تفصلك عن الإنطلاق
-                        </h2>
-                        <p className="text-center text-white text-sm font-semibold pt-3">
+                <AuthVisual
+                    title="خطوة واحدة تفصلك عن الإنطلاق"
+                    description={
+                        <>
                             تحقق من حسابك لتكمل رحلتك على إحياء, حيث تلتقي الأفكار الواعدة
                             <br /> بالمستثمرين المناسبين.
-                        </p>
-                    </div>
-                    <div className="grid grid-cols-3 mt-5">
-                        <div className="flex items-start gap-2 h-15 pt-3 pl-2 pr-4 xl:pl-3">
-                            <div className="space-y-0.5">
-                                <h3 className="text-xs min-[1270px]:text-sm font-semibold text-white">
-                                    سهولة التواصل
-                                </h3>
-                                <p className="text-[10px] min-[1270px]:text-xs text-gray-300 leading-snug pt-0.5">
-                                    تواصل سهل بين المستثمر وصاحب الفكرة
-                                </p>
-                            </div>
-                            <div className="p-2 rounded-xl bg-white/10 backdrop-blur-md shrink-0 border border-white/10">
-                                <svg
-                                    className="w-5 h-5 text-white"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="1.5"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"
-                                    />
-                                </svg>
-                            </div>
-                        </div>
-                        <div className="flex items-start gap-2 h-15 pt-3 border-r border-white/20 pr-5 xl:pr-6 xl:pl-3 pl-3">
-                            <div className="space-y-0.5">
-                                <h3 className="text-xs min-[1270px]:text-sm font-semibold text-white">
-                                    تقييم ذكي للفكرة
-                                </h3>
-                                <p className="text-[10px] min-[1270px]:text-xs text-gray-300 leading-snug pt-0.5">
-                                    احصل على تحليل دقيق لإمكانات فكرتك
-                                </p>
-                            </div>
-                            <div className="p-2 rounded-xl bg-white/10 backdrop-blur-md shrink-0 border border-white/10">
-                                <svg
-                                    className="w-5 h-5 text-white"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="1.5"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"
-                                    />
-                                </svg>
-                            </div>
-                        </div>
-
-                        <div className="flex items-start gap-2 h-15 pt-3 border-r border-white/20 pr-2 xl:pr-4">
-                            <div className="space-y-0.5">
-                                <h3 className="text-xs min-[1270px]:text-sm font-semibold text-white">
-                                    بيئة آمنة وموثوقة
-                                </h3>
-                                <p className="text-[10px] min-[1270px]:text-xs text-gray-300 leading-snug">
-                                    بياناتك محمية بأعلى معايير الأمان
-                                </p>
-                            </div>
-                            <div className="p-2 rounded-xl bg-white/10 backdrop-blur-md shrink-0 border border-white/10">
-                                <svg
-                                    className="w-5 h-5 text-white"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="1.5"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-2.17 0-4.207-.576-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"
-                                    />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                        </>
+                    }
+                />
             </div>
         </div>
     );

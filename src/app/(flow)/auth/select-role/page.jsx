@@ -13,6 +13,8 @@ import { Role } from "@/features/auth/authApi";
 import { useState, useEffect } from "react";
 import { deleteCookie, getCookie, setCookie } from "@/lib/action";
 import { getDashboardPath } from "@/lib/auth-routes";
+import { getAuthErrors } from "@/features/auth/formErrors";
+import { notifyAuthConnectionError, notifyAuthErrors } from "@/features/auth/authNotifications";
 
 const Page = () => {
 
@@ -43,8 +45,9 @@ const Page = () => {
     }, []);
 
     const handleSubmit = async (selectedRole) => {
+        if (loading) return;
         const activeRole = selectedRole || role;
-        if (!activeRole) return alert("الرجاء اختيار دورك")
+        if (!activeRole) return notifyAuthErrors({}, "الرجاء اختيار دورك");
 
         const userData = {
             email,
@@ -58,8 +61,9 @@ const Page = () => {
             const data = await res.json().catch(() => ({}));
 
             if (!res.ok) {
-                const errorMessage = data.message || "حدث خطأ في الطلب: " + res.status;
-                throw new Error(errorMessage);
+                const result = getAuthErrors(data, res.status, []);
+                notifyAuthErrors(result.fieldErrors, result.formError);
+                return;
             }
 
             const token = data.data?.token
@@ -68,8 +72,8 @@ const Page = () => {
             await deleteCookie("pending_selection_role")
             router.replace(getDashboardPath(data?.data?.user?.role));
 
-        } catch (error) {
-            alert(error.message)
+        } catch {
+            notifyAuthConnectionError();
         } finally {
             setLoading(false)
         }

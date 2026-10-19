@@ -1,5 +1,6 @@
 import { Cairo } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "sonner";
 
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
@@ -24,7 +25,11 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
       className={`${cairo.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans">{children}</body>
+      <body className="min-h-full flex flex-col font-sans">
+        {children}
+        <Toaster position="bottom-right" dir="rtl" richColors closeButton
+          toastOptions={{ style: { fontFamily: "var(--font-cairo)" } }} />
+      </body>
     </html>
   );
 }
