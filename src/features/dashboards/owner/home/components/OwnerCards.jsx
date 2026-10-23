@@ -1,12 +1,12 @@
 import { HomeIcon } from '@/icons/HomeIcon'
 import { cardSurfaceClass } from '@/features/dashboards/shared/dashboardStyles'
 
-const OwnerCards = () => {
+const OwnerCards = ({ projects = [] }) => {
     const cards = [
-        { id: 1, head: "إجمالي المشاريع", value: "24", icon: <HomeIcon />, span: "12" },
-        { id: 2, head: "إجمالي المشاريع", value: "24", icon: <HomeIcon />, span: "12" },
-        { id: 3, head: "إجمالي المشاريع", value: "24", icon: <HomeIcon />, span: "12" },
-        { id: 4, head: "إجمالي المشاريع", value: "24", icon: <HomeIcon />, span: "12" },
+        { id: 1, head: "إجمالي المشاريع", value: projects.length },
+        { id: 2, head: "المشاريع النشطة", value: projects.filter(project => project.status === "نشط").length },
+        { id: 3, head: "قيد التقييم", value: projects.filter(project => project.evaluationStatus === "evaluating").length },
+        { id: 4, head: "طلبات الاهتمام", value: projects.reduce((sum, project) => sum + (Number(project.Leads) || 0), 0) },
     ]
     return (
         <>
@@ -19,10 +19,10 @@ const OwnerCards = () => {
                         <div className="flex items-start justify-between">
                             <div>
                                 <h4 className="text-sm font-semibold text-slate-500 mb-1">
-                                    إجمالي المشاريع
+                                    {card.head}
                                 </h4>
                                 <span className="text-4xl font-extrabold text-slate-900 tracking-tight block">
-                                    24
+                                    {card.value}
                                 </span>
                             </div>
 
@@ -31,12 +31,6 @@ const OwnerCards = () => {
                             </div>
                         </div>
 
-                        <div className="mt-2.5 flex items-center gap-1.5 text-xs font-medium text-slate-500">
-                            <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 font-bold">
-                                {card.span}%
-                            </span>
-                            <span>عن الشهر الماضي</span>
-                        </div>
                     </div>
                 ))}
             </div>

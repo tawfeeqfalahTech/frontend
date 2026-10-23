@@ -1,8 +1,8 @@
+import { requierRole } from "@/lib/auth";
 import InterestRequestsPage from "@/features/dashboards/owner/interest-requests/InterestRequestsPage"
-import { initialRequests } from "@/features/dashboards/owner/interest-requests/data/mockRequests"
+import { getOwnerRequests } from "@/features/dashboards/data/dashboardRepository"
 
-export default async function Page({ searchParams }) {
-    const params = await searchParams
-    const empty = params?.state === "empty"
-    return <InterestRequestsPage key={String(empty)} initialData={empty ? [] : initialRequests} />
+export default async function Page() {
+    await requierRole("idea_owner");
+    return <InterestRequestsPage initialData={await getOwnerRequests()} />
 }

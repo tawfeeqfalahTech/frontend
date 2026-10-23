@@ -1,7 +1,5 @@
 // Presentation fixtures. Replace this adapter with the admin analytics service
 // when its endpoint is available; do not present these figures as live data.
-export const adminPreviewStates = ["complete", "empty", "loading", "error", "empty-activity", "empty-projects", "empty-requests"];
-
 const sampleData = {
     source: "demo",
     users: { total: 1284, owners: 762, investors: 366, admins: 156 },
@@ -22,19 +20,8 @@ const sampleData = {
     requests: { pending: 31, accepted: 172, rejected: 29, cancelled: 16 },
 };
 
-export function getAdminDashboardData(state = "") {
-    if (state === "error" || state === "loading") return null;
-    const empty = state === "empty";
-    const emptyProjects = empty || state === "empty-projects";
-    return {
-        ...sampleData,
-        users: empty ? { total: 0, owners: 0, investors: 0, admins: 0 } : sampleData.users,
-        projects: emptyProjects ? { total: 0, published: 0, reviewing: 0, drafts: 0 } : sampleData.projects,
-        evaluation: emptyProjects ? { average: null, count: 0 } : sampleData.evaluation,
-        activity: empty || state === "empty-activity" ? [] : sampleData.activity,
-        sectors: emptyProjects ? [] : sampleData.sectors,
-        requests: empty || state === "empty-requests" ? { pending: 0, accepted: 0, rejected: 0, cancelled: 0 } : sampleData.requests,
-    };
+export function getAdminDashboardData() {
+    return sampleData;
 }
 
 export const formatNumber = (value) => new Intl.NumberFormat("en-US").format(value);

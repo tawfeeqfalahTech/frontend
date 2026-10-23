@@ -1,20 +1,13 @@
 "use client"
-import { projects as defaultProjects } from "@/features/dashboards/owner/data/projects"
 import EmptyState from "@/features/dashboards/shared/EmptyState"
 import ProjectsEmptyState from "@/features/dashboards/owner/home/components/ProjectsEmptyState"
 import SessionsCard from "@/features/dashboards/owner/project/Seestion"
-import GithubIcon from "@/icons/GithubIcon"
-import LinkedIcon from "@/icons/LinkedIcon"
 import { Award, Clock, Heart, MoreVertical } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
-const OwnerProfile = ({ empty = false }) => {
-    const userName = "توفيق أبو حصيرة"
-    const bio = empty ? "" : "أُحول الأفكار التقنية إلى مشاريع قابلة للنمو, مبرمج وصاحب مشاريع أدرس السوق وأخرج بمشاريع حقيقية ونماذج أولية مشاريع تحل المشاكل"
-
-    const skills = empty ? [] : ["Next.js", "react", "Tailwend", "HTML", "Css", "Javascript", "node.js"]
-    const projects = empty ? [] : defaultProjects
+const OwnerProfile = ({ profile, projects = [] }) => {
+    const { name: userName, bio, skills = [], links = [], sessions = [] } = profile
 
     const getScoreColor = (ratingString) => {
         const score = parseInt(ratingString, 10) || 0;
@@ -53,7 +46,7 @@ const OwnerProfile = ({ empty = false }) => {
                     <div className="relative size-20 shrink-0 overflow-hidden rounded-full ring-2 ring-[#B19971] ring-offset-5 sm:size-35">
                         <Image
                             alt="avatar"
-                            src="/images/avatar.png"
+                            src={profile.avatar}
                             fill
                             priority
                             unoptimized
@@ -63,9 +56,8 @@ const OwnerProfile = ({ empty = false }) => {
                     <div className="min-w-0">
                         <h1 className="break-words text-2xl font-bold sm:text-[34px]">{userName}</h1>
                         <p className="text-xs leading-6 text-gray-500 font-bold mt-2">{bio || "لم تُضف نبذة عنك بعد. عرّف المستثمرين بخبراتك من خلال تعديل ملفك."}</p>
-                        {empty ? <p className="mt-2 text-xs text-[#68879F]">لا توجد روابط تواصل مضافة بعد.</p> : <div className="flex items-center gap-1 mt-1">
-                            <GithubIcon className="cursor-pointer w-5 h-5" />
-                            <LinkedIcon className="text-[#0A66C2] w-5 h-5 cursor-pointer" />
+                        {links.length === 0 ? <p className="mt-2 text-xs text-[#68879F]">لا توجد روابط تواصل مضافة بعد.</p> : <div className="flex flex-wrap items-center gap-2 mt-1">
+                            {links.map(link => <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer" className="text-xs text-[#1E4C6F] hover:underline">{link.label || link.url}</a>)}
                         </div>}
                     </div>
                 </div>
@@ -142,7 +134,7 @@ const OwnerProfile = ({ empty = false }) => {
                 <h2 className="text-2xl font-bold pr-3 border-r-5 rounded-sm border-[#1E4C6F]">إدارة الجلسات</h2>
                 <div className="mt-4">
                     <SessionsCard
-                        {...(empty ? { sessions: [] } : {})}
+                        sessions={sessions}
                         onLogoutOne={(idx) => handleLogoutOne(idx)}
                         onLogoutAll={() => handleLogoutAll()}
                         onLogoutAllSessions={() => handleLogoutAllSessions()}

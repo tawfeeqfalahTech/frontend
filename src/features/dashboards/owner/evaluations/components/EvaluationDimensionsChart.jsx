@@ -7,7 +7,7 @@ import { evaluationDimensions } from "../data/mockEvaluations"
 const EvaluationDimensionsChart = ({ evaluation }) => {
     const series = useMemo(() => [{ name: "الدرجة", data: evaluation.scores }], [evaluation])
     const options = useMemo(() => ({
-        chart: { type: "bar", fontFamily: "Cairo, sans-serif", foreColor: "#4B5563", toolbar: { show: false }, zoom: { enabled: false } },
+        chart: { type: "bar", fontFamily: "var(--font-cairo), sans-serif", foreColor: "#4B5563", toolbar: { show: false }, zoom: { enabled: false } },
         colors: evaluationDimensions.map(dimension => dimension.color),
         plotOptions: { bar: { horizontal: false, distributed: true, columnWidth: "32%", borderRadius: 5, borderRadiusApplication: "end", dataLabels: { position: "top" }, colors: { backgroundBarColors: ["#F9FAFB"], backgroundBarRadius: 5 } } },
         dataLabels: { enabled: true, formatter: value => value + " / 100", offsetY: -26, style: { fontSize: "13px", fontWeight: 600, colors: ["#111827"] } },

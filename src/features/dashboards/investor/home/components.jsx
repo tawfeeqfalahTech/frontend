@@ -1,12 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Bookmark, CheckCheck, Clock3, FolderOpen, X } from "lucide-react";
+import { ArrowLeft, Bookmark, CheckCheck, Clock3, FolderOpen } from "lucide-react";
 import DashboardEmptyState from "@/features/dashboards/shared/EmptyState";
 import { iconActionClass, outlineClass, primaryClass, surfaceClass } from "@/features/dashboards/shared/dashboardStyles";
-import { suggestedProjects } from "./data";
 import styles from "./InvestorDashboard.module.css";
 
 export const base = "/dashboard/investor";
@@ -52,8 +50,8 @@ export function ProjectAvatar({ project }) {
     return <div className="relative size-11 shrink-0 overflow-hidden rounded-full border border-[#E5EDF3] bg-[#E9EDF1]"><Image src={project.cover} alt="" fill sizes="44px" className="object-cover" /></div>;
 }
 
-export function RequestRow({ request, onDetails }) {
-    const project = suggestedProjects.find((item) => item.id === request.projectId);
+export function RequestRow({ request, project = request.project, onDetails }) {
+    if (!project) return <li className={`${surfaceClass} p-4 text-sm`}>المشروع غير متاح حالياً</li>;
     const accepted = request.status === "accepted";
     const StatusIcon = accepted ? CheckCheck : Clock3;
     return <li style={{ "--row-accent": accepted ? "#367C59" : "#9E7F4D", "--row-soft": accepted ? "#E1EEE6" : "#EDE5D8", "--row-tint": accepted ? "#F5FAF7" : "#FCFAF6" }} className={`${surfaceClass} ${styles.detailCard} grid grid-cols-[2.75rem_minmax(0,1fr)] items-center gap-x-3 gap-y-3 p-4 sm:p-5`}>
@@ -83,22 +81,4 @@ export function SavedRow({ project, onDetails, onSave }) {
     </li>;
 }
 
-export function ProjectDialog({ selection, onClose }) {
-    const dialogRef = useRef(null);
-    useEffect(() => {
-        const dialog = dialogRef.current;
-        if (selection && !dialog.open) dialog.showModal();
-        if (!selection && dialog.open) dialog.close();
-    }, [selection]);
-    const project = selection?.project;
-    return <dialog ref={dialogRef} dir="rtl" onClose={onClose} onClick={(event) => { if (event.target === event.currentTarget) onClose(); }} aria-labelledby="investor-project-title" className="fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-xl overflow-y-auto rounded-2xl border-0 bg-white p-0 text-[#0D202F] shadow-xl backdrop:bg-[#0D202F]/40">
-        {project && <div className="p-5 sm:p-7">
-            <div className="flex items-start justify-between gap-4"><h2 id="investor-project-title" className="text-xl font-bold">{project.title}</h2><button type="button" onClick={onClose} aria-label="إغلاق التفاصيل" className={iconActionClass}><X size={20} /></button></div>
-            <div className="relative mt-5 h-52 overflow-hidden rounded-xl"><Image src={project.cover} alt={`واجهة ${project.title}`} fill sizes="560px" className="object-cover" /></div>
-            <p className="mt-5 text-sm leading-7 text-[#4B708C]">{project.description}</p>
-            <dl className="mt-5 grid gap-3 text-sm sm:grid-cols-3">{[{ label: "القطاع", value: project.sector }, { label: "جودة الفكرة", value: `${project.score}%` }, { label: "المرحلة", value: project.stage }].map((item) => <div key={item.label} className="rounded-lg bg-[#E9EDF1] p-3"><dt className="text-xs text-[#4B708C]">{item.label}</dt><dd className="mt-2 font-semibold">{item.value}</dd></div>)}</dl>
-            {selection.request && <div className="mt-5 rounded-xl bg-[#F3F7FA] p-4 text-sm leading-7"><p>حالة الطلب: <strong>{selection.request.status === "accepted" ? "مقبول" : "قيد المراجعة"}</strong></p><p className="mt-1 text-xs text-gray-500">{selection.request.status === "accepted" ? "تم قبول طلب اهتمامك. بيانات التواصل مع المالك غير متاحة حالياً." : "طلب اهتمامك قيد المراجعة من صاحب المشروع."}</p></div>}
-            <button type="button" onClick={onClose} className={`${primaryClass} mt-6`}>إغلاق</button>
-        </div>}
-    </dialog>;
-}
+export { default as ProjectDialog } from "../shared/ProjectDialog";

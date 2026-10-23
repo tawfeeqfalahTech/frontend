@@ -10,7 +10,7 @@ const dashboardLinks = {
   ],
   investor: [
     { name: "الرئيسية", href: "/dashboard/investor", icon: Home },
-    { name: "استكشاف المشاريع", href: "/dashboard/investor/projects", icon: Compass },
+    { name: "استكشاف المشاريع", href: "/explore", icon: Compass },
     { name: "المشاريع المحفوظة", href: "/dashboard/investor/saved", icon: Bookmark },
     { name: "طلباتي", href: "/dashboard/investor/requests", icon: HeartHandshake },
   ],

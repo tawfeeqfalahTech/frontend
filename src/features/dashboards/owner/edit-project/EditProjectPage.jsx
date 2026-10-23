@@ -8,24 +8,24 @@ import PdfFilesTab from "@/features/dashboards/owner/edit-project/tabs/PdfFilesT
 import VideoTab from "@/features/dashboards/owner/edit-project/tabs/VideoTab"
 import ProjectLinksTab from "@/features/dashboards/owner/edit-project/tabs/ProjectLinksTab"
 
-const EditProjectPage = ({ empty = false, initialTab = "basic-info" }) => {
+const EditProjectPage = ({ project, initialTab = "basic-info" }) => {
     const [activeTab, setActiveTab] = useState(initialTab)
 
 
     const renderTabContent = () => {
         switch (activeTab) {
             case "basic-info":
-                return <BasicInfoTab empty={empty} />
+                return <BasicInfoTab project={project} />
             case "media":
-                return <MediaUploadTab empty={empty} />
+                return <MediaUploadTab initialImages={project.images ?? []} />
             case "pdf":
-                return <PdfFilesTab empty={empty} />
+                return <PdfFilesTab initialDocuments={project.files ?? []} />
             case "video":
-                return <VideoTab empty={empty} />
+                return <VideoTab initialVideoUrl={project.videoUrl ?? ""} poster={project.videoPoster} />
             case "links":
-                return <ProjectLinksTab empty={empty} />
+                return <ProjectLinksTab initialLinks={project.links ?? []} />
             default:
-                return <BasicInfoTab empty={empty} />
+                return <BasicInfoTab project={project} />
         }
     }
 

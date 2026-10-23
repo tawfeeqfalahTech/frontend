@@ -1,7 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState, useSyncExternalStore } from "react";
-import { suggestedProjects } from "./data";
+import { useCallback, useMemo, useSyncExternalStore } from "react";
 
 function subscribe(callback) {
     window.addEventListener("storage", callback);
@@ -12,28 +11,23 @@ function subscribe(callback) {
     };
 }
 
-export default function useSavedProjects(seed, accountKey, preview) {
+export default function useSavedProjects(seed, accountKey) {
     const key = `ihyaa:investor-saved:${accountKey}`;
-    const [previewIds, setPreviewIds] = useState(seed);
     const getSnapshot = useCallback(() => {
-        try { return preview ? null : localStorage.getItem(key); } catch { return null; }
-    }, [key, preview]);
+        try { return localStorage.getItem(key); } catch { return null; }
+    }, [key]);
     const raw = useSyncExternalStore(subscribe, getSnapshot, () => null);
     const ids = useMemo(() => {
-        if (preview) return previewIds;
         try {
             const stored = raw === null ? seed : JSON.parse(raw);
-            return Array.isArray(stored) ? stored.filter((id) => suggestedProjects.some((project) => project.id === id)) : seed;
+            return Array.isArray(stored) ? stored.filter((id) => typeof id === "string") : seed;
         } catch { return seed; }
-    }, [raw, seed, preview, previewIds]);
+    }, [raw, seed]);
 
     const toggle = (id) => {
         const next = ids.includes(id) ? ids.filter((value) => value !== id) : [...ids, id];
-        if (preview) setPreviewIds(next);
-        else {
-            localStorage.setItem(key, JSON.stringify(next));
-            window.dispatchEvent(new Event("investor-saved-updated"));
-        }
+        localStorage.setItem(key, JSON.stringify(next));
+        window.dispatchEvent(new Event("investor-saved-updated"));
     };
     return { ids, toggle };
 }

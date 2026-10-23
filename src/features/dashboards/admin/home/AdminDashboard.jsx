@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { CheckCheck, Clock3, Download, FolderOpen, HeartHandshake, Sparkles, Users, X } from "lucide-react";
 import { surfaceClass } from "@/features/dashboards/shared/dashboardStyles";
 import { ActivityChart, SectorChart } from "./charts";
-import { AdminError, AdminFrame, AdminLoading, EmptyState, exportButtonClass, SectionTitle } from "./states";
+import { AdminError, AdminFrame, EmptyState, exportButtonClass, SectionTitle } from "./states";
 import { buildAdminCsv, formatNumber } from "./data";
 import styles from "./AdminDashboard.module.css";
 
@@ -43,14 +43,13 @@ function InterestRequests({ data }) {
     </section>;
 }
 
-export default function AdminDashboard({ data, state = "" }) {
+export default function AdminDashboard({ data }) {
     const router = useRouter();
     const [exporting, setExporting] = useState(false);
     const [notice, setNotice] = useState("");
     const [exportFailed, setExportFailed] = useState(false);
 
-    if (state === "loading") return <AdminLoading />;
-    if (state === "error" || !data) return <AdminError onRetry={() => state === "error" ? router.replace("/dashboard/admin") : router.refresh()} />;
+    if (!data) return <AdminError onRetry={() => router.refresh()} />;
 
     const hasData = data.users.total > 0 || data.projects.total > 0 || data.activity.some((item) => item.count > 0) || Object.values(data.requests).some((count) => count > 0);
     const exportCsv = () => {

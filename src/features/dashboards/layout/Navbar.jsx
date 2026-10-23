@@ -22,7 +22,6 @@ const pageTitles = {
     "/dashboard/idea-owner/profile": "الملف الشخصي",
     "/dashboard/idea-owner/profile/edit": "تعديل الملف الشخصي",
     "/dashboard/investor": "الرئيسية",
-    "/dashboard/investor/projects": "استكشاف المشاريع",
     "/dashboard/investor/saved": "المشاريع المحفوظة",
     "/dashboard/investor/requests": "طلباتي",
     "/dashboard/investor/profile": "الملف الشخصي",
@@ -101,7 +100,7 @@ const Navbar = ({ user, role, standalone = false, onMenuClick, onLogoutClick }) 
             </nav>}
 
             <div className={`flex items-center gap-3 ${standalone ? "shrink-0" : ""} ${isProjectDetails ? "shrink-0 max-[660px]:gap-2" : ""}`}>
-                {isInvestor ? <form action={standalone ? "/explore" : "/dashboard/investor/projects"} role="search" className="group relative hidden shrink-0 md:block">
+                {isInvestor ? <form action="/explore" role="search" className="group relative hidden shrink-0 md:block">
                     <label htmlFor="navbar-project-search" className="sr-only">ابحث عن مشروع</label>
                     <input id="navbar-project-search" name="q" placeholder="ابحث عن مشروع" className="h-10 w-44 rounded-xl border border-slate-200 bg-white ps-11 pe-4 text-sm text-[#163852] shadow-[0_2px_14px_rgba(30,76,111,0.07)] outline-none transition-colors placeholder:text-gray-400 hover:border-[#9CB1C1] focus:border-[#1E4C6F] focus:ring-2 focus:ring-[#1E4C6F]/15 lg:w-56" />
                     <button type="submit" aria-label="البحث" className="absolute inset-y-1 start-1 flex size-8 cursor-pointer items-center justify-center rounded-lg text-[#7C8B97] transition-colors hover:bg-[#EDF3F7] hover:text-[#1E4C6F] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4C6F] group-focus-within:text-[#1E4C6F]"><Search size={18} /></button>
@@ -116,7 +115,8 @@ const Navbar = ({ user, role, standalone = false, onMenuClick, onLogoutClick }) 
                     <Image
                         width={30}
                         height={30}
-                        unoptimized
+                        sizes="36px"
+                        unoptimized={Boolean(user?.avatarUrl || user?.avatar_url)}
                         src={user?.avatarUrl || user?.avatar_url || "/images/avatar.png"}
                         className="object-cover rounded-full cursor-pointer w-9 h-9 border border-slate-300 shadow-sm hover:opacity-90 transition-opacity"
                         alt=""

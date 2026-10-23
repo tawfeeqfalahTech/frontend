@@ -1,7 +1,7 @@
 import Navbar from "@/features/landing/Navbar";
 import Footer from "@/features/landing/Footer";
 import InvestorProjects from "@/features/dashboards/investor/projects/InvestorProjects";
-import { getDashboardState } from "@/features/dashboards/investor/home/data";
+import { getInvestorDashboard } from "@/features/dashboards/data/dashboardRepository";
 import { getAuthUser, getUserRole } from "@/lib/auth";
 import { AuthContext } from "@/contexts/AuthContext";
 import ExploreNavbar from "@/features/explore/ExploreNavbar";
@@ -9,7 +9,7 @@ import ExploreNavbar from "@/features/explore/ExploreNavbar";
 export default async function ExplorePage({ searchParams }) {
   const [params, user] = await Promise.all([searchParams, getAuthUser()]);
   const query = typeof params?.q === "string" ? params.q : "";
-  const state = ["empty", "empty-projects"].includes(params?.state) ? params.state : "";
+  const data = await getInvestorDashboard();
   const account = user?.data?.user ?? user?.data ?? user?.user ?? user;
 
   return (
@@ -21,9 +21,9 @@ export default async function ExplorePage({ searchParams }) {
       ) : <Navbar />}
       <main className="flex-1 min-w-0 m-6">
         <InvestorProjects
-          key={`${query}-${state}`}
+          key={query}
           query={query}
-          data={getDashboardState(state)}
+          data={data}
           accountKey={account ? account.email || "current" : "guest"}
         />
       </main>

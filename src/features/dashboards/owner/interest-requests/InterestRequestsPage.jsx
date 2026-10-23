@@ -5,11 +5,10 @@ import RequestFilterTabs from "@/features/dashboards/owner/interest-requests/com
 import InterestRequestCard from "@/features/dashboards/owner/interest-requests/components/InterestRequestCard"
 import RejectReasonModal from "@/features/dashboards/owner/interest-requests/components/RejectReasonModal"
 import AcceptConfirmModal from "@/features/dashboards/owner/interest-requests/components/AcceptConfirmModal"
-import { initialRequests } from "@/features/dashboards/owner/interest-requests/data/mockRequests"
 import { Inbox } from "lucide-react"
 import EmptyState from "@/features/dashboards/shared/EmptyState"
 
-const InvestorsRequestsPage = ({ initialData = initialRequests }) => {
+const InvestorsRequestsPage = ({ initialData = [] }) => {
     const [requests, setRequests] = useState(initialData)
     const [activeFilter, setActiveFilter] = useState("all")
 

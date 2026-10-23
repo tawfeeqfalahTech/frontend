@@ -8,6 +8,7 @@ import { notifyAuthConnectionError, notifyAuthErrors } from '../../authNotificat
 import { setCookie } from '@/lib/action'
 import { useRouter } from 'next/navigation'
 import AuthInput from './AuthInput'
+import { getUserRole } from '@/lib/auth-routes'
 
 const SignInForm = () => {
     const [email, setEmail] = useState("")
@@ -52,9 +53,9 @@ const SignInForm = () => {
                 notifyAuthErrors(result.fieldErrors, result.formError)
                 return
             }
-            await setCookie("token", data.data?.token, 60 * 60 * 24 * 7)
-            const targetRole = data?.user?.role
-            if (targetRole) router.push(`/dashboard/${targetRole}`)
+            const token = data.data?.token
+            await setCookie("token", token, 604800)
+            router.replace(getUserRole(data))
         } catch {
             notifyAuthConnectionError()
         } finally {

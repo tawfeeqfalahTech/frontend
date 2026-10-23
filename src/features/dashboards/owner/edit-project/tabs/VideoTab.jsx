@@ -1,12 +1,13 @@
 "use client"
+import Image from "next/image"
 import { useState } from "react"
 import { Play, Trash2, Link as LinkIcon, Video, AlertCircle } from "lucide-react"
 import SaveChangesButton from "../components/SaveChangesButton"
 
-const VideoTab = ({ empty = false }) => {
-    // رابط الفيديو التجريبي المضاف مسبقاً
-    const [videoUrl, setVideoUrl] = useState(empty ? "" : "https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+const VideoTab = ({ initialVideoUrl = "", poster = "/images/video-player.png" }) => {
+    const [videoUrl, setVideoUrl] = useState(initialVideoUrl)
     const [isSaving, setIsSaving] = useState(false)
+    const [previewSrc, setPreviewSrc] = useState(poster)
 
     const handleRemoveVideo = () => {
         setVideoUrl("")
@@ -71,13 +72,13 @@ const VideoTab = ({ empty = false }) => {
 
                     {/* مشغل ومعاينة الفيديو بارتفاع 400px كما في فيجما */}
                     <div className="relative rounded-2xl overflow-hidden bg-gray-900 border border-gray-200 h-[300px] sm:h-[340px] w-full flex items-center justify-center group shadow-md">
-                        <img
-                            src="/images/video-player.png"
+                        <Image
+                            src={previewSrc}
                             alt="معاينة الفيديو"
+                            fill
+                            sizes="(min-width: 1024px) calc(100vw - 360px), calc(100vw - 96px)"
                             className="w-full h-full object-cover opacity-85 group-hover:opacity-75 transition-opacity duration-300"
-                            onError={(e) => {
-                                e.currentTarget.src = "/images/cover-image.png"
-                            }}
+                            onError={() => setPreviewSrc("/images/cover-image.png")}
                         />
 
                         {/* زر التشغيل في المنتصف */}

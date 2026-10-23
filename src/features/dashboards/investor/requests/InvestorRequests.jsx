@@ -5,8 +5,7 @@ import Image from "next/image";
 import { BriefcaseBusiness, Clock3, FileText, Inbox, Mail, Send, X } from "lucide-react";
 import EmptyState from "@/features/dashboards/shared/EmptyState";
 import { iconActionClass, outlineClass, surfaceClass } from "@/features/dashboards/shared/dashboardStyles";
-import { ProjectDialog } from "../home/components";
-import { suggestedProjects } from "../home/data";
+import ProjectDialog from "../shared/ProjectDialog";
 import { requestFilters, requestStatuses } from "./data";
 import InterestRequestDialog from "./InterestRequestDialog";
 import styles from "./InvestorRequests.module.css";
@@ -56,7 +55,7 @@ function RequestRow({ request, project, onAction, onDetails }) {
     </li>;
 }
 
-export default function InvestorRequests({ initialData, initialFilter = "all" }) {
+export default function InvestorRequests({ initialData, projects = [], initialFilter = "all" }) {
     const [requests, setRequests] = useState(initialData);
     const [filter, setFilter] = useState(initialFilter);
     const [selection, setSelection] = useState(null);
@@ -84,7 +83,8 @@ export default function InvestorRequests({ initialData, initialFilter = "all" })
         <p role="status" aria-live="polite" className="sr-only">{filtered.length} طلبات في قسم {requestFilters.find((item) => item.id === filter).label}</p>
         <div id="investor-requests-list">
             {filtered.length ? <ul className={styles.list}>{filtered.map((request) => {
-                const project = suggestedProjects.find((item) => item.id === request.projectId);
+                const project = request.project ?? projects.find((item) => item.id === request.projectId);
+                if (!project) return <li key={request.id} className={`${surfaceClass} p-4 text-sm`}>المشروع غير متاح حالياً</li>;
                 return <RequestRow key={request.id} request={request} project={project} onDetails={(project) => setSelection({ project })} onAction={(type, request, project) => setAction({ type, request, project })} />;
             })}</ul> : <div className={surfaceClass}><EmptyState icon={requests.length ? Inbox : Send} title={requests.length ? "لا توجد طلبات في هذا القسم" : "لم ترسل أي طلب بعد"} description={requests.length ? "ستظهر هنا الطلبات التي تطابق الحالة المختارة. يمكنك العودة إلى جميع طلباتك." : "استكشف المشاريع وأبدِ اهتمامك بالفرص المناسبة لك لتتابع طلباتك هنا."} {...(requests.length ? { actionLabel: "عرض جميع الطلبات", onAction: () => setFilter("all") } : { actionLabel: "استكشاف المشاريع", actionHref: "/explore" })} /></div>}
         </div>

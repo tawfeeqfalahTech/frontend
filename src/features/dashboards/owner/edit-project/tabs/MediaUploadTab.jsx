@@ -1,30 +1,16 @@
 "use client"
+import Image from "next/image"
 import { useState, useRef } from "react"
 import { UploadCloud, Image as ImageIcon, Trash2, CheckCircle2, Star } from "lucide-react"
 import SaveChangesButton from "../components/SaveChangesButton"
 import EmptyState from "@/features/dashboards/shared/EmptyState"
 
-const MediaUploadTab = ({ empty = false }) => {
+const MediaUploadTab = ({ initialImages = [] }) => {
     const fileInputRef = useRef(null)
     const [isDragging, setIsDragging] = useState(false)
     const [isSaving, setIsSaving] = useState(false)
 
-    const [images, setImages] = useState(empty ? [] : [
-        {
-            id: 1,
-            url: "/images/cover-image.png",
-            name: "واجهة لوحة التحكم الرئيسية.png",
-            size: "2.4 MB",
-            isCover: true
-        },
-        {
-            id: 2,
-            url: "/images/project-success.png",
-            name: "مخطط إدارة المنتجات والمخزون.png",
-            size: "1.8 MB",
-            isCover: false
-        }
-    ])
+    const [images, setImages] = useState(initialImages)
 
     const handleFileSelect = (files) => {
         if (!files || files.length === 0) return
@@ -130,12 +116,17 @@ const MediaUploadTab = ({ empty = false }) => {
                                     }`}
                             >
                                 <div className="relative h-40 w-full bg-gray-100 overflow-hidden">
-                                    <img
+                                    <Image
                                         src={img.url}
                                         alt={img.name}
+                                        fill
+                                        sizes="(min-width: 1024px) calc((100vw - 392px) / 3), (min-width: 768px) calc((100vw - 128px) / 3), (min-width: 640px) calc((100vw - 112px) / 2), calc(100vw - 96px)"
+                                        unoptimized={img.url.startsWith("blob:") || img.url.startsWith("data:")}
                                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                        onError={(e) => {
-                                            e.currentTarget.src = "/images/cover-image.png"
+                                        onError={() => {
+                                            if (img.url !== "/images/cover-image.png") {
+                                                setImages((current) => current.map((image) => image.id === img.id ? { ...image, url: "/images/cover-image.png" } : image))
+                                            }
                                         }}
                                     />
                                     {img.isCover && (

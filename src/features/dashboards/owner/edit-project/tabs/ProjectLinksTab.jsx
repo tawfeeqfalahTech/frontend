@@ -22,14 +22,10 @@ const FigmaIcon = ({ className = "w-5 h-5" }) => (
     </svg>
 )
 
-const ProjectLinksTab = ({ empty = false }) => {
-    const [links, setLinks] = useState(empty ? { website: "", prototype: "", linkedin: "", twitter: "", github: "" } : {
-        website: "https://smartstore-demo.com",
-        prototype: "https://www.figma.com/proto/smartstore-prototype",
-        linkedin: "https://linkedin.com/company/smartstore-app",
-        twitter: "https://x.com/smartstore_app",
-        github: "https://github.com/tawfeeq/smartstore-core"
-    })
+const ProjectLinksTab = ({ initialLinks = [] }) => {
+    const [links, setLinks] = useState(() => Object.fromEntries(
+        ["website", "prototype", "linkedin", "twitter", "github"].map(key => [key, initialLinks.find(link => link.type === key)?.url ?? ""])
+    ))
 
     const [isSaving, setIsSaving] = useState(false)
 

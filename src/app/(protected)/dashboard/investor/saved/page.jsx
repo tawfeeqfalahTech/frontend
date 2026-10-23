@@ -1,8 +1,8 @@
+import { requierRole } from "@/lib/auth";
 import InvestorSavedProjects from "@/features/dashboards/investor/saved/InvestorSavedProjects";
-import { getDashboardState } from "@/features/dashboards/investor/home/data";
+import { getInvestorDashboard } from "@/features/dashboards/data/dashboardRepository";
 
-export default async function Page({ searchParams }) {
-    const params = await searchParams;
-    const state = ["complete", "empty", "empty-saved", "loading", "error"].includes(params?.state) ? params.state : "";
-    return <InvestorSavedProjects key={state} data={getDashboardState(state)} previewState={state} />;
+export default async function Page() {
+    await requierRole("investor");
+    return <InvestorSavedProjects data={await getInvestorDashboard()} />;
 }

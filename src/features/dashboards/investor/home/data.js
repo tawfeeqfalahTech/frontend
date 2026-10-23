@@ -31,16 +31,11 @@ export const recentUpdates = [
     { id: "saved", type: "saved", text: "حفظت مشروع إدارة المشاريع", projectId: "projects", time: "أمس" },
 ];
 
-// Home previews: ?state=complete | empty-updates | incomplete-profile | empty | empty-saved.
-// Without a preview, profile completeness and saved projects reflect the local account.
-export const dashboardPreviewStates = ["complete", "empty-updates", "incomplete-profile", "empty", "empty-saved", "empty-projects", "empty-requests"];
-
-export function getDashboardState(state) {
+export function getDashboardData() {
     return {
-        projects: ["empty", "empty-projects"].includes(state) ? [] : suggestedProjects,
-        requests: ["empty", "empty-requests"].includes(state) ? [] : investorRequests,
-        savedIds: ["empty", "empty-saved"].includes(state) ? [] : initialSavedIds,
-        updates: ["empty", "empty-updates"].includes(state) ? [] : recentUpdates,
-        profileState: state === "incomplete-profile" ? "incomplete" : state ? "complete" : "auto",
+        projects: suggestedProjects,
+        requests: investorRequests,
+        savedIds: initialSavedIds,
+        updates: recentUpdates,
     };
 }

@@ -4,27 +4,12 @@ import { UploadCloud, FileText, Trash2, Download, ExternalLink } from "lucide-re
 import SaveChangesButton from "../components/SaveChangesButton"
 import EmptyState from "@/features/dashboards/shared/EmptyState"
 
-const PdfFilesTab = ({ empty = false }) => {
+const PdfFilesTab = ({ initialDocuments = [] }) => {
     const fileInputRef = useRef(null)
     const [isDragging, setIsDragging] = useState(false)
     const [isSaving, setIsSaving] = useState(false)
 
-    const [documents, setDocuments] = useState(empty ? [] : [
-        {
-            id: 1,
-            name: "دراسة الجدوى الاقتصادية الشاملة 2026.pdf",
-            size: "4.2 MB",
-            date: "15 يناير 2026",
-            type: "feasibility"
-        },
-        {
-            id: 2,
-            name: "عرض تقديم فكرة المشروع للمستثمرين (Pitch Deck).pdf",
-            size: "8.7 MB",
-            date: "20 فبراير 2026",
-            type: "pitch_deck"
-        }
-    ])
+    const [documents, setDocuments] = useState(initialDocuments)
 
     const handleFileSelect = (files) => {
         if (!files || files.length === 0) return

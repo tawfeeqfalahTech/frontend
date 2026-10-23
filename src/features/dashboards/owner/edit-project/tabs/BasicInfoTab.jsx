@@ -21,15 +21,15 @@ const projectStatuses = [
     // { id: "funding", label: "مرحلة التمويل" }
 ]
 
-const BasicInfoTab = ({ empty = false }) => {
+const BasicInfoTab = ({ project }) => {
     const [formData, setFormData] = useState({
-        title: "مشروع إدارة المتاجر الذكية",
-        description: "نظام متكامل قائم على إدارة المخزون التجاري والصادر والوارد من الأموال بشكل مؤتمت يسهل على أصحاب المتاجر الصغيرة إدارة تجارتهم بكفاءة عالية.",
-        status: "active_idea",
-        category: "التجارة الإلكترونية",
-        minBudget: "4000",
-        maxBudget: "10000",
-        tags: empty ? [] : ["تقنية", "متاجر", "أتمتة"]
+        title: project.title ?? "",
+        description: project.description ?? "",
+        status: project.status ?? "",
+        category: project.category ?? "",
+        minBudget: project.minBudget ?? "",
+        maxBudget: project.maxBudget ?? "",
+        tags: project.tags ?? []
     })
 
     const [isSaving, setIsSaving] = useState(false)

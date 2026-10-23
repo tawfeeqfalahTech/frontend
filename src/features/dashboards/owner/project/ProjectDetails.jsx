@@ -35,8 +35,8 @@ function CardHeading({ children }) {
 
 export default function ProjectDetails({ projectId, videoUrl, files = defaultFiles, socialLinks = defaultSocialLinks, tags = defaultTags }) {
     const [isPlaying, setIsPlaying] = useState(false)
-    const projectQuery = projectId ? `&id=${encodeURIComponent(projectId)}` : ""
-    const evaluationHref = `/dashboard/idea-owner/evaluations?state=empty${projectQuery}`
+    const projectQuery = projectId ? `?id=${encodeURIComponent(projectId)}` : ""
+    const evaluationHref = `/dashboard/idea-owner/evaluations${projectQuery}`
     const editHref = `/dashboard/idea-owner/edit-project${projectId ? `?id=${encodeURIComponent(projectId)}` : ""}`
     const evaluationAction = <Link href={evaluationHref} className={`${actionClass} bg-[#1E4C6F] text-white hover:bg-[#163852]`}>طلب تقييم</Link>
 

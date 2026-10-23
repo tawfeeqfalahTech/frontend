@@ -1,6 +1,7 @@
 export const projects = [
   {
     id: "0001356",
+    evaluationStatus: "completed",
     title: "إدارة الحجوزات",
     rating: "50%",
     status: "نشط",
@@ -10,6 +11,7 @@ export const projects = [
   },
   {
     id: "0001357",
+    evaluationStatus: "unevaluated",
     title: "إدارة الحجوزات",
     rating: "0%",
     status: "مرفوض",
@@ -19,6 +21,7 @@ export const projects = [
   },
   {
     id: "0001358",
+    evaluationStatus: "evaluating",
     title: "إدارة الحجوزات",
     rating: "50%",
     status: "قيد التقييم",

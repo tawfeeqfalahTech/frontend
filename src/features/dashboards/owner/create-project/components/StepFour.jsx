@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Image from 'next/image';
 import { Sprout, Coins, Users, Tag, Globe, Lock } from 'lucide-react';
 
 const StepFour = ({ formData, setFormData, errors = {} }) => {
@@ -92,10 +93,12 @@ const StepFour = ({ formData, setFormData, errors = {} }) => {
                     </div>
                 </div>
 
-                <div className="w-full lg:w-72 h-50 rounded-2xl overflow-hidden shrink-0 border border-slate-100 shadow-sm bg-slate-900">
-                    <img
+                <div className="relative w-full lg:w-72 h-50 rounded-2xl overflow-hidden shrink-0 border border-slate-100 shadow-sm bg-slate-900">
+                    <Image
                         src="/images/Rectangle 16.png"
                         alt={projectData.title}
+                        fill
+                        sizes="(min-width: 1024px) 288px, calc(100vw - 80px)"
                         className="w-full h-full object-cover"
                     />
                 </div>

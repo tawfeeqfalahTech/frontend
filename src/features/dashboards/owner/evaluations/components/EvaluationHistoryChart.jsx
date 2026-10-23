@@ -13,7 +13,7 @@ const EvaluationHistoryChart = ({ evaluations }) => {
     const options = useMemo(() => ({
         chart: {
             type: "bar",
-            fontFamily: "Cairo, sans-serif",
+            fontFamily: "var(--font-cairo), sans-serif",
             foreColor: "#4B5563",
             toolbar: { show: false },
             zoom: { enabled: false },

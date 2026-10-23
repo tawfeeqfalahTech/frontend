@@ -4,15 +4,9 @@ import ApexChart from "../../evaluations/components/ApexChart"
 import { ChartPie } from "lucide-react"
 import EmptyState from "@/features/dashboards/shared/EmptyState"
 
-const data = [
-    { name: "نشط", value: 8, color: "#4EA853" },
-    { name: "قيد التقييم", value: 10, color: "#F7931E" },
-    { name: "مرفوض", value: 6, color: "#F14336" },
-]
-
-const options = {
+function chartOptions(data) { return {
     chart: {
-        type: "donut", fontFamily: "Cairo, sans-serif",
+        type: "donut", fontFamily: "var(--font-cairo), sans-serif",
         toolbar: { show: false }, animations: { enabled: false },
         parentHeightOffset: 0, sparkline: { enabled: true },
     },
@@ -33,10 +27,19 @@ const options = {
             },
         },
     },
-}
+} }
 
-export default function OwnerPieChart({ empty = false }) {
-    const totalProjects = empty ? 0 : data.reduce((sum, item) => sum + item.value, 0)
+export default function OwnerPieChart({ projects = [] }) {
+    const colors = { "نشط": "#4EA853", "قيد التقييم": "#F7931E", "مرفوض": "#F14336" }
+    const counts = projects.reduce((result, project) => {
+        const status = project.status || "غير محدد"
+        result[status] = (result[status] || 0) + 1
+        return result
+    }, {})
+    const data = Object.entries(counts).map(([name, value]) => ({ name, value, color: colors[name] || "#64748B" }))
+    const options = chartOptions(data)
+    const totalProjects = projects.length
+    const empty = totalProjects === 0
 
     return (
         <section className="flex w-full min-w-0 flex-col rounded-2xl border border-slate-100 bg-white px-4 pb-6 pt-4 shadow-sm" dir="rtl" aria-labelledby="status-chart-title">

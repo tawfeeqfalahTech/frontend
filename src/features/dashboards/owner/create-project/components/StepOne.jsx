@@ -1,4 +1,5 @@
 import { X } from 'lucide-react'
+import Image from 'next/image'
 import { useCallback, useRef, useState, useEffect } from 'react'
 
 const StepOne = ({ formData, setFormData, errors = {} }) => {
@@ -9,23 +10,19 @@ const StepOne = ({ formData, setFormData, errors = {} }) => {
     const accept = "image/png,image/jpeg,image/webp"
 
     const inputRef = useRef(null);
-    const [preview, setPreview] = useState(null);
+    const [blobPreview, setBlobPreview] = useState(null);
+    const preview = typeof value === 'string' ? value : blobPreview?.value === value ? blobPreview.url : null;
     const [isDragging, setIsDragging] = useState(false);
     const [error, setError] = useState("");
     const [techInput, setTechInput] = useState("");
 
     // تحديث المعاينة تلقائياً عند تغيير صورة الغلاف في بيانات النموذج
     useEffect(() => {
-        if (!value) {
-            setPreview(null);
-            return;
-        }
-
-        if (typeof value === 'string') {
-            setPreview(value);
-        } else if (value instanceof File || value instanceof Blob) {
+        if (value instanceof Blob) {
             const objectUrl = URL.createObjectURL(value);
-            setPreview(objectUrl);
+            // Synchronize with the browser-owned URL; strings/null are derived above.
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setBlobPreview({ value, url: objectUrl });
 
             // تنظيف الذاكرة عند التفكيك أو التغيير
             return () => URL.revokeObjectURL(objectUrl);
@@ -83,7 +80,6 @@ const StepOne = ({ formData, setFormData, errors = {} }) => {
 
     const handleRemove = (e) => {
         e.stopPropagation();
-        setPreview(null);
         setError("");
         onChange?.(null);
     };
@@ -202,9 +198,13 @@ const StepOne = ({ formData, setFormData, errors = {} }) => {
                     >
                         {preview ? (
                             <>
-                                <img
+                                <Image
                                     src={preview}
                                     alt="معاينة صورة الغلاف"
+                                    fill
+                                    sizes="(min-width: 768px) 240px, calc(100vw - 80px)"
+                                    unoptimized
+                                    loading="eager"
                                     className="h-full w-full object-cover"
                                 />
                                 <button
@@ -218,7 +218,7 @@ const StepOne = ({ formData, setFormData, errors = {} }) => {
                             </>
                         ) : (
                             <>
-                                <img src="/images/dragImage.png" alt="" className="w-14 h-14 object-contain opacity-80" />
+                                <Image src="/images/dragImage.png" alt="" width={56} height={56} className="w-14 h-14 object-contain opacity-80" />
                                 <span className="px-3 text-center text-xs font-medium text-slate-600 leading-relaxed">
                                     {hint}
                                 </span>

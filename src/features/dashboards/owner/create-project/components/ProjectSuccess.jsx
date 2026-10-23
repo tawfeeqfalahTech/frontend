@@ -1,13 +1,17 @@
 import React from 'react';
+import Image from 'next/image';
 
 const ProjectSuccess = ({ onContinue }) => {
     return (
         <main className="flex flex-col items-center justify-center px-4 text-center">
             {/* Container للصورة لمنع التمدد غير المرغوب */}
             <div className="w-55 md:w-80 flex justify-center items-center">
-                <img
+                <Image
                     src="/images/project-success.png"
                     alt="تم نشر المشروع بنجاح"
+                    width={441}
+                    height={316}
+                    sizes="(min-width: 768px) 320px, 220px"
                     className="w-full h-auto object-contain select-none"
                 />
             </div>

@@ -1,8 +1,8 @@
+import { requierRole } from "@/lib/auth";
 import AdminDashboard from "@/features/dashboards/admin/home/AdminDashboard";
-import { adminPreviewStates, getAdminDashboardData } from "@/features/dashboards/admin/home/data";
+import { getAdminDashboard } from "@/features/dashboards/data/dashboardRepository";
 
-export default async function Page({ searchParams }) {
-    const params = await searchParams;
-    const state = adminPreviewStates.includes(params?.state) ? params.state : "";
-    return <AdminDashboard key={state} data={getAdminDashboardData(state)} state={state} />;
+export default async function Page() {
+    await requierRole("admin");
+    return <AdminDashboard data={await getAdminDashboard()} />;
 }

@@ -1,13 +1,16 @@
 import { cookies } from "next/headers";
 import { cache } from "react";
 import { notFound, redirect } from "next/navigation";
-import { getDashboardPath } from "./auth-routes";
+import { getDashboardPath, getUserRole } from "./auth-routes";
+import { deleteCookie } from "./action";
+
+export { getUserRole } from "./auth-routes";
 
 export const getAuthUser = cache(async function getAuthUser() {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-  const cookiseStore = await cookies();
-  const token = cookiseStore.get("token")?.value;
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
 
   if (!token) return null;
 
@@ -19,9 +22,11 @@ export const getAuthUser = cache(async function getAuthUser() {
     cache: "no-store",
   });
 
-  if (!response.ok) {
-    return null;
+  if (response.status === 401 || response.status === 403) {
+    await deleteCookie("token");
   }
+
+  if (!response.ok) throw new Error("Authentication service unavailable");
 
   return response.json();
 });
@@ -34,18 +39,14 @@ export const requireAuth = async () => {
   return user;
 };
 
-export const getUserRole = (user) =>
-  user?.role ?? user?.data?.role ?? user?.data?.user?.role ?? user?.user?.role;
-
 export const requierRole = async (role) => {
   const user = await requireAuth();
-  const userRole = getUserRole(user);
 
-  if (userRole !== role) {
+  if (getUserRole(user) !== role) {
     if (role === "admin") {
       notFound();
     } else {
-      redirect(getDashboardPath(userRole));
+      redirect(getDashboardPath(getUserRole(user)));
     }
   }
 

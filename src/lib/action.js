@@ -13,9 +13,9 @@ export async function setCookie(name, value, maxAgeInSeconds) {
   });
 }
 
-export async function getCookie(value) {
+export async function getCookie(name) {
   const cookieStore = await cookies();
-  return cookieStore.get(value)?.value || "";
+  return cookieStore.get(name)?.value || "";
 }
 
 export async function deleteCookie(name) {

@@ -1,18 +1,19 @@
 "use client"
 
 import { useMemo } from "react"
-import { ArrowUpRight, UsersRound } from "lucide-react"
+import { UsersRound } from "lucide-react"
 import EmptyState from "@/features/dashboards/shared/EmptyState"
 import ApexChart from "../../evaluations/components/ApexChart"
 
-const weeklyInterest = [24, 40, 18, 32, 55, 48, 70]
 const days = ["السبت", "الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة"]
 
-export default function OwnerLineChart({ empty = false }) {
-    const series = useMemo(() => [{ name: "المهتمون", data: empty ? days.map(() => 0) : weeklyInterest }], [empty])
+export default function OwnerLineChart({ data = [] }) {
+    const empty = data.length === 0 || data.every(value => value === 0)
+    const total = data.reduce((sum, value) => sum + value, 0)
+    const series = useMemo(() => [{ name: "المهتمون", data }], [data])
     const options = useMemo(() => ({
         chart: {
-            type: "area", fontFamily: "Cairo, sans-serif", foreColor: "#64748B",
+            type: "area", fontFamily: "var(--font-cairo), sans-serif", foreColor: "#64748B",
             toolbar: { show: false }, zoom: { enabled: false }, animations: { enabled: false },
             parentHeightOffset: 0,
         },
@@ -26,7 +27,7 @@ export default function OwnerLineChart({ empty = false }) {
             tooltip: { enabled: false },
             labels: { rotate: 0, hideOverlappingLabels: false, style: { fontSize: "12px", fontWeight: 500 } },
         },
-        yaxis: { min: 0, max: 80, tickAmount: 4, labels: { style: { fontSize: "12px" }, formatter: value => Math.round(value).toString() } },
+        yaxis: { min: 0, tickAmount: 4, labels: { style: { fontSize: "12px" }, formatter: value => Math.round(value).toString() } },
         markers: { size: 0, hover: { size: 4 } },
         tooltip: { theme: "dark", y: { formatter: value => value + " مهتم" } },
         responsive: [{ breakpoint: 480, options: { xaxis: { labels: { style: { fontSize: "9px" } } }, grid: { padding: { left: -6, right: 2 } } } }],
@@ -40,11 +41,7 @@ export default function OwnerLineChart({ empty = false }) {
                     <p className="pt-1 text-xs text-slate-500">إحصائيات الإقبال للأيام السبعة الماضية</p>
                 </div>
                 <div className="flex shrink-0 flex-col items-center gap-1">
-                    <span className="text-2xl font-bold text-slate-900">{empty ? 0 : 147}</span>
-                    <div className="flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-600">
-                        <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-                        <span dir="ltr">{empty ? "0%" : "+14.5%"}</span>
-                    </div>
+                    <span className="text-2xl font-bold text-slate-900">{total}</span>
                 </div>
             </div>
             <div className="h-48 min-w-0 overflow-hidden">

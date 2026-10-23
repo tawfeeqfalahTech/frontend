@@ -1,43 +1,36 @@
+import { requierRole } from "@/lib/auth";
 import { File, ImageOff, Link2, Tags, Video } from "lucide-react"
 import Image from "next/image"
 import ProjectEvaluation from "@/features/dashboards/owner/project/ProjectEvaluation"
 import EmptyState from "@/features/dashboards/shared/EmptyState"
+import { getOwnerProject } from "@/features/dashboards/data/dashboardRepository"
+import { notFound } from "next/navigation"
 const page = async ({ searchParams }) => {
+    await requierRole("idea_owner");
     const params = await searchParams || {}
-    const empty = params.state === "empty"
-    const state = empty ? "unevaluated" : ["completed", "report", "unevaluated", "evaluating", "failed"].includes(params.state) ? params.state : "completed"
-    const editHref = (tab) => `/dashboard/idea-owner/edit-project?tab=${tab}${params.id ? `&id=${encodeURIComponent(params.id)}` : ""}`
+    const project = await getOwnerProject(typeof params.id === "string" ? params.id : undefined)
+    if (!project) notFound()
+    const editHref = (tab) => `/dashboard/idea-owner/edit-project?tab=${tab}&id=${encodeURIComponent(project.id)}`
     const title = "المؤشرات المالية والتشغيلية"
-    const items = [
-        { label: "الميزانية المتوقعة", value: "500k - 1.5M USD" },
-        { label: "حالة العرض", value: "متاح للمستثمرين" },
-        { label: "عدد المشاهدات", value: "432 مشاهدة" },
-    ]
+    const items = project.indicators
 
     const titlee = "المستندات والملفات المرفقة"
-    const files = empty || params.state === "empty-files" ? [] : [
-        { name: "العرض التقديمي للمستثمرين.pdf", size: "4.2 MB" },
-        { name: "دراسة الجدوى الفنية والتقنية.pdf", size: "8.1 MB" },
-    ]
+    const files = project.files ?? []
 
-    const links = empty || params.state === "empty-links" ? [] : [
-        { label: "انستقرام", url: "instagram.com/sanad-ai" },
-        { label: "فيسبوك", url: "facebook.com/sanad-ai" },
-        { label: "رابط المشروع", url: "sand.com/sanad-ai" },
-    ]
+    const links = project.links ?? []
 
-    const tags = empty ? [] : ["الذكاء الاصطناعي", "RegTech", "تقنيات قانونية", "NLP", "معالجة اللغات الطبيعية", "SaaS"]
+    const tags = project.tags ?? []
 
     return (
         <main className="min-w-0 px-0 sm:px-4 lg:px-6 xl:px-30">
             <section>
                 <div>
-                    <h1 className="text-xl leading-relaxed font-semibold sm:text-2xl xl:text-3xl xl:leading-9">منصة &apos;سند&apos;: الذكاء الاصطناعي لتحليل المستندات القانونية </h1>
+                    <h1 className="text-xl leading-relaxed font-semibold sm:text-2xl xl:text-3xl xl:leading-9">{project.title}</h1>
                 </div>
-                <p className="text-[#4B5563] text-sm font-semibold mt-1">منصة سحابية متقدمة تستخدم نماذج اللغات الكبيرة المعربة لتحليل العقود واستخراج الثغرات القانونية.</p>
-                {empty ? <div className="mt-4 rounded-xl border border-[#E5EDF3] bg-white"><EmptyState compact icon={ImageOff} title="لم تُضف صورة غلاف للمشروع" description="أضف صورة تعبّر عن فكرتك وتُظهر مشروعك للمستثمرين." actionLabel="إضافة صور" actionHref={editHref("media")} /></div> : <div className="relative mt-4 w-full h-40 sm:h-45 rounded-xl overflow-hidden">
+                <p className="text-[#4B5563] text-sm font-semibold mt-1">{project.subtitle}</p>
+                {!project.cover ? <div className="mt-4 rounded-xl border border-[#E5EDF3] bg-white"><EmptyState compact icon={ImageOff} title="لم تُضف صورة غلاف للمشروع" description="أضف صورة تعبّر عن فكرتك وتُظهر مشروعك للمستثمرين." actionLabel="إضافة صور" actionHref={editHref("media")} /></div> : <div className="relative mt-4 w-full h-40 sm:h-45 rounded-xl overflow-hidden">
                     <Image
-                        src="/images/cover-image.png"
+                        src={project.cover}
                         alt="cover"
                         fill
                         sizes="(max-width: 639px) calc(100vw - 48px), (max-width: 1023px) calc(100vw - 80px), (max-width: 1279px) calc(100vw - 96px), calc(100vw - 288px)"
@@ -54,11 +47,11 @@ const page = async ({ searchParams }) => {
                             <h3 className="mb-4 text-[15px] border-b border-gray-100 pb-3 font-bold text-gray-900">مالك الفكرة</h3>
                             <div className="flex items-center gap-3">
                                 <div className="w-13 h-13 relative shrink-0">
-                                    <Image src="/images/avatar.png" alt="Owner" width={80} height={80} className="rounded-full absolute max-lg:h-13 max-lg:w-13 max-lg:object-cover" />
+                                    <Image src={project.owner.image} alt="Owner" width={80} height={80} className="rounded-full absolute max-lg:h-13 max-lg:w-13 max-lg:object-cover" />
                                 </div>
                                 <div className="min-w-0 break-words">
-                                    <h4 className="text-sm font-bold text-gray-900">د. عبد الرحمن آل سعود</h4>
-                                    <p className="text-xs text-[#4B708C] font-semibold">a.alsaud@sanad.ai</p>
+                                    <h4 className="text-sm font-bold text-gray-900">{project.owner.name}</h4>
+                                    <p className="text-xs text-[#4B708C] font-semibold">{project.owner.email}</p>
                                 </div>
                             </div>
 
@@ -159,9 +152,9 @@ const page = async ({ searchParams }) => {
                         >
                             <h3 className="mb-2 text-lg font-bold text-gray-900">الفيديو التعريفي وقصة المشروع</h3>
 
-                            {empty || params.state === "empty-video" ? <EmptyState compact icon={Video} title="لا يوجد فيديو تعريفي للمشروع" description="أضف فيديو قصيراً تشرح فيه فكرتك للمستثمرين." actionLabel="إضافة فيديو" actionHref={editHref("video")} /> : <div className="relative mt-4 w-full h-40 rounded-xl overflow-hidden">
+                            {!project.videoUrl ? <EmptyState compact icon={Video} title="لا يوجد فيديو تعريفي للمشروع" description="أضف فيديو قصيراً تشرح فيه فكرتك للمستثمرين." actionLabel="إضافة فيديو" actionHref={editHref("video")} /> : <div className="relative mt-4 w-full h-40 rounded-xl overflow-hidden">
                                 <Image
-                                    src="/images/video-player.png"
+                                    src={project.videoPoster || "/images/video-player.png"}
                                     alt="cover"
                                     fill
                                     sizes="(max-width: 639px) calc(100vw - 80px), (max-width: 1023px) calc(100vw - 128px), (max-width: 1279px) calc(100vw - 448px), 720px"
@@ -171,7 +164,7 @@ const page = async ({ searchParams }) => {
                             </div>}
                         </div>
 
-                        <ProjectEvaluation key={`${params.id || "sanad"}-${state}`} initialState={state} projectId={params.id || "sanad"} />
+                        <ProjectEvaluation key={`${project.id}-${project.evaluationStatus}`} status={project.evaluationStatus} evaluation={project.evaluation} projectId={project.id} />
 
                     </div>
                 </div>

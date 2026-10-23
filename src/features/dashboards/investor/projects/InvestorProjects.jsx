@@ -3,7 +3,6 @@
 import { useMemo, useState } from "react";
 import { Grid2X2, List, SlidersHorizontal } from "lucide-react";
 import useSavedProjects from "../home/useSavedProjects";
-import { suggestedProjects } from "../home/data";
 import { EmptyState, ProjectCard, ProjectDialog } from "../home/components";
 import ProjectFilters, { DesignIcon, domains } from "./ProjectFilters";
 import styles from "./InvestorProjects.module.css";
@@ -12,7 +11,7 @@ const initialFilters = { domains: [], statuses: [], rating: [0, 100], funding: [
 const normalize = (value) => value.normalize("NFKD").replace(/[\u064B-\u065F]/g, "").replace(/[أإآ]/g, "ا").toLowerCase().trim();
 
 export default function InvestorProjects({ data, query = "", accountKey = "guest" }) {
-    const { ids: savedIds, toggle } = useSavedProjects(data.savedIds, accountKey, false);
+    const { ids: savedIds, toggle } = useSavedProjects(data.savedIds, accountKey);
     const [filters, setFilters] = useState(initialFilters);
     const [search, setSearch] = useState(query);
     const [sort, setSort] = useState("newest");
@@ -20,7 +19,7 @@ export default function InvestorProjects({ data, query = "", accountKey = "guest
     const [mobileFilters, setMobileFilters] = useState(false);
     const [selection, setSelection] = useState(null);
     const [notice, setNotice] = useState("");
-    const availableProjects = data.projects ?? suggestedProjects;
+    const availableProjects = data.projects;
     const counts = useMemo(() => Object.fromEntries(domains.map((domain) => [domain, availableProjects.filter((project) => project.domain === domain).length])), [availableProjects]);
     const active = JSON.stringify(filters) !== JSON.stringify(initialFilters);
     const projects = useMemo(() => availableProjects.filter((project) => {

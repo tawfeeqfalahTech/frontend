@@ -1,13 +1,6 @@
-import { Cairo } from "next/font/google";
+import { cairo } from "./fonts";
 import "./globals.css";
 import { Toaster } from "sonner";
-
-const cairo = Cairo({
-  subsets: ["arabic", "latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-cairo",
-  display: "swap",
-});
 
 export const metadata = {
   icons: {

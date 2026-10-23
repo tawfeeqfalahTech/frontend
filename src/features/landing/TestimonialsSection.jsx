@@ -60,7 +60,7 @@ export default function TestimonialsSection() {
 
                 {/* Quote Content */}
                 <p className="text-slate-700 leading-relaxed text-base italic">
-                  "{item.content}"
+                  &quot;{item.content}&quot;
                 </p>
               </div>
 

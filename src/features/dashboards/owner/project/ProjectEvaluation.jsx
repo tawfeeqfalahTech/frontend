@@ -1,11 +1,11 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useRef, useState, useTransition } from "react"
 import Link from "next/link"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { CircleSlash, Clock3, TriangleAlert } from "lucide-react"
 import { PolarAngleAxis, PolarGrid, PolarRadiusAxis, Radar, RadarChart, ResponsiveContainer } from "recharts"
-import { projectDetails } from "./projectDetails"
+import { getEvaluationStatus } from "../../shared/viewState.mjs"
 import { evaluationHref } from "../evaluations/data/evaluationReport"
 
 const cardClass = "w-full min-w-0 mt-4 max-w-3xl rounded-2xl border border-gray-100 bg-white p-4 sm:p-6 shadow-sm"
@@ -18,50 +18,47 @@ function RadarAxisTick({ x, y, payload, textAnchor }) {
     </text>
 }
 
-export default function ProjectEvaluation({ initialState = "completed", projectId, evaluation = projectDetails.evaluation, onRequestEvaluation }) {
+export default function ProjectEvaluation({ status, projectId, evaluation, onRequestEvaluation }) {
     const router = useRouter()
-    const searchParams = useSearchParams()
-    const [state, setState] = useState(initialState)
+    const [requesting, setRequesting] = useState(false)
+    const [refreshing, startTransition] = useTransition()
+    const state = requesting || refreshing ? "evaluating" : getEvaluationStatus({ status, result: evaluation })
+    const [error, setError] = useState("")
     const requestInProgress = useRef(false)
-    const completed = state === "completed" || state === "report"
-
-    const changeState = nextState => {
-        setState(nextState)
-        const params = new URLSearchParams(searchParams.toString())
-        params.set("state", nextState)
-        router.replace(`?${params}`, { scroll: false })
-    }
+    const completed = state === "completed"
 
     const requestEvaluation = async () => {
-        if (requestInProgress.current || state === "evaluating") return
+        if (!onRequestEvaluation || requestInProgress.current || state === "evaluating") return
         requestInProgress.current = true
-        setState("evaluating")
+        setError("")
+        setRequesting(true)
         try {
-            // Without a service callback, this previews the pending state without fabricating a result.
-            if (onRequestEvaluation) await onRequestEvaluation(projectId)
-            changeState("evaluating")
+            await onRequestEvaluation(projectId)
+            startTransition(() => router.refresh())
         } catch {
-            changeState("failed")
+            setError("تعذّر إرسال طلب التقييم. حاول مرة أخرى.")
         } finally {
             requestInProgress.current = false
+            setRequesting(false)
         }
     }
 
     if (!completed) {
         const failed = state === "failed"
         const evaluating = state === "evaluating"
-        return <section className={`${cardClass} flex min-h-60 flex-col items-center justify-center text-center`} aria-live="polite" aria-busy={evaluating}>
+        return <section id="project-evaluation" className={`${cardClass} flex min-h-60 flex-col items-center justify-center text-center`} aria-live="polite" aria-busy={evaluating}>
             <div className={`mb-3 flex h-12 w-12 items-center justify-center rounded-full ${failed ? "bg-red-50 text-red-500" : "bg-[#E9EDF1] text-[#1E4C6F]"}`}>
                 {failed ? <TriangleAlert size={28} aria-hidden="true" /> : evaluating ? <Clock3 size={28} aria-hidden="true" /> : <CircleSlash size={48} aria-hidden="true" />}
             </div>
             <h3 className="mb-2 text-lg font-bold text-gray-900">{failed ? "فشلت عملية التقييم" : evaluating ? "جاري التقييم" : "هذا المشروع لم يُقيّم بعد"}</h3>
             <p className="mb-4 max-w-md text-xs leading-5 text-[#68879F]">{failed ? "تعذّر إكمال التقييم. تأكد من اكتمال بيانات المشروع والملفات المرفقة ثم أعد المحاولة." : evaluating ? "يجري الآن تحليل بيانات مشروعك وإعداد تقرير التقييم. ستظهر النتائج هنا بمجرد اكتمال العملية." : "اطلب تقييم مشروعك للحصول على تقرير يوضح نقاط القوة والتوصيات ومدى جاهزية المشروع للاستثمار."}</p>
-            {evaluating ? <span className="rounded-md bg-[#E9EDF1] px-3 py-1.5 text-xs text-[#4B708C]">سيتم إشعارك بمجرد اكتمال التقييم</span> : <button type="button" className={buttonClass} onClick={requestEvaluation}>{failed ? "إعادة التقييم" : "طلب التقييم"}</button>}
+            {evaluating ? <span className="rounded-md bg-[#E9EDF1] px-3 py-1.5 text-xs text-[#4B708C]">سيتم إشعارك بمجرد اكتمال التقييم</span> : <button type="button" className={buttonClass} disabled={!onRequestEvaluation} title={!onRequestEvaluation ? "خدمة التقييم غير متاحة حالياً" : undefined} onClick={requestEvaluation}>{failed ? "إعادة التقييم" : "طلب التقييم"}</button>}
+            {error && <p role="alert" className="mt-3 text-sm text-red-600">{error}</p>}
         </section>
     }
 
     return <>
-        <section className={cardClass}>
+        <section id="project-evaluation" className={cardClass}>
             <h3 className="mb-2 text-lg font-bold text-gray-900">التقييم الفني الإجمالي</h3>
             <div className="flex flex-wrap items-center justify-between gap-2 text-sm font-semibold text-[#1E4C6F]">
                 <Link href={evaluationHref({ projectId })} className="hover:underline">عرض سجل التقييمات</Link>
@@ -92,7 +89,7 @@ export default function ProjectEvaluation({ initialState = "completed", projectI
                 </div>)}
             </div>
         </section>
-        {state === "report" && <section className={cardClass}>
+        {evaluation.strengths?.length > 0 && <section className={cardClass}>
             <h3 className="mb-4 text-lg font-bold text-gray-900">تحليل المشروع: المزايا والتوصيات والمهارات المطلوبة</h3>
             <h4 className="mb-2 text-sm font-bold text-gray-900">المزايا التقنية ونقاط القوة</h4>
             <ul className="mb-4 list-disc space-y-1 pr-4 text-xs leading-5 text-[#68879F]">{evaluation.strengths.map(item => <li key={item}>{item}</li>)}</ul>

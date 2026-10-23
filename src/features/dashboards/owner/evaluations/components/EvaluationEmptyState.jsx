@@ -16,7 +16,7 @@ const content = {
     },
 }
 
-const EvaluationEmptyState = ({ variant = "reports", actionHref = "/dashboard/idea-owner/evaluations?state=single" }) => {
+const EvaluationEmptyState = ({ variant = "reports", actionHref = "/dashboard/idea-owner/view-project#project-evaluation" }) => {
     const { image, title, description, action } = content[variant]
     const isReports = variant === "reports"
 

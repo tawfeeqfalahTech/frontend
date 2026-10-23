@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react"
 import { SquarePen, Trash2 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { projects as defaultProjects } from "../../data/projects"
 import ProjectsEmptyState from "./ProjectsEmptyState"
 
 const columns = ["رقم", "صورة", "المشروع", "المجال", "الحالة", "تقييم الذكاء", "المشاهدات", "تاريخ الإنشاء", "إجراءات"]
@@ -15,7 +14,7 @@ const statusStyles = {
 }
 const actionClass = "inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-[#E5EDF3] bg-white text-[#1E4C6F] transition-colors hover:border-[#1E4C6F] hover:bg-[#E9EDF1] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E4C6F]"
 
-export default function ProjectsTable({ slice, projects = defaultProjects, onDelete }) {
+export default function ProjectsTable({ slice, projects = [], onDelete }) {
     const [hiddenIds, setHiddenIds] = useState([])
     const [selectedProject, setSelectedProject] = useState(null)
     const [lastRemoved, setLastRemoved] = useState(null)

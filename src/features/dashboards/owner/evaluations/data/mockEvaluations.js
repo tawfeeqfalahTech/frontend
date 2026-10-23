@@ -7,7 +7,6 @@ export const evaluationDimensions = [
   { key: "team", label: "اكتمال الفريق", color: "#B8862E" },
   { key: "documentation", label: "التوثيق", color: "#C4453A" },
 ];
-
 export const evaluationHistory = [
   {
     id: "2025-07-15",
@@ -50,6 +49,3 @@ export const evaluationHistory = [
     scores: [85, 78, 82, 90, 88],
   },
 ];
-
-export const firstEvaluation = { ...evaluationHistory[4], difference: null };
-export const evaluationCooldown = (6 * 60 + 20) * 60;

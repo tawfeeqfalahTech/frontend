@@ -3,8 +3,6 @@ import { projectDetails } from "../../project/projectDetails"
 import { evaluationHistory } from "./mockEvaluations"
 
 // Presentation fixtures; replace with the project's evaluation service when available.
-const agricultureName = "قناة الذكي للزراعة المائية"
-
 export const readinessDimensions = [
     { key: "documentation", label: "التوثيق", scoreIndex: 4 },
     { key: "team", label: "الفريق", scoreIndex: 3 },
@@ -13,17 +11,18 @@ export const readinessDimensions = [
     { key: "market", label: "السوق", scoreIndex: 2 },
 ]
 
-export function getEvaluationProject(projectId) {
+export function getEvaluationProject(projectId = projectDetails.id) {
     const isSanad = projectId === projectDetails.id
     const project = projects.find(item => item.id === projectId)
-    const name = isSanad ? projectDetails.title : project?.title || agricultureName
-    const reports = isSanad ? evaluationHistory.map((report, index) => index === evaluationHistory.length - 1 ? {
+    if (!isSanad && !project) return null
+    const name = isSanad ? projectDetails.title : project.title
+    const reports = project?.evaluationStatus === "unevaluated" || project?.evaluationStatus === "evaluating" ? [] : isSanad ? evaluationHistory.map((report, index) => index === evaluationHistory.length - 1 ? {
         ...report,
         score: projectDetails.evaluation.score,
         scores: [94, 98, 85, 78, 86],
-    } : report) : evaluationHistory
+    } : report) : evaluationHistory.map((report, index) => index === evaluationHistory.length - 1 ? { ...report, score: parseInt(project.rating, 10) || 0 } : report)
 
-    return { id: projectId || "smart-agriculture", name, reports, isSanad }
+    return { id: projectId, name, reports, isSanad }
 }
 
 export function getEvaluationReport(project, evaluation) {
@@ -49,10 +48,9 @@ export function getEvaluationReport(project, evaluation) {
     }
 }
 
-export function evaluationHref({ projectId, reportId, state } = {}) {
+export function evaluationHref({ projectId, reportId } = {}) {
     const params = new URLSearchParams()
     if (projectId) params.set("id", projectId)
     if (reportId) params.set("report", reportId)
-    if (state) params.set("state", state)
     return `/dashboard/idea-owner/evaluations${params.size ? `?${params}` : ""}`
 }

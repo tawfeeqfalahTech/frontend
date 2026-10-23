@@ -7,7 +7,7 @@ const EvaluationScore = ({ score = 78, large = false }) => {
     const size = large ? 120 : 80
     const series = useMemo(() => [Math.min(100, Math.max(0, score))], [score])
     const options = useMemo(() => ({
-        chart: { type: "radialBar", sparkline: { enabled: true }, fontFamily: "Cairo, sans-serif", animations: { enabled: true, speed: 350 } },
+        chart: { type: "radialBar", sparkline: { enabled: true }, fontFamily: "var(--font-cairo), sans-serif", animations: { enabled: true, speed: 350 } },
         colors: [large ? "#2F8F6F" : "#1E4C6F"],
         plotOptions: {
             radialBar: {
