@@ -8,7 +8,7 @@ import { notifyAuthConnectionError, notifyAuthErrors } from '../../authNotificat
 import { setCookie } from '@/lib/action'
 import { useRouter } from 'next/navigation'
 import AuthInput from './AuthInput'
-import { getUserRole } from '@/lib/auth-routes'
+import { getDashboardPath, getUserRole } from '@/lib/auth-routes'
 
 const SignInForm = () => {
     const [email, setEmail] = useState("")
@@ -55,7 +55,8 @@ const SignInForm = () => {
             }
             const token = data.data?.token
             await setCookie("token", token, 604800)
-            router.replace(getUserRole(data))
+            const targetPath = getDashboardPath(getUserRole(data))
+            window.location.replace(targetPath)
         } catch {
             notifyAuthConnectionError()
         } finally {

@@ -9,7 +9,7 @@ import DoveIcon from "@/icons/DoveIcon";
 import BarChartIcon from "@/icons/BarChartIcon";
 import { MoveRight, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Role } from "@/features/auth/authApi";
+import { selectRole } from "@/features/auth/authApi";
 import { useState, useEffect } from "react";
 import { deleteCookie, getCookie, setCookie } from "@/lib/action";
 import { getDashboardPath } from "@/lib/auth-routes";
@@ -56,7 +56,7 @@ const Page = () => {
 
         setLoading(true)
         try {
-            const res = await Role(userData)
+            const res = await selectRole(userData)
 
             const data = await res.json().catch(() => ({}));
 
@@ -70,7 +70,8 @@ const Page = () => {
 
             await setCookie("token", token, 60 * 60 * 24 * 7);
             await deleteCookie("pending_selection_role")
-            router.replace(getDashboardPath(data?.data?.user?.role));
+            const targetPath = getDashboardPath(data?.data?.user?.role)
+            window.location.replace(targetPath)
 
         } catch {
             notifyAuthConnectionError();

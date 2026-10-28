@@ -2,7 +2,8 @@ import { cookies } from "next/headers";
 import { cache } from "react";
 import { notFound, redirect } from "next/navigation";
 import { getDashboardPath, getUserRole } from "./auth-routes";
-import { deleteCookie } from "./action";
+
+import { ENDPOINTS } from "./constants/endpoints";
 
 export { getUserRole } from "./auth-routes";
 
@@ -14,7 +15,7 @@ export const getAuthUser = cache(async function getAuthUser() {
 
   if (!token) return null;
 
-  const response = await fetch(`${API_URL}/me`, {
+  const response = await fetch(`${API_URL}${ENDPOINTS.AUTH.ME}`, {
     headers: {
       Accept: "application/json",
       Authorization: `Bearer ${token}`,
@@ -23,7 +24,8 @@ export const getAuthUser = cache(async function getAuthUser() {
   });
 
   if (response.status === 401 || response.status === 403) {
-    await deleteCookie("token");
+
+    return null;
   }
 
   if (!response.ok) throw new Error("Authentication service unavailable");

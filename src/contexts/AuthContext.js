@@ -22,7 +22,7 @@ export const AuthContext = ({ initialUser, children }) => {
       console.log(error);
     } finally {
       await deleteCookie("token");
-      router.replace("/login");
+      window.location.replace("/login");
     }
   };
 
